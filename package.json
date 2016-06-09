@@ -1,5 +1,5 @@
 {
-  "name": "superflat-admin",
+  "name": "bags-admin-client",
   "version": "0.1.0",
   "devDependencies": {
     "grunt": "~0.4.5",
