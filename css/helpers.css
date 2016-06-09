@@ -1,0 +1,384 @@
+﻿/*
+    Author: Arpit Jain
+    Website: www.arpitjain.me
+*/
+
+.mn {
+    margin: 0px;
+}
+ 
+.m20 {
+    margin:20px;
+}
+
+.mtn {
+    margin-top: 0px !important;
+}
+
+.mt3 {
+    margin-top: 3px;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
+.mt8 {
+    margin-top: 8px;
+}
+
+.mt10 {
+    margin-top: 10px;
+}
+
+.mt15 {
+    margin-top: 15px;
+}
+
+.mt20 {
+    margin-top: 20px !important;
+}
+
+.mt25 {
+    margin-top: 25px !important;
+}
+
+.mt30 {
+    margin-top: 30px;
+}
+
+.mt40 {
+    margin-top: 40px;
+}
+
+.mt70 {
+    margin-top: 70px;
+}
+
+.mt80 {
+    margin-top: 80px;
+}
+
+.mt90 {
+    margin-top: 90px;
+}
+
+.mr5 {
+    margin-right: 5px;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+
+.mr20 {
+    margin-right: 20px !important;
+}
+.mr50 {
+    margin-right: 50px !important;
+}
+
+.mn7 {
+    margin: -7px;
+}
+
+.mn10 {
+    margin: -10px;
+}
+
+.mn20 {
+    margin: -20px;
+}
+
+.mn30 {
+    margin: -30px;
+}
+
+.mrn10 {
+    margin-right: -10px;
+}
+.ml5 {
+    margin-left: 5px;
+}
+.ml10 {
+    margin-left: 10px;
+}
+
+.ml20 {
+    margin-left: 20px;
+}
+.mb5 {
+    margin-bottom: 5px;
+}
+
+.mb10 {
+    margin-bottom: 10px;
+}
+
+.mb15 {
+    margin-bottom: 15px;
+}
+
+.mb20 {
+    margin-bottom: 20px;
+}
+
+.mb25 {
+    margin-bottom: 25px;
+}
+
+.mb30 {
+    margin-bottom: 30px;
+}
+
+.mbn {
+    margin-bottom: 0px !important;
+}
+
+.pn {
+    padding: 0px !important;
+}
+
+.p5 {
+    padding: 5px !important;
+}
+
+.p10 {
+    padding: 10px !important;
+}
+
+.p15 {
+    padding: 15px !important;
+}
+
+.p20 {
+    padding: 20px !important;
+}
+
+.p25 {
+    padding: 25px !important;
+}
+
+.p30 {
+    padding: 30px !important;
+}
+
+.prn {
+    padding-right: 0px;
+}
+
+.pr6 {
+    padding-right: 6px;
+}
+
+.pr10 {
+    padding-right: 10px !important;
+}
+
+.pr15 {
+    padding-right: 15px;
+}
+
+.pr30 {
+    padding-right: 30px !important;
+}
+
+.pr50 {
+    padding-right: 50px !important;
+}
+
+.pln {
+    padding-left: 0px;
+}
+
+.pl5 {
+    padding-left: 5px !important;
+}
+
+.pl10 {
+    padding-left: 10px !important;
+}
+
+.pl15 {
+    padding-left: 15px;
+}
+
+.pl30 {
+    padding-left: 30px;
+}
+
+.pt1 {
+    padding-top: 1px;
+}
+
+.pt6 {
+    padding-top: 6px !important;
+}
+
+.pt10 {
+    padding-top: 10px;
+}
+
+.pt20 {
+    padding-top: 20px;
+}
+
+.pt25 {
+    padding-top: 25px;
+}
+
+.pt30 {
+    padding-top: 30px;
+}
+
+.pt50 {
+    padding-top: 50px !important;
+}
+
+.pbn {
+    padding-bottom: 0px !important;
+}
+
+.pb6 {
+    padding-bottom: 6px !important;
+}
+
+.pb10 {
+    padding-bottom:10px !important;
+}
+
+.pb30 {
+    padding-bottom: 30px !important;
+}
+
+.pb20 {
+    padding-bottom: 20px;
+}
+
+.fs10{
+    font-size:10px;
+}
+
+.fs12 {
+    font-size: 12px;
+}
+
+.fs14 {
+    font-size: 14px;
+}
+
+.fs16 {
+    font-size: 16px;
+}
+
+.fs18 {
+    font-size: 18px;
+}
+
+.fs20 {
+    font-size: 20px;
+}
+
+.fs22 {
+    font-size: 22px;
+}
+
+.fs24 {
+    font-size: 24px;
+}
+
+.fs26 {
+    font-size: 26px;
+}
+
+.fs30 {
+    font-size: 30px;
+}
+
+.fs40 {
+    font-size: 40px;
+}
+
+.fs50 {
+    font-size: 50px;
+}
+
+.fs70 {
+    font-size: 70px;
+}
+
+.br-n {
+    border: 0px;
+}
+
+.brr3 {
+    border-radius: 3px;
+}
+
+.brr6 {
+    border-radius: 6px !important;
+}
+
+.brr4 {
+    border-radius: 4px !important;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.full-width {
+    width: 100% !important;
+}
+
+.text-yellow {
+    color: yellow !important;
+}
+.text-black {
+    color:black;
+}
+.text-light{
+    color:#dddddd;
+}
+.text-white {
+    color:white;
+}
+.bg-light{
+    background-color:#fafafa !important;
+}
+.br-b-light {
+    border-bottom:1px solid #eee !important;
+}
+.br-t-light {
+    border-top:1px solid #eee !important;
+}
+.fw300 {
+    font-weight:300;
+}
+.fw500 {
+    font-weight:500;
+}
+.fw600 {
+    font-weight:600;
+}
+.fw700 {
+    font-weight:700;
+}
+.lh14{
+    line-height:14px;
+}
+.br50p{
+    border-radius:50%;
+}

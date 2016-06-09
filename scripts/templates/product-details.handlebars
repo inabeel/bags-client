@@ -1,0 +1,53 @@
+﻿<div id="product-popup" class="product-popup white-popup mfp-with-anim">
+	<div class="row">
+		<div class="col-sm-12 col-md-5 col-lg-4">
+			<div id="product-gallery" class="carousel slide mb20" data-ride="carousel" data-interval="false">
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner" role="listbox">
+					{{#each images}}
+					<div class="item {{#ifCond @index '==' 0}}active{{/ifCond}} thumb-image">
+						<img src="{{large}}" data-imagezoom="{{large}}" data-zoomviewsize="[360,360]" data-magnification="3" alt="">
+					</div>
+					{{/each}}
+				</div>
+				<!-- Indicators -->
+
+				<div class="thumbnail-container">
+					{{#isLengthOf images ">" 3}}
+						<a href="javascript:void(0)" onclick="ThumbnailScroll('left')" class="thumbnail-arrow"><i class="fa fa-angle-left text-primary"></i></a>
+					{{/isLengthOf}}
+					<div class="thumbnail-scroll">
+						<ol class="carousel-indicators">
+							{{#each images}}
+							<li data-target="#product-gallery" data-slide-to="{{@index}}" class="{{#ifCond @index '==' 0}}active{{/ifCond}} ">
+								<img src="{{small}}" alt="">
+							</li>
+							{{/each}}
+						</ol>
+					</div>
+					{{#isLengthOf images ">" 3}}
+						<a href="javascript:void(0)" onclick="ThumbnailScroll('right')" class="thumbnail-arrow"><i class="fa fa-angle-right text-primary"></i></a>
+					{{/isLengthOf}}
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12 col-md-7 col-lg-8">
+			<div id="product-popup-right-column" style="position:relative">
+				<div class="product-name">
+					{{titleCase name}}
+				</div>
+				<div class="product-tags">
+					{{#each tags}}
+						<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-container="body" data-delay='{"show":"700"}' data-original-title="<b>{{category.name}}: {{name}}</b><br/><span style='font-size:10px'>Click to add in filter</span>">#{{category.name}}: {{name}}</button>
+					{{/each}}
+				</div>
+				<div class="mt20 fs30 fw700" style="color:black;">
+					${{price}}
+				</div>
+				<div class="mt70 text-center">
+					<a href="{{purchase_urls.[0]}}" target="_blank" class="btn btn-primary btn-lg"><i class="fa fa-shopping-cart"></i> Buy it</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
