@@ -27,7 +27,7 @@
     width:100%;
 }
 .product-list .product-card .product-details{
-    height:235px;
+    height:203px;
     padding:0px 20px 20px 20px;
 }
 @media (max-width: 767px)
@@ -38,12 +38,78 @@
     }
 }
 .product-list .product-card .card-body .tag{
+    position:relative;
     margin-top:8px;
     margin-right:3px;
-    padding: 2px 5px;
+    padding: 2px 5px 2px 5px;
     font-size: 12px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.12) !important;
+    max-width:100%;
 }
+.product-list .product-card .card-body > .tag:last-of-type{
+    max-width:calc(100% - 39px);
+}
+.product-list .product-card .card-body .tag:after{
+    content: "";
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 5px;
+    height: 20px;
+}
+.product-list .product-card .card-body .tag.bgm-red:after{
+    background: linear-gradient(to right, rgba(244, 67, 54, 0), rgba(244, 67, 54, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-blue:after{
+    background: linear-gradient(to right, rgba(33, 150, 243, 0), rgba(33, 150, 243, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-green:after{
+    background: linear-gradient(to right, rgba(76, 175, 80, 0), rgba(76, 175, 80, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-lightgreen:after{
+    background: linear-gradient(to right, rgba(139, 195, 74, 0), rgba(139, 195, 74, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-cyan:after{
+    background: linear-gradient(to right, rgba(0, 188, 212, 0), rgba(0, 188, 212, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-pink:after{
+    background: linear-gradient(to right, rgba(233, 30, 99, 0), rgba(233, 30, 99, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-lightblue:after{
+    background: linear-gradient(to right, rgba(3, 169, 244, 0), rgba(3, 169, 244, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-orange:after{
+    background: linear-gradient(to right, rgba(255, 152, 0, 0), rgba(255, 152, 0, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-purple:after{
+    background: linear-gradient(to right, rgba(156, 39, 176, 0), rgba(156, 39, 176, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-deeporange:after{
+    background: linear-gradient(to right, rgba(255, 87, 34, 0), rgba(255, 87, 34, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-teal:after{
+    background: linear-gradient(to right, rgba(0, 150, 136, 0), rgba(0, 150, 136, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-amber:after{
+    background: linear-gradient(to right, rgba(255, 193, 7, 0), rgba(255, 193, 7, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-gray:after{
+    background: linear-gradient(to right, rgba(158, 158, 158, 0), rgba(158, 158, 158, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-indigo:after{
+    background: linear-gradient(to right, rgba(63, 81, 181, 0), rgba(63, 81, 181, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-lime:after{
+    background: linear-gradient(to right, rgba(205, 220, 57, 0), rgba(205, 220, 57, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-bluegray:after{
+    background: linear-gradient(to right, rgba(96, 125, 139, 0), rgba(96, 125, 139, 1) 60%);
+}
+.product-list .product-card .card-body .tag.bgm-deeppurple:after{
+    background: linear-gradient(to right, rgba(103, 58, 183, 0), rgba(103, 58, 183, 1) 60%);
+}
+
 .product-list .product-card .card-body .tag-more.btn-sm{
    padding: 2px 5px;
     font-size: 12px;
