@@ -17,6 +17,8 @@
 	<link href="vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
 	<link href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
 	<link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+	<link href="vendors/bower_components/nouislider/distribute/jquery.nouislider.min.css" rel="stylesheet">
+	<link href="vendors/bower_components/nouislider/distribute/nouislider.tooltips.css" rel="stylesheet" />
 
 	<!-- CSS -->
 	<link href="css/app.min.1.css" rel="stylesheet">
@@ -31,32 +33,88 @@
 	<link href="vendors/magnific-popup/magnific-popup.css" rel="stylesheet" />
 </head>
 <body>
-	<header id="header" class="clearfix" data-current-skin="blue">
-		<div class="container">
-		<ul class="header-inner">
-
-			<li class="logo">
-				<img src="images/Zoltu-Logo-Web.png" />
-			</li>
-
-			<li class="pull-right">
-				<ul class="top-menu">
-					<li id="top-search">
-						<a href="">
-							<i class="tm-icon zmdi zmdi-search"></i>
-							<i id="search-tag-cnt" class="tmn-counts"></i>
-						</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-			</div>
-
+	<header id="header" class="clearfix search-toggled" data-current-skin="blue">
 		<!-- Top Search Content -->
 		<div id="top-search-wrap">
-			<div class="tsw-inner main-search">
-				<i id="top-search-close" class="zmdi zmdi-arrow-left"></i>
-				<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
+			<div class="container">
+				<div class="row">
+					<div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
+						<img src="images/Zoltu-Logo-Web.png" class="header-logo" />
+					</div>
+					<div class="col-xs-12 col-sm-8 col-md-7 col-lg-7 search-container">
+						<div class="tsw-inner main-search">
+							<i id="top-search-close" class="zmdi zmdi-search"></i>
+							<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 price-filter-container">
+						<ul class="top-menu">
+							<li class="dropdown">
+								<a data-toggle="dropdown" href="javascript:void(0)">
+									<span class="tm-icon"><i class="zmdi zmdi-money"></i> 0 - any</span>
+								</a>
+								<div class="price-menu dropdown-menu dropdown-menu-lg pull-right">
+									<div class="listview">
+										<div class="lv-header">
+											Price Range
+										</div>
+										<div class="lv-body p10">
+											<div class="ml30 mr30">
+												<div id="price-slider" class="input-slider-range mt30 mb30"></div>
+											</div>
+											<div class="row">
+												<div class="col-xs-6">
+													<div class="fs12 text-muted pl10">MIN</div>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',0)">
+														$ 0
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',100)">
+														$ 100+
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',200)">
+														$ 200+
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',400)">
+														$ 400+
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',500)">
+														$ 500+
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',700)">
+														$ 700+
+													</a>
+												</div>
+												<div class="col-xs-6">
+													<div class="fs12 text-muted pl10">MAX</div>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('max',100)">
+														upto $ 100
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('max', 200)">
+														upto $ 200
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('max', 400)">
+														upto $ 400
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('max', 500)">
+														upto $ 500
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('max', 700)">
+														upto $ 700
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('max',100000)">
+														Any value
+													</a>
+												</div>
+											</div>
+
+										</div>
+										<a class="lv-footer" href="javascript:void(0)"><i class="fa fa-undo"></i> Reset</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</header>
@@ -64,10 +122,6 @@
 	<section id="main" data-layout="layout-1">
 		<section id="content">
 			<div class="container">
-				<div class="block-header">
-					<h2><i class="fa fa-shopping-bag"></i> Handbags</h2>
-				</div>
-
 				<div class="product-list">
 
 				</div>
@@ -79,7 +133,7 @@
 		Copyright &copy; 2016 Zoltu
 	</footer>
 
-	 <!-- Modal Large -->
+	<!-- Modal Large -->
 	<div id="product-popup" class="white-popup mfp-hide">
 
 	</div>
@@ -157,6 +211,7 @@
 	<script src="vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
 	<script src="vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
 	<script src="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
 	<script src="vendors/handlebars/handlebars.runtime-v4.0.5.js"></script>
 	<script src="scripts/templates/lc_template-min.js"></script>
 
@@ -178,14 +233,12 @@
 	<script src="scripts/index.js"></script>
 	<script>
 		function ThumbnailScroll(direction) {
-			if(direction =="left")
-			{
-				$(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 },300);
+			if (direction == "left") {
+				$(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, 300);
 			}
-			if(direction == "right")
-			{
+			if (direction == "right") {
 				console.dir($(this).scrollLeft() + 66);
-				$(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 },300);
+				$(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, 300);
 			}
 		}
 	</script>

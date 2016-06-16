@@ -27,6 +27,10 @@
     margin-top: 8px;
 }
 
+.mt9 {
+    margin-top: 9px;
+}
+
 .mt10 {
     margin-top: 10px;
 }
@@ -74,6 +78,9 @@
 .mr20 {
     margin-right: 20px !important;
 }
+.mr30 {
+    margin-right: 30px !important;
+}
 .mr50 {
     margin-right: 50px !important;
 }
@@ -93,10 +100,13 @@
 .mn30 {
     margin: -30px;
 }
-
+.mrn{
+    margin-right:0px;
+}
 .mrn10 {
     margin-right: -10px;
 }
+.mln{margin-left:0px;}
 .ml5 {
     margin-left: 5px;
 }
@@ -106,6 +116,9 @@
 
 .ml20 {
     margin-left: 20px;
+}
+.ml30 {
+    margin-left: 30px;
 }
 .mb5 {
     margin-bottom: 5px;
@@ -266,7 +279,9 @@
 .fs14 {
     font-size: 14px;
 }
-
+.fs15 {
+    font-size: 15px;
+}
 .fs16 {
     font-size: 16px;
 }
