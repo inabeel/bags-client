@@ -561,6 +561,9 @@ content: '\f1c3' ;
 .top-menu > li > a{
     padding:0px 10px;
 }
+.top-menu > li .dropdown-menu-lg .lv-body{
+    min-height:initial;
+}
 .dropdown-menu.price-menu{
     padding:0px;
 }
