@@ -2,6 +2,8 @@
 var g_page_count = 24;
 var newFilterApplied = true;
 var currentRequest = null;
+var g_price_min = 0;
+var g_price_max = 100000;
 
 Handlebars.registerHelper("colorTag", function (categoryid) {
     return fnColorTag(categoryid);
@@ -60,10 +62,6 @@ function getTags() {
 
             $("#main-search").on("change", function (e) {
                 console.log("main-search-change");
-                if ($("#main-search").val())
-                    $("#search-tag-cnt").text($("#main-search").val().length).show();
-                else
-                    $("#search-tag-cnt").text(0).hide();
 
                 //reseting product id to 1 to fetch result from start
                 newFilterApplied = true;
@@ -84,7 +82,7 @@ function getTags() {
 
 function loadTags() {
     $("#main-search").select2({
-        placeholder: "Start typing..",
+        placeholder: "Search by tags..",
         data: tagsData,
         allowClear: true,
         templateSelection: function (data,a) {
@@ -180,7 +178,8 @@ function ShowMore() {
 }
 function GetProducts() {
     
-    var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count;
+    var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count + 
+        '&min_price=' + g_price_min + '&max_price=' + g_price_max;
 
     //Use selected tags as parameters for api
     var selectedTags = $("#main-search").val();
@@ -313,4 +312,13 @@ function ShowProductPopup(productid) {
             }
         });
     });
+}
+function ApplyPriceRange(bound, amount) {
+    if (bound == "min")
+        g_price_min = amount;
+    else
+        g_price_max = amount;
+    newFilterApplied = true;
+    g_result_from_product_id = 1;
+    GetProducts();
 }
