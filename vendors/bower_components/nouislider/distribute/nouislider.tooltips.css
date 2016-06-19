@@ -7,13 +7,18 @@
 	padding: 5px;
 	text-align: center;
 }
-
+.noUi-tooltip:hover{
+    cursor:grab !important;
+}
 .noUi-horizontal .noUi-handle-lower .noUi-tooltip {
 	top: -32px;
+     left:-5px;
 }
 .noUi-horizontal .noUi-handle-upper .noUi-tooltip {
-	top: -32px;
+    left:-20px;
+    bottom: -32px;
 }
+
 .noUi-vertical .noUi-handle-lower .noUi-tooltip {
 	left: 120%;
 }

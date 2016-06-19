@@ -55,6 +55,10 @@
     margin-top: 40px;
 }
 
+.mt50 {
+    margin-top: 50px;
+}
+
 .mt70 {
     margin-top: 70px;
 }
@@ -80,6 +84,12 @@
 }
 .mr30 {
     margin-right: 30px !important;
+}
+.mr35 {
+    margin-right: 35px !important;
+}
+.mr40 {
+    margin-right: 40px !important;
 }
 .mr50 {
     margin-right: 50px !important;
@@ -142,6 +152,10 @@
 
 .mb30 {
     margin-bottom: 30px;
+}
+
+.mb50 {
+    margin-bottom: 50px;
 }
 
 .mbn {

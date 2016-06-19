@@ -579,12 +579,16 @@ content: '\f1c3' ;
     padding:12px;
     font-size:12px;
 }
-.dropdown-menu.price-menu .lv-header{
-}
 .dropdown-menu.price-menu .fg-float .fg-toggled .fg-label{
     top:-13px !important;
 }
 .dropdown-menu.price-menu .input-group-addon{
     min-width:initial;
     padding:0px 6px 6px 10px;
+}
+.dropdown-menu.dropdown-menu-lg{
+    width:280px;
+}
+#min_max_selected{
+    display:none;
 }
