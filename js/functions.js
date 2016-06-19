@@ -429,73 +429,9 @@ $(document).ready(function(){
         });
     }
 
-    /*
-     * Input Slider
-     */
-    //Basic
-    if($('.input-slider')[0]) {
-        $('.input-slider').each(function(){
-            var isStart = $(this).data('is-start');
 
-            $(this).noUiSlider({
-                start: isStart,
-                range: {
-                    'min': 0,
-                    'max': 100,
-                }
-            });
-        });
-    }
+    
 
-    //Range slider
-
-    var stepSlider = document.getElementById('price-slider');
-
-    noUiSlider.create(stepSlider, {
-        start: [0, 5000],
-        step: 100,
-        tooltips: true,
-        range: {
-            'min': 0,
-            'max': 5000
-        },
-        format: {
-            to: function (value) {
-                return  '$' + value;
-            },
-            from: function (value) {
-                return value.replace('$', '');
-            }
-        }
-    });
-
-    //if($('.input-slider-range')[0]) {
-	//$('.input-slider-range').noUiSlider({
-	//    start: [30, 60],
-	//    range: {
-	//	    'min': 0,
-	//	    'max': 100
-	//    },
-	//    connect: true
-	//});
-    //}
-
-    //Range slider with value
-    if($('.input-slider-values')[0]) {
-	$('.input-slider-values').noUiSlider({
-	    start: [ 45, 80 ],
-	    connect: true,
-	    direction: 'rtl',
-	    behaviour: 'tap-drag',
-	    range: {
-		    'min': 0,
-		    'max': 100
-	    }
-	});
-
-	$('.input-slider-values').Link('lower').to($('#value-lower'));
-        $('.input-slider-values').Link('upper').to($('#value-upper'), 'html');
-    }
 
     /*
      * Input Mask
