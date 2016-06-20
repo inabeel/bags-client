@@ -1,4 +1,6 @@
-FROM zoltu/aspnetcore
+FROM zoltu/aspnetcore-gulp-bower
+
+RUN npm install -g handlebars
 
 COPY server /app
 WORKDIR /app
@@ -13,6 +15,8 @@ COPY less /app/client/less
 COPY scripts /app/client/scripts
 COPY vendors /app/client/vendors
 COPY index.html /app/client/index.html
+
+RUN handlebars /app/client/scripts/templates/ --output /app/client/scripts/templates/lc_template-min.js --map
 
 EXPOSE 80
 
