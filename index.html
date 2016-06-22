@@ -67,22 +67,23 @@
 					<div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
 						<img src="images/Zoltu-Logo-Web.png" class="header-logo" />
 					</div>
-					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 search-container">
+					<div class="col-xs-10 col-sm-7 col-md-7 col-lg-7 search-container">
 						<div class="tsw-inner main-search">
 							<i id="top-search-close" class="zmdi zmdi-search"></i>
 							<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 price-filter-container">
+					<div class="col-xs-2 col-sm-3 col-md-3 col-lg-3 price-filter-container">
 						<ul class="top-menu">
 							<li class="dropdown">
-								<a data-toggle="dropdown" href="javascript:void(0)" style="width:150px">
+								<a data-toggle="dropdown" href="javascript:void(0)" class="price-display">
 									<span class="tm-icon">
 										<span id="lbl_price_filter">
-											<i class="fa fa-filter"></i> Price
+											<i class="fa fa-filter"></i> <span class="hidden-xs">Price</span>
 										</span>
 										<span id="min_max_selected">
-											<span id="lbl_min_price"><i class="zmdi zmdi-money"></i>0</span> - <span id="lbl_max_price"><i class="zmdi zmdi-money"></i>1000</span>
+											<span class="visible-xs"><i class="fa fa-filter"></i><i class="fa fa-circle text-warning dot-price-filtered"></i> </span>
+											<span class="hidden-xs"><span id="lbl_min_price"><i class="zmdi zmdi-money"></i>0</span> - <span id="lbl_max_price"><i class="zmdi zmdi-money"></i>1000</span></span>
 										</span>
 									</span>
 								</a>
@@ -107,11 +108,11 @@
 													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',400)">
 														$400
 													</a>
-													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',600)">
-														$600
-													</a>
 													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',800)">
 														$800
+													</a>
+													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',1000)">
+														$1000
 													</a>
 												</div>
 												<div class="col-xs-6">
@@ -125,14 +126,14 @@
 													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max', 400)">
 														$400
 													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max', 600)">
-														$600
-													</a>
 													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max', 800)">
 														$800
 													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max',1000)">
+													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max', 1000)">
 														$1000
+													</a>
+													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max',10000)">
+														Any
 													</a>
 												</div>
 											</div>

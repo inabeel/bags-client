@@ -10453,8 +10453,8 @@ h6 small,
   padding-top: 9px;
 }
 
-#top-search-wrap #top-search-close:hover {
-  background-color: #e3e3e3;
+#top-search-wrap #top-search-close:hover{
+    cursor:default;
 }
 
 @media (max-width: 767px) {

@@ -524,27 +524,37 @@ content: '\f1c3' ;
     padding-left:0px;
     padding-right:0px;
 }
-@media (max-width: 767px){
-    .search-container{
-        padding-left:10px !important;
-        padding-right:10px !important;
-    }
-}
 .price-filter-container{
     padding-left:0px;
     padding-right:0px;
+}
+.price-filter-container .price-display{
+    width:150px;
 }
 .price-filter-container .top-menu{
     margin-top:10px;
 }
 @media (max-width: 767px){
-    .price-filter-container{
+    .top-menu .dropdown-menu-lg {
+        position:fixed;
+        width:100% !important;
+        left:0px;
+    }
+    .search-container{
         padding-left:10px !important;
-        padding-right:10px !important;
+        padding-right:0px !important;
+    }
+    .price-filter-container{
+        padding-left:0px !important;
+        padding-right:0px !important;
         text-align:center;
     }
     .price-filter-container .top-menu{
         margin-top:0px;
+    }
+    .price-filter-container .price-display{
+        margin-top:10px;
+        width:30px;
     }
 }
 #top-search-wrap #top-search-close{
@@ -591,4 +601,10 @@ content: '\f1c3' ;
 }
 #min_max_selected{
     display:none;
+}
+.dot-price-filtered{
+    position:absolute;
+    top:9px;
+    right:3px;
+    font-size:8px !important;
 }

@@ -1,10 +1,10 @@
-﻿var g_api = 'https://bags-api.zoltu.com';
+﻿var g_api = 'https://bags-api-test.zoltu.com';
 var g_page_count = 24;
 var newFilterApplied = true;
 var currentRequest = null;
 var g_price_min = 0;
-var g_price_max = 1000;
-var g_price_max_limit = 1000;
+var g_price_max = 10000;
+var g_price_max_limit = 10000;
 
 Handlebars.registerHelper("colorTag", function (categoryid) {
     return fnColorTag(categoryid);
@@ -28,7 +28,6 @@ $.ajax({
     type: 'GET',
     dataType: 'JSON',
     success: function (cats) {
-        console.dir(cats);
         //assign each category a color
         $.each(cats, function (index, cat) {
             var category = cat;
@@ -49,16 +48,19 @@ $.ajax({
 var stepSlider = document.getElementById('price-slider');
 
 noUiSlider.create(stepSlider, {
-    start: [0, 1000],
+    start: [0, g_price_max],
     step: 50,
     tooltips: true,
     range: {
         'min': 0,
-        'max': 1000
+        'max': 1050
     },
     format: {
         to: function (value) {
-            return '$' + value;
+            if (value >= 1050)
+                return ">&nbsp;$1000";
+            else
+                return '$' + value;
         },
         from: function (value) {
             return value.replace('$', '');
@@ -68,9 +70,9 @@ noUiSlider.create(stepSlider, {
 
 stepSlider.noUiSlider.on("change", function (texts, btn_index, values) {
     g_price_min = values[0];
-    g_price_max = values[1];
+    g_price_max = (values[1] == 1050) ? 10000 : values[1];
     $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
-    $("#lbl_max_price").html('<i class="zmdi zmdi-money"></i>' + g_price_max);
+    $("#lbl_max_price").html(g_price_max == 10000 ? 'any' : '<i class="zmdi zmdi-money"></i>' + g_price_max);
     $("#min_max_selected").show();
     $("#lbl_price_filter").hide();
     newFilterApplied = true;
@@ -85,7 +87,7 @@ function getTags() {
         type: 'GET',
         dataType: 'JSON',
         success: function (tags) {
-            console.dir(tags);
+            
             tagsData = $.map(tags, function (obj, index) {
                 obj.id = obj.id;
                 obj.text = "#" + obj.category.name + ": " + obj.name;
@@ -96,7 +98,6 @@ function getTags() {
             loadTags();
 
             $("#main-search").on("change", function (e) {
-                console.log("main-search-change");
 
                 //reseting product id to 1 to fetch result from start
                 newFilterApplied = true;
@@ -139,9 +140,6 @@ function loadTags() {
                 return null;
             }
         },
-    });
-    $("#main-search").on("select2:selecting", function (event) {
-        console.dir(event.params.args.data);
     });
 }
 
@@ -227,8 +225,6 @@ function GetProducts() {
     }
 
     //Call api to get products;
-    console.log("g_result_from_product_id - " + g_result_from_product_id);
-    console.log(api);
     currentRequest = $.ajax({
         url: api,
         type: 'GET',
@@ -239,12 +235,10 @@ function GetProducts() {
             }
         },
         success: function (data) {
-            console.dir(data);
 
             //Setting product id to fetch next result from
             if (data.length > 0) {
                 g_result_from_product_id = data[data.length - 1].id + 1
-                console.log("Next result from product id - " + g_result_from_product_id);
             }
 
             //Initialize product template
@@ -315,7 +309,6 @@ function ShowProductPopup(productid) {
         $.ajax({
             url: g_api + '/api/products/' + productid,
             success: function (product) {
-                console.dir(product);
                 var template = Handlebars.templates['product-details'];
                 $.magnificPopup.open({
                     closeBtnInside: true,
@@ -368,7 +361,7 @@ function ApplyPriceRange(bound, amount) {
         stepSlider.noUiSlider.set([g_price_min, amount]);
     }
     $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
-    $("#lbl_max_price").html('<i class="zmdi zmdi-money"></i>' + g_price_max);
+    $("#lbl_max_price").html(g_price_max == 10000 ? 'any' : '<i class="zmdi zmdi-money"></i>' + g_price_max);
     
     newFilterApplied = true;
     g_result_from_product_id = 1;
