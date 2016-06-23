@@ -83,11 +83,6 @@ $(document).ready(function(){
             $('#header').addClass('search-toggled');
             $('#top-search-wrap input').focus();
         });
-
-        $('body').on('click', '#top-search-close', function(e){
-            e.preventDefault();
-            $('#header').removeClass('search-toggled');
-        });
     })();
 
     /*
