@@ -1,0 +1,4 @@
+#!/bin/sh
+
+docker tag $IMAGE_NAME $IMAGE_NAME:$SOURCE_COMMIT
+docker push $IMAGE_NAME:$SOURCE_COMMIT
