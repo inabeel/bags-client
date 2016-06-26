@@ -1,4 +1,4 @@
-﻿var g_api = 'https://bags-api-test.zoltu.com';
+﻿var g_api = 'https://bags-api.zoltu.com';
 var g_page_count = 24;
 var newFilterApplied = true;
 var currentRequest = null;
@@ -87,7 +87,7 @@ function getTags() {
         type: 'GET',
         dataType: 'JSON',
         success: function (tags) {
-            
+
             tagsData = $.map(tags, function (obj, index) {
                 obj.id = obj.id;
                 obj.text = "#" + obj.category.name + ": " + obj.name;
@@ -210,8 +210,8 @@ function ShowMore() {
     GetProducts();
 }
 function GetProducts() {
-    
-    var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count + 
+
+    var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count +
         '&min_price=' + g_price_min + '&max_price=' + g_price_max;
 
     //Use selected tags as parameters for api
@@ -249,7 +249,7 @@ function GetProducts() {
                 $("#show-more-panel").remove();
 
             //Bind products on UI
-          
+
             if (newFilterApplied) {
                 $(".product-list").html(template({ products: data }));
                 $('html,body').animate({
@@ -374,7 +374,7 @@ function ApplyPriceRange(bound, amount) {
     }
     $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
     $("#lbl_max_price").html(g_price_max == 10000 ? 'any' : '<i class="zmdi zmdi-money"></i>' + g_price_max);
-    
+
     newFilterApplied = true;
     g_result_from_product_id = 1;
     GetProducts();
@@ -388,7 +388,7 @@ function ResetPriceFilter() {
 
     $("#min_max_selected").hide();
     $("#lbl_price_filter").show();
-   
+
     stepSlider.noUiSlider.set([g_price_min, g_price_max]);
     $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
     $("#lbl_max_price").html('<i class="zmdi zmdi-money"></i>' + g_price_max);
