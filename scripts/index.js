@@ -295,6 +295,15 @@ function GetProducts() {
             $(".carousel-control").on("mouseleave", function () {
                 overSlider = false;
             });
+
+            //Enabling swiping
+            $(".carousel").swiperight(function () {
+                $(this).carousel('prev');
+            });
+            $(".carousel").swipeleft(function () {
+                $(this).carousel('next');
+            });
+
             if ($('[data-toggle="tooltip"]')[0]) {
                 $('[data-toggle="tooltip"]').tooltip();
             }
@@ -304,7 +313,7 @@ function GetProducts() {
 }
 function ShowProductPopup(productid) {
 
-    $("body").css("margin-right:17px;overflow:hidden");
+   
     $("#product-popup-loader").fadeIn("fast",function () {
         $.ajax({
             url: g_api + '/api/products/' + productid,
@@ -320,9 +329,12 @@ function ShowProductPopup(productid) {
                     },
                     callbacks: {
                         beforeOpen: function () {
+                            $("body").css("overflow-y", "hidden");
                             $("#product-popup-loader").hide();
                             this.st.mainClass = "mfp-zoom-in";
-                            $("body").css("margin-right overflow:hidden");
+                        },
+                        close: function(){
+                            $("body").css("overflow-y", "auto");
                         },
                         open: function () {
                             //Click event on Tags

@@ -608,3 +608,4 @@ content: '\f1c3' ;
     right:3px;
     font-size:8px !important;
 }
+.mfp-container {overflow-y:auto;}
