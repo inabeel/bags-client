@@ -7,11 +7,11 @@ var g_price_min = 0;
 var g_price_max = 10000;
 var g_price_max_limit = 10000;
 var g_open_productid = 0;
-
+var g_popupOpened = false;
 var menuHiding = false;
 $(document).scroll(function () {
     if ($(document).scrollTop() < 10) {
-        if (menuHiding == false) {
+        if (menuHiding == false && g_popupOpened == false) {
             menuHiding = true;
             $(".top-menu-small").slideDown("fast",function () {
                 menuHiding = false;
@@ -434,7 +434,6 @@ function ShowProductPopup(productid) {
                             $("body").css("overflow-y", "hidden");
                             $("#product-popup-loader").hide();
                             this.st.mainClass = "mfp-zoom-in";
-                            
                         },
                         beforeClose: function () {
                             g_open_productid = 0;
@@ -442,8 +441,12 @@ function ShowProductPopup(productid) {
                         },
                         close: function(){
                             $("body").css("overflow-y", "auto");
+                            setTimeout(function () {
+                                g_popupOpened = false;
+                            }, 1000);
                         },
                         open: function () {
+                            g_popupOpened = true;
                             //Click event on Tags
                             $(".product-popup .product-tags .tag").on("click", function () {
                                 $(this).tooltip('hide');
