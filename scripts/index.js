@@ -8,6 +8,27 @@ var g_price_max = 10000;
 var g_price_max_limit = 10000;
 var g_open_productid = 0;
 
+var menuHiding = false;
+$(document).scroll(function () {
+    if ($(document).scrollTop() < 10) {
+        if (menuHiding == false) {
+            menuHiding = true;
+            $(".top-menu-small").slideDown("fast",function () {
+                menuHiding = false;
+            });
+            
+        }
+    }
+    if ($(document).scrollTop() >= 10) {
+        if (menuHiding == false) {
+            menuHiding = true;
+            $(".top-menu-small").slideUp("fast", function () {
+                menuHiding = false;
+            });
+        }
+    }
+});
+
 Handlebars.registerHelper("colorTag", function (categoryid) {
     return fnColorTag(categoryid);
 });
@@ -450,6 +471,17 @@ function ShowProductPopup(productid) {
         });
     });
 }
+
+function ThumbnailScroll(direction) {
+    if (direction == "left") {
+        $(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, 300);
+    }
+    if (direction == "right") {
+        console.dir($(this).scrollLeft() + 66);
+        $(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, 300);
+    }
+}
+
 function ApplyPriceRange(bound, amount) {
     $("#min_max_selected").show();
     $("#lbl_price_filter").hide();

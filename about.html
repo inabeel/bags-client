@@ -40,9 +40,6 @@
 	<!-- Vendor CSS -->
 	<link href="vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
 	<link href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
-	<link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
-	<link href="vendors/bower_components/nouislider/distribute/jquery.nouislider.min.css" rel="stylesheet">
-	<link href="vendors/bower_components/nouislider/distribute/nouislider.tooltips.css" rel="stylesheet" />
 
 	<!-- CSS -->
 	<link href="css/app.min.1.css" rel="stylesheet">
@@ -52,9 +49,7 @@
 	<link href="css/BootstrapXL.css" rel="stylesheet">
 	<link href="fonts/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 	<link href="fonts/flaticons/flaticon.css" rel="stylesheet" />
-	<link href="vendors/select2/select2.min.css" rel="stylesheet" />
 	<link href="fonts/gotham.css" rel="stylesheet" />
-	<link href="vendors/magnific-popup/magnific-popup.css" rel="stylesheet" />
 </head>
 <body>
 	<header id="header" class="clearfix search-toggled" data-current-skin="blue">
@@ -65,109 +60,33 @@
 				<div class="container">
 					<ul class="top-menu-small">
 						<li>
-							<a href="#" class="active">Bags</a>
+							<a href="index.html" >Bags</a>
 						</li>
 						<li>
-							<a href="http://google.com" target="_blank">Blog</a>
+							<a class="active">Blog</a>
 						</li>
 						<li>
-							<a href="about.html">About Us</a>
+							<a href="#">About Us</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-			<div class="container">
-				<div class="row">
-					<div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
-						<img src="images/Zoltu-Logo-Web.png" class="header-logo" />
-					</div>
-					<div class="col-xs-10 col-sm-7 col-md-7 col-lg-7 search-container">
-						<div class="tsw-inner main-search">
-							<i id="top-search-close" class="zmdi zmdi-search"></i>
-							<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
-						</div>
-					</div>
-					<div class="col-xs-2 col-sm-3 col-md-3 col-lg-3 price-filter-container">
-						<ul class="top-menu">
-							<li class="dropdown">
-								<a data-toggle="dropdown" href="javascript:void(0)" class="price-display">
-									<span class="tm-icon">
-										<span id="lbl_price_filter">
-											<i class="fa fa-filter"></i> <span class="hidden-xs">Price</span>
-										</span>
-										<span id="min_max_selected">
-											<span class="visible-xs"><i class="fa fa-filter"></i><i class="fa fa-circle text-warning dot-price-filtered"></i> </span>
-											<span class="hidden-xs"><span id="lbl_min_price"><i class="zmdi zmdi-money"></i>0</span> - <span id="lbl_max_price"><i class="zmdi zmdi-money"></i>1000</span></span>
-										</span>
-									</span>
-								</a>
-								<div class="price-menu dropdown-menu dropdown-menu-lg pull-right">
-									<div class="listview">
-										<div class="lv-body p10">
-											<div class="ml30 mr30">
-												<div id="price-slider" class="input-slider-range mt50 mb50"></div>
-											</div>
-											<div class="row">
-												<div class="col-xs-6">
-													<div class="fs12 text-primary pl10">MIN</div>
-													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',0)">
-														$0
-													</a>
-													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',100)">
-														$100
-													</a>
-													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',200)">
-														$200
-													</a>
-													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',400)">
-														$400
-													</a>
-													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',800)">
-														$800
-													</a>
-													<a class="lv-item" href="javascript:void(0)" onclick="ApplyPriceRange('min',1000)">
-														$1000
-													</a>
-												</div>
-												<div class="col-xs-6">
-													<div class="fs12 text-primary pr10  text-right">MAX</div>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max',100)">
-														$100
-													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max', 200)">
-														$200
-													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max', 400)">
-														$400
-													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max', 800)">
-														$800
-													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max', 1000)">
-														$1000
-													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ApplyPriceRange('max',10000)">
-														Any
-													</a>
-												</div>
-											</div>
-										</div>
-										<a class="lv-footer" href="javascript:void(0)"  onclick="ResetPriceFilter()"><i class="fa fa-undo"></i> Reset</a>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
+			<div class="pb3 text-center">
+				<img src="images/Zoltu-Logo-Web.png" class="header-logo" />
 			</div>
+			
 		</div>
 	</header>
 
 	<section id="main" data-layout="layout-1">
 		<section id="content">
 			<div class="container">
-				<div class="product-list">
-
+				<div class="card">
+					<div class="card-body card-padding">
+						<p class="lead">Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.</p>
+                        <p>Pellentesque lacinia sagittis libero et feugiat. Etiam volutpat adipiscing tortor non luctus. Vivamus venenatis vitae metus et aliquet. Praesent vitae justo purus. In hendrerit lorem nisl, ac lacinia urna aliquet non. Quisque nisi tellus, rhoncus quis est sit amet, lacinia euismod nunc. Aenean nec nibh velit. Fusce quis ante in nisl molestie fringilla. Nunc vitae ante id magna feugiat condimentum. Maecenas sit amet urna massa.</p>
+                        <p>Integer eu lectus sollicitudin, hendrerit est ac, sollicitudin nisl. Quisque viverra sodales lectus nec ultrices. Fusce elit dolor, dignissim a nunc id, varius suscipit turpis. Cras porttitor turpis vitae leo accumsan molestie. Morbi vitae luctus leo. Sed nec scelerisque magna, et adipiscing est. Proin lobortis lectus eu sem ullamcorper, commodo malesuada quam fringilla. Curabitur ac nunc dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sagittis enim eu est lacinia, ut egestas ligula imperdiet.</p>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -181,24 +100,6 @@
 			<li><a href="about.html">About Us</a></li>
 		</ul>
 	</footer>
-
-	<!-- Modal Large -->
-	<div id="product-popup" class="white-popup mfp-hide">
-
-	</div>
-	<div id="product-popup-loader">
-		<div class="text">Loading..</div>
-	</div>
-
-	<!-- Page Loader -->
-	<div class="page-loader">
-		<div class="preloader pls-blue">
-			<svg class="pl-circular" viewBox="25 25 50 50">
-				<circle class="plc-path" cx="50" cy="50" r="20" />
-			</svg>
-			<p>Please wait...</p>
-		</div>
-	</div>
 
 	<!-- Older IE warning message -->
 	<!--[if lt IE 9]>
@@ -248,15 +149,10 @@
 
 	<script src="vendors/bower_components/flot/jquery.flot.js"></script>
 	<script src="vendors/bower_components/flot/jquery.flot.resize.js"></script>
-	<script src="vendors/magnific-popup/jquery.magnific-popup.min.js"></script>
+	<script src="vendors/bower_components/flot.curvedlines/curvedLines.js"></script>
 	<script src="vendors/jquery-touch/jquery.mobile.custom.min.js"></script>
-	<script src="vendors/bower_components/moment/min/moment.min.js"></script>
 	<script src="vendors/bower_components/Waves/dist/waves.min.js"></script>
 	<script src="vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-	<script src="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
-	<script src="vendors/handlebars/handlebars.runtime-v4.0.5.js"></script>
-	<script src="scripts/templates/lc_template-min.js"></script>
 
 	<!-- Placeholder for IE9 -->
 	<!--[if IE 9 ]>
@@ -265,12 +161,5 @@
 
 	<script src="js/functions.js"></script>
 	<script src="js/demo.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.js"></script>
-	<script src="vendors/zoom-demo/imagezoom.js"></script>
-
-	<script src="scripts/index.js"></script>
-	<script>
-		
-	</script>
 </body>
 </html>
