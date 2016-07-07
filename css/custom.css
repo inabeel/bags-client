@@ -506,6 +506,9 @@ content: '\f1c3' ;
     margin:10px;
     height:37px;
 }
+.about-logo{
+    height:45px;
+}
 #header{
     min-height:60px;
 }
@@ -518,7 +521,7 @@ content: '\f1c3' ;
     background-color:#fafafa !important;
 }
 #main{
-    padding-top:90px;
+    padding-top:110px;
 }
 .search-container{
     padding-left:0px;
@@ -609,3 +612,33 @@ content: '\f1c3' ;
     font-size:8px !important;
 }
 .mfp-container {overflow-y:auto;}
+.top-menu-small{
+    height:24px;
+ background-color:rgb(12,121,211);
+}
+.top-menu-small ul{
+    list-style: none;
+    padding:0;
+    margin:0px;
+    text-align:right;
+}
+.top-menu-small ul li{
+    display:inline-block;
+     padding:3px 0px;
+}
+.top-menu-small ul li a{
+    font-size:11px;
+    color:#eee;
+    border-right:1px solid #2196f3;
+    padding: 0px 10px 0px 7px;
+}
+.top-menu-small ul li a.active:hover{
+    cursor:default;
+    color:#eee;
+}
+.top-menu-small ul li a:hover{
+    color:white;
+}
+.top-menu-small ul li:last-child a{
+    border-right:none;
+}
