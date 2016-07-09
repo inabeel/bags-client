@@ -146,7 +146,7 @@ var stepSlider = document.getElementById('price-slider');
 
 noUiSlider.create(stepSlider, {
     start: [0, g_price_max],
-    step: 50,
+    step: 1,
     tooltips: true,
     range: {
         'min': 0,
@@ -157,7 +157,7 @@ noUiSlider.create(stepSlider, {
             if (value >= 1050)
                 return ">&nbsp;$1000";
             else
-                return '$' + value;
+                return '$' + parseInt(value);
         },
         from: function (value) {
             return value.replace('$', '');
@@ -458,9 +458,12 @@ function BuildUrlHash() {
     window.location.hash = hash;
 }
 
-function ShowProductPopup(productid) {
+function TriggerProductPopup(productid) {
     g_open_productid = productid;
     BuildUrlHash();
+}
+
+function ShowProductPopup(productid) {
     $("#product-popup-loader").fadeIn("fast", function () {
         $("body").css("overflow-y", "hidden");
         $.ajax({
