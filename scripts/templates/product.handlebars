@@ -15,7 +15,7 @@
 							<!-- Wrapper for slides -->
 							<div class="carousel-inner" role="listbox">
 								{{#each images}}
-									<a href="javascript:void(0)" onclick="ShowProductPopup('{{../id}}')" class="item {{#ifCond @index '==' 0}}active{{/ifCond}}">
+									<a href="javascript:void(0)" onclick="TriggerProductPopup('{{../id}}')" class="item {{#ifCond @index '==' 0}}active{{/ifCond}}">
 										<img src="{{medium}}" alt="">
 									</a>
 								{{/each}}

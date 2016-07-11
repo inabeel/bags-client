@@ -146,7 +146,7 @@ var stepSlider = document.getElementById('price-slider');
 
 noUiSlider.create(stepSlider, {
     start: [0, g_price_max],
-    step: 50,
+    step: 1,
     tooltips: true,
     range: {
         'min': 0,
@@ -157,7 +157,7 @@ noUiSlider.create(stepSlider, {
             if (value >= 1050)
                 return ">&nbsp;$1000";
             else
-                return '$' + value;
+                return '$' + Math.round(value);
         },
         from: function (value) {
             return value.replace('$', '');
@@ -167,12 +167,12 @@ noUiSlider.create(stepSlider, {
 
 stepSlider.noUiSlider.on("change", function (texts, btn_index, values) {
     //Change global values for Price
-    g_price_min = values[0];
+    g_price_min = Math.round(values[0]);
     if (g_price_min > g_price_max) {
         g_price_max = g_price_max_limit;
     }
   
-    g_price_max = (values[1] == 1050) ? 10000 : values[1];
+    g_price_max = (values[1] == 1050) ? 10000 : Math.round(values[1]);
     if (g_price_min > g_price_max) {
         g_price_min = 0;
     }
@@ -458,9 +458,12 @@ function BuildUrlHash() {
     window.location.hash = hash;
 }
 
-function ShowProductPopup(productid) {
+function TriggerProductPopup(productid) {
     g_open_productid = productid;
     BuildUrlHash();
+}
+
+function ShowProductPopup(productid) {
     $("#product-popup-loader").fadeIn("fast", function () {
         $("body").css("overflow-y", "hidden");
         $.ajax({

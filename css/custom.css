@@ -621,6 +621,7 @@ content: '\f1c3' ;
     padding:0;
     margin:0px;
     text-align:right;
+    padding-top:2px;
 }
 .top-menu-small ul li{
     display:inline-block;
@@ -631,6 +632,7 @@ content: '\f1c3' ;
     color:#eee;
     border-right:1px solid #2196f3;
     padding: 0px 10px 0px 7px;
+    display:block;
 }
 .top-menu-small ul li a.active:hover{
     cursor:default;
