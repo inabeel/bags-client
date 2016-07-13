@@ -38,7 +38,7 @@
 					{{#if tags}}
 						{{#each tags}}
 							{{#ifCond @index "<=" 4}}
-								<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-container="body" data-delay='{"show":"700"}' data-original-title="<b>{{category.name}}: {{name}}</b><br/><span style='font-size:10px'>Click to add in filter</span>">#{{category.name}}: {{name}}</button>
+								<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
 							{{/ifCond}}
 						{{/each}}
 						{{#isLengthOf tags ">=" 4}}
@@ -48,7 +48,7 @@
 									{{#each tags}}
 										{{#ifCond @index ">" 4}}
 											<li>
-												<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag" data-toggle="tooltip" data-placement="top" data-html="true" title="" data-container="body" data-delay='{"show":"700"}' data-original-title="<b>{{category.name}}: {{name}}</b><br/><span style='font-size:10px'>Click to add in filter</span>">#{{category.name}}: {{name}}</button>
+												<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
 											</li>
 										{{/ifCond}}
 									{{/each}}
