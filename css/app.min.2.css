@@ -2401,7 +2401,7 @@ select.chosen {
 .input-slider:not([data-is-color]) .noUi-connect,
 .input-slider-range:not([data-is-color]) .noUi-connect,
 .input-slider-values:not([data-is-color]) .noUi-connect {
-  background: #009688 !important;
+  background: #009688;
 }
 
 .input-slider:not([data-is-color]) .is-tooltip,

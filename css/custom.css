@@ -46,6 +46,14 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.12) !important;
     max-width:100%;
 }
+body > .tag{
+    position:relative;
+    margin-right:3px;
+    padding: 2px 5px 2px 5px;
+    font-size: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 1px 2px rgba(0, 0, 0, 0.12) !important;
+    max-width:100%;
+}
 .product-list .product-card .card-body > .tag:last-of-type{
     max-width:calc(100% - 39px);
 }
@@ -643,4 +651,7 @@ content: '\f1c3' ;
 }
 .top-menu-small ul li:last-child a{
     border-right:none;
+}
+.noUi-handle:focus{
+    background:#2196f3 !important;
 }
