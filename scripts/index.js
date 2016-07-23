@@ -1,4 +1,5 @@
 ﻿var g_api = 'https://bags-api.zoltu.com',
+g_result_from_product_id = 1,
 g_tags = [], //holds selected tags
 tagsData = [], //holds tags data returned by api
 g_page_count = 24, //number of items to load by each api (by_tags) call
@@ -19,8 +20,6 @@ visibleTagCnt = 5, //number of visible tags on each product tile
 sliderInterval,
 sliderRunning = false,
 overSlider = false;
-
-var g_result_from_product_id = 1;
 
 $(document).scroll(function () {
     if ($(document).scrollTop() < 10) {
@@ -171,7 +170,8 @@ function ProcessUrlParams() {
 $(window).on('hashchange', function () {
     g_dynamic_tag_change = true;
     newFilterApplied = true;
-    g_result_from_product_id = 1;
+    if (g_load_bags)
+        g_result_from_product_id = 1;
     ProcessUrlParams();
 });
 
@@ -203,7 +203,6 @@ noUiSlider.create(stepSlider, {
 stepSlider.noUiSlider.on("change", function (texts, btn_index, values) {
     //Change global values for Price
     g_price_min = Math.round(values[0]);
-    console.log("g_price_min: " + g_price_min);
     if (g_price_min > g_price_max) {
         g_price_max = g_price_max_limit;
     }
@@ -274,9 +273,12 @@ function getTags() {
                 //reseting product id to 1 to fetch result from start
                 if (g_dynamic_tag_change == true) {
                     newFilterApplied = true;
-                    g_result_from_product_id = 1;
-                    if(g_load_bags)
+                    
+                    if (g_load_bags) {
+                        g_result_from_product_id = 1;
                         GetProducts();
+                    }
+                       
                 }
                 else {
                     g_tags = $("#main-search").val();
@@ -466,7 +468,6 @@ function GetProducts() {
                 g_load_bags = true;
                 g_dynamic_tag_change = true;
                 flyToElement($(this), $('#centerpoint_search'));
-                $(this).tooltip('hide');
                 setTimeout(function (tag) {
                     return function () {
                         if ($.inArray(tag.attr('tag-id'), g_tags) < 0) {
@@ -594,12 +595,17 @@ function ShowProductPopup(productid) {
                                 g_load_bags = true;
                                 g_load_popup = false;
                                 g_dynamic_tag_change = true;
-                                $(this).tooltip('hide');
-                                if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
-                                    if (g_tags == null) g_tags = [];
-                                    g_tags.push($(this).attr('tag-id'));
-                                }
-                                BuildUrlHash();
+                                flyToElement($(this), $('#centerpoint_search'));
+
+                                setTimeout(function (tag) {
+                                    return function () {
+                                        if ($.inArray(tag.attr('tag-id'), g_tags) < 0) {
+                                            if (g_tags == null) g_tags = [];
+                                            g_tags.push(tag.attr('tag-id'));
+                                        }
+                                        BuildUrlHash();
+                                    };
+                                }($(this)), 500);
                             });
                             if(!$('html').hasClass('ismobile')) {
                                 $('#product-popup [data-imagezoom]').imageZoom();
