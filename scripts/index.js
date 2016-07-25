@@ -304,7 +304,7 @@ function getTags() {
 
 function loadTags() {
     $("#main-search").select2({
-        placeholder: "Search by tags..",
+        placeholder: "Describe your ideal handbag here... (e.g.: small black crossbody michael kors)",
         data: tagsData,
         allowClear: true,
         templateSelection: function (data,a) {
