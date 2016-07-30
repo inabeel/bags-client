@@ -22,7 +22,8 @@ sliderRunning = false,
 overSlider = false;
 
 $(document).scroll(function () {
-    if ($(document).scrollTop() < 10) {
+    $("#main-search").select2("close");
+    if ($(document).scrollTop() <= 10) {
         if (menuHiding == false && g_popupOpened == false) {
             menuHiding = true;
             $(".top-menu-small").slideDown("fast",function () {
@@ -30,7 +31,8 @@ $(document).scroll(function () {
             });
         }
     }
-    if ($(document).scrollTop() >= 10) {
+    if ($(document).scrollTop() > 10) {
+        console.log("scrollTop : " + $(document).scrollTop());
         if (menuHiding == false) {
             menuHiding = true;
             $(".top-menu-small").slideUp("fast", function () {
@@ -168,6 +170,8 @@ function ProcessUrlParams() {
 }
 
 $(window).on('hashchange', function () {
+    //Show Page Loader
+    ShowPageLoader();
     g_dynamic_tag_change = true;
     newFilterApplied = true;
     if (g_load_bags)
@@ -306,6 +310,7 @@ function loadTags() {
     $("#main-search").select2({
         placeholder: "Describe your ideal handbag here... (e.g.: small black crossbody michael kors)",
         data: tagsData,
+        minimumInputLength:0,
         allowClear: true,
         templateSelection: function (data,a) {
             a.addClass(fnColorTag(data.category_id));
@@ -389,19 +394,22 @@ Handlebars.registerHelper('titleCase', function (name) {
 
 
 function ShowMore() {
+    ShowPageLoader();
+
     newFilterApplied = false;
 
     //Disabling Show More button
     $("#show-more-panel button").attr("disabled", true);
 
     //Loading button
-    $("#show-more-panel button").html("<i class='fa fa-spinner fa-spin'></i> Wait a moment..");
+    $("#show-more-panel button").html("Wait a moment..");
 
     //Fetch Product
     GetProducts();
 }
 
 function GetProducts() {
+    
     g_load_bags = true;
     //Show bags view in case About us is openend
 
@@ -431,7 +439,6 @@ function GetProducts() {
             }
         },
         success: function (data) {
-
             //Setting product id to fetch next result from
             if (data.length > 0) {
                 g_result_from_product_id = data[data.length - 1].id + 1
@@ -448,9 +455,11 @@ function GetProducts() {
 
             if (newFilterApplied) {
                 $(".product-list").html(template({ products: data }));
-                $('html,body').animate({
-                    scrollTop: 0
-                }, 500);
+                if (guide_running == false) {
+                    $('html,body').animate({
+                        scrollTop: 0
+                    }, 500);
+                }
             }
             else
                 $(".product-list").append(template({ products: data }));
@@ -508,10 +517,8 @@ function GetProducts() {
                 $(this).carousel('next');
             });
 
-            if ($('[data-toggle="tooltip"]')[0]) {
-                $('[data-toggle="tooltip"]').tooltip();
-            }
-            HideInitialLoader();
+            //Hide Page Loader
+            HidePageLoader();
 
             //Reset
             g_hashchanged = false;
@@ -520,19 +527,16 @@ function GetProducts() {
     });
 }
 
-function HideInitialLoader() {
-    if (!$('html').hasClass('ismobile')) {
-        if ($('.page-loader')[0]) {
-            setTimeout(function () {
-                $('.page-loader').fadeOut();
-            }, 500);
+function ShowPageLoader() {
+    $('.page-loader').show();
+}
 
-        }
-    }
+function HidePageLoader() {
+    $('.page-loader').hide();
 }
 
 function BuildUrlHash() {
-    
+   
     var hash = "";
     if (g_aboutus_open == true)
         hash += "aboutus=" + g_aboutus_open;
@@ -555,8 +559,7 @@ function TriggerProductPopup(productid) {
 }
 
 function ShowProductPopup(productid) {
-    $("#product-popup-loader").fadeIn("fast", function () {
-        $("body").css("overflow-y", "hidden");
+       
         $.ajax({
             url: g_api + '/api/products/' + productid,
             success: function (product) {
@@ -571,18 +574,19 @@ function ShowProductPopup(productid) {
                     },
                     callbacks: {
                         beforeOpen: function () {
-                            $("#product-popup-loader").hide();
+                            $("body").addClass("showing-product");
+                            HidePageLoader();
                             this.st.mainClass = "mfp-zoom-in";
                         },
                         beforeClose: function () {
                             g_open_productid = 0;
                             g_load_bags = false;
                             g_load_popup = false;
-                            $("#product-popup-loader").hide();
                             BuildUrlHash();
                         },
-                        close: function(){
-                            $("body").css("overflow-y", "auto");
+                        close: function () {
+                            HidePageLoader();
+                            $("body").removeClass("showing-product");
                             setTimeout(function () {
                                 g_popupOpened = false;
                                 g_load_bags = true;
@@ -627,7 +631,6 @@ function ShowProductPopup(productid) {
                 alert('error fetching product')
             }
         });
-    });
 }
 
 function ThumbnailScroll(direction) {
@@ -673,4 +676,124 @@ function ShowAboutUsView() {
 function ShowBagsView() {
     g_aboutus_open = false;
     BuildUrlHash();
+}
+
+var guide_running = false;
+function ShowGuide() {
+    $("#helper").removeClass("animated animated-short zoomIn").addClass("animated animated-short zoomOut");
+    setTimeout(function () {
+        //initialize instance
+        var enjoyhint_instance = new EnjoyHint({
+            onStart: function () {
+                guide_running = true;
+            },
+            onSkip: function () {
+                guide_running = false;
+                $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short zoomIn");
+            },
+            onStop: function () {
+                guide_running = false;
+                $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short zoomIn");
+            }
+        });
+
+        //simple config. 
+        //Only one step - highlighting(with description) "New" button 
+        //hide EnjoyHint after a click on the button.
+        var enjoyhint_script_steps = [
+            {
+                selector: '.product-list .product-card:first-child',
+                description: 'This is an awesome bag..!',
+                showNext: true,
+                showSkip: true,
+                margin: 0,
+                skipButton: { text: "Skip Help" }
+            },
+             {
+                 event: 'click',
+                 selector: '.product-list div:first-child .card-header',
+                 event_selector: '.product-list div:first-child .card-header .carousel-control',
+                 description: 'Hover or click on slider buttons <br/>to see more images of the bag',
+                 showSkip: true,
+                 skipButton: { text: "Skip Help" },
+                 margin: 0
+             },
+            {
+                timeout: 2000,
+                event: 'click',
+                selector: '.product-list div:first-child .product-details',
+                event_selector: '.product-list div:first-child .product-details .tags-container',
+                description: 'Select tag(s) which match<br/> with your ideal Bag.',
+                showSkip: true,
+                skipButton: { text: "Skip Help" },
+                showNext: false,
+                margin: 0
+            },
+          {
+              timeout: 400,
+              selector: '.select2-selection',
+              description: 'You can search and add more tags here',
+              showSkip: true,
+              skipButton: { text: "Skip Help" },
+              showNext: true,
+              margin: 0
+          },
+          {
+              event: 'click',
+              selector: '.price-display',
+              description: 'Want to see Bags within your budget?<br/> Click on this Price filter',
+              showSkip: true,
+              skipButton: { text: "Skip Help" },
+              showNext: false,
+              margin: 0
+          },
+          {
+              selector: '.price-menu',
+              description: 'You can select a price range <br/>to see Bags within your budget',
+              showSkip: true,
+              skipButton: { text: "Skip Help" },
+              showNext: true,
+              margin: 0
+          },
+          {
+              event: 'click',
+              selector: '.product-list div:first-child .card-header .carousel',
+              event_selector: '.product-list div:first-child .card-header .carousel .item',
+              description: 'Click on images to see the Bag details',
+              showSkip: true,
+              skipButton: { text: "Skip Help" },
+              margin: 0
+          },
+          {
+              timeout: 1000,
+              selector: '#product-popup #product-gallery',
+              description: "Check out Image gallery of the Bag,<br/> where you can hover the<br/> cursor to see magnified image.",
+              showSkip: true,
+              showNext: true,
+              skipButton: { text: "Skip Help" },
+              margin: 10
+          },
+          {
+              selector: '#product-popup #product-popup-right-column',
+              description: 'Details of this Bag',
+              showSkip: true,
+              showNext: true,
+              skipButton: { text: "Skip Help" },
+              margin: 25
+          },
+           {
+               selector: '#product-popup #product-popup-right-column #btn-buy',
+               description: "Clicking on \"Buy\" button<br/> will open seller's website.<br/><text style='color: #2bff3c'>Happy Shopping!</text>",
+               showSkip: true,
+               showNext: false,
+               skipButton: { className: "bg-primary", text: "End Help" },
+           }
+        ];
+
+        //set script config
+        enjoyhint_instance.set(enjoyhint_script_steps);
+
+        //run Enjoyhint script
+        enjoyhint_instance.run();
+    }, 300);
 }

@@ -20,7 +20,7 @@
 
   var imagezoomCursor,imagezoomView,settings,imageWidth,imageHeight,offset;
   var methods = {
-    init : function(options){
+      init: function (options) {
       $this = $(this),
       imagezoomCursor = $('.imagezoom-cursor'),
       imagezoomView = $('.imagezoom-view'),
@@ -37,7 +37,8 @@
           imageSrc = $(this).get(0).getAttribute('data-imagezoom');
         }
 
-        var posX = e.pageX,posY = e.pageY,zoomViewPositionX;
+        var posX = e.pageX, posY = e.pageY, zoomViewPositionX;
+        $(imagezoomCursor.selector).remove();
         $('body').prepend('<div class="imagezoom-cursor">&nbsp;</div>');
         $('#product-popup-right-column').prepend('<div class="imagezoom-view"><img src="' + imageSrc + '"></div>');
 
@@ -46,7 +47,6 @@
         }else{
           zoomViewPositionX = (offset.left-imageWidth-settings.zoomviewmargin);
         }
-
         $(imagezoomView.selector).css({
           'position':'absolute',
           'left': -1, //zoomViewPositionX
@@ -80,7 +80,7 @@
     },
     cursorPos:function(e){
       var posX = e.pageX,posY = e.pageY;
-      if(posY < offset.top || posX < offset.left || posY > (offset.top+imageHeight) || posX > (offset.left+imageWidth)){
+      if (posY < offset.top || posX < offset.left || posY > (offset.top + imageHeight) || posX > (offset.left + imageWidth)) {
         $(imagezoomCursor.selector).remove();
         $(imagezoomView.selector).remove();
         return;
@@ -102,7 +102,7 @@
       $(imagezoomView.selector).children('img').css({'top':((offset.top-posY)+(cursorSize[1]/2))*settings.magnification,'left':((offset.left-posX)+(cursorSize[0]/2))*settings.magnification});
 
       $(imagezoomCursor.selector).mouseleave(function(){
-        $(this).remove();
+          $(this).remove();
       });
     }
   };

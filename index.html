@@ -44,6 +44,7 @@
 	<link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
 	<link href="vendors/bower_components/nouislider/distribute/jquery.nouislider.min.css" rel="stylesheet">
 	<link href="vendors/bower_components/nouislider/distribute/nouislider.tooltips.css" rel="stylesheet" />
+	<link href="vendors/enjoyhint/enjoyhint.css" rel="stylesheet" />
 
 	<!-- CSS -->
 	<link href="css/app.min.1.css" rel="stylesheet">
@@ -197,18 +198,17 @@
 		</ul>
 	</footer>
 
-	<div id="product-popup-loader">
-		<div class="text">Loading..</div>
-	</div>
-
 	<!-- Page Loader -->
 	<div class="page-loader">
 		<div class="preloader pls-blue">
 			<svg class="pl-circular" viewBox="25 25 50 50">
 				<circle class="plc-path" cx="50" cy="50" r="20" />
 			</svg>
-			<p>Please wait...</p>
 		</div>
+	</div>
+
+	<div id="helper" onclick="ShowGuide();" class="animated animated-short zoomIn">
+		<i class="fa fa-question"></i>
 	</div>
 
 	<!-- Javascript Libraries -->
@@ -218,6 +218,7 @@
 
 	<script src="vendors/bower_components/flot/jquery.flot.js"></script>
 	<script src="vendors/bower_components/flot/jquery.flot.resize.js"></script>
+	<script src="vendors/enjoyhint/enjoyhint.min.js"></script>
 	<script src="vendors/magnific-popup/jquery.magnific-popup.min.js"></script>
 	<script src="vendors/jquery-touch/jquery.mobile.custom.min.js"></script>
 	<script src="vendors/bower_components/moment/min/moment.min.js"></script>
@@ -234,8 +235,6 @@
 	<script src="vendors/zoom-demo/imagezoom.js"></script>
 
 	<script src="scripts/index.js"></script>
-	<script>
-
-	</script>
+	
 </body>
 </html>
