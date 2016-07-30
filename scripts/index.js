@@ -722,7 +722,7 @@ function ShowGuide() {
                 timeout: 2000,
                 event: 'click',
                 selector: '.product-list div:first-child .product-details',
-                event_selector: '.product-list div:first-child .product-details .tags-container',
+                event_selector: '.product-list div:first-child .product-details .tags-container .tag',
                 description: 'Select tag(s) which match<br/> with your ideal Bag.',
                 showSkip: true,
                 skipButton: { text: "Skip Help" },
@@ -732,12 +732,26 @@ function ShowGuide() {
           {
               timeout: 400,
               selector: '.select2-selection',
-              description: 'You can search and add more tags here',
+              description: 'You can type here to search<br/> and add more tags',
               showSkip: true,
               skipButton: { text: "Skip Help" },
               showNext: true,
               margin: 0
           },
+           {
+               selector: '.select2-selection .select2-selection__choice__remove:first-child',
+               description: 'Clicking on cross button of the tag will remove it',
+               showSkip: true,
+               skipButton: { text: "Skip Help" },
+               showNext: true,
+           },
+           {
+               selector: '.select2-selection .select2-selection__clear',
+               description: 'Clicking this cross button will remove all tags',
+               showSkip: true,
+               skipButton: { text: "Skip Help" },
+               showNext: true,
+           },
           {
               event: 'click',
               selector: '.price-display',
@@ -765,7 +779,7 @@ function ShowGuide() {
               margin: 0
           },
           {
-              timeout: 1000,
+              timeout: 1500,
               selector: '#product-popup #product-gallery',
               description: "Check out Image gallery of the Bag,<br/> where you can hover the<br/> cursor to see magnified image.",
               showSkip: true,
