@@ -477,15 +477,12 @@ function GetProducts() {
                 g_load_bags = true;
                 g_dynamic_tag_change = true;
                 flyToElement($(this), $('#centerpoint_search'));
-                setTimeout(function (tag) {
-                    return function () {
-                        if ($.inArray(tag.attr('tag-id'), g_tags) < 0) {
-                            if (g_tags == null) g_tags = [];
-                            g_tags.push(tag.attr('tag-id'));
-                        }
-                        BuildUrlHash();
-                    };
-                }($(this)), 500);
+              
+                if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
+                    if (g_tags == null) g_tags = [];
+                    g_tags.push($(this).attr('tag-id'));
+                }
+                BuildUrlHash();
             });
 
             //Initialize sliding images for each product
@@ -553,9 +550,16 @@ function BuildUrlHash() {
 }
 
 function TriggerProductPopup(productid) {
-    g_open_productid = productid;
-    g_load_bags = false;
-    BuildUrlHash();
+    if (!guide_running) {
+        g_open_productid = productid;
+        g_load_bags = false;
+        BuildUrlHash();
+    }
+    else if (guide_running && guide_running_allow_product_click) {
+        g_open_productid = productid;
+        g_load_bags = false;
+        BuildUrlHash();
+    }
 }
 
 function ShowProductPopup(productid) {
@@ -601,15 +605,11 @@ function ShowProductPopup(productid) {
                                 g_dynamic_tag_change = true;
                                 flyToElement($(this), $('#centerpoint_search'));
 
-                                setTimeout(function (tag) {
-                                    return function () {
-                                        if ($.inArray(tag.attr('tag-id'), g_tags) < 0) {
-                                            if (g_tags == null) g_tags = [];
-                                            g_tags.push(tag.attr('tag-id'));
-                                        }
-                                        BuildUrlHash();
-                                    };
-                                }($(this)), 500);
+                                if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
+                                    if (g_tags == null) g_tags = [];
+                                    g_tags.push($(this).attr('tag-id'));
+                                }
+                                BuildUrlHash();
                             });
                             if(!$('html').hasClass('ismobile')) {
                                 $('#product-popup [data-imagezoom]').imageZoom();
@@ -679,21 +679,34 @@ function ShowBagsView() {
 }
 
 var guide_running = false;
+var guide_running_allow_product_click = false;
+
 function ShowGuide() {
-    $("#helper").removeClass("animated animated-short zoomIn").addClass("animated animated-short zoomOut");
-    setTimeout(function () {
+    $("#helper").tooltip("hide");
+    
         //initialize instance
         var enjoyhint_instance = new EnjoyHint({
             onStart: function () {
                 guide_running = true;
+                setTimeout(function () {
+                    $("#helper").removeClass("animated animated-short slideInUp").addClass("animated animated-short zoomOut");
+                }, 1000);
             },
             onSkip: function () {
                 guide_running = false;
-                $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short zoomIn");
+                guide_running_allow_product_click = false;
+                $.magnificPopup.close();
+                setTimeout(function () {
+                    $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short slideInUp");
+                }, 1000);
             },
             onStop: function () {
                 guide_running = false;
-                $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short zoomIn");
+                guide_running_allow_product_click = false;
+                $.magnificPopup.close();
+                setTimeout(function () {
+                    $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short slideInUp");
+                }, 1000);
             }
         });
 
@@ -730,14 +743,27 @@ function ShowGuide() {
                 margin: 0
             },
           {
+              event: 'click',
               timeout: 400,
               selector: '.select2-selection',
               description: 'You can type here to search<br/> and add more tags',
               showSkip: true,
               skipButton: { text: "Skip Help" },
               showNext: true,
-              margin: 0
+              margin: 400,
+              margin:10
           },
+           {
+               selector: '.select2-selection',
+               description: 'Start typing..<br/> Select tag with arrow keys and hit enter to add it',
+               showSkip: true,
+               skipButton: { text: "Skip Help" },
+               showNext: true,
+               margin: 415,
+               left: 202,
+               right: 202,
+               top: 203
+           },
            {
                selector: '.select2-selection .select2-selection__choice__remove:first-child',
                description: 'Clicking on cross button of the tag will remove it',
@@ -776,7 +802,10 @@ function ShowGuide() {
               description: 'Click on images to see the Bag details',
               showSkip: true,
               skipButton: { text: "Skip Help" },
-              margin: 0
+              margin: 0,
+              onBeforeStart: function () {
+                  guide_running_allow_product_click = true;
+              }
           },
           {
               timeout: 1500,
@@ -785,7 +814,10 @@ function ShowGuide() {
               showSkip: true,
               showNext: true,
               skipButton: { text: "Skip Help" },
-              margin: 10
+              margin: 10,
+              onBeforeStart: function () {
+                  guide_running_allow_product_click = false;
+              }
           },
           {
               selector: '#product-popup #product-popup-right-column',
@@ -797,7 +829,7 @@ function ShowGuide() {
           },
            {
                selector: '#product-popup #product-popup-right-column #btn-buy',
-               description: "Clicking on \"Buy\" button<br/> will open seller's website.<br/><text style='color: #2bff3c'>Happy Shopping!</text>",
+               description: "Clicking on \"Buy\" button<br/> will open seller's website.<br/><text style='color: #fff'>Happy Shopping!</text>",
                showSkip: true,
                showNext: false,
                skipButton: { className: "bg-primary", text: "End Help" },
@@ -809,5 +841,4 @@ function ShowGuide() {
 
         //run Enjoyhint script
         enjoyhint_instance.run();
-    }, 300);
 }
