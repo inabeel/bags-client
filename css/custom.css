@@ -665,12 +665,12 @@ html:not(.ismobile) .page-loader{
     background:none !important;
 }
 html:not(.ismobile) .page-loader .preloader{
-    width:40px;
+    width:45px;
     background-color:rgb(12,121,211);
     border-radius:5px;
     border: 1px solid rgb(12,121,211);
-    margin-left:-20px;
-    margin-top:-20px;
+    margin-left:-22px;
+    margin-top:-22px;
 }
 .preloader.pls-blue .plc-path{
     stroke: white;
@@ -699,7 +699,4 @@ body.showing-product{
     font-size:20px;
     text-align:center;
     line-height:45px;
-}
-#helper:hover{
-    cursor:pointer;
 }

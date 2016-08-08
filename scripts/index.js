@@ -24,7 +24,7 @@ overSlider = false;
 $(document).scroll(function () {
     $("#main-search").select2("close");
     if ($(document).scrollTop() <= 10) {
-        if (menuHiding == false && g_popupOpened == false) {
+        if (menuHiding == false && g_popupOpened == false && guide_running == false) {
             menuHiding = true;
             $(".top-menu-small").slideDown("fast",function () {
                 menuHiding = false;
@@ -32,7 +32,6 @@ $(document).scroll(function () {
         }
     }
     if ($(document).scrollTop() > 10) {
-        console.log("scrollTop : " + $(document).scrollTop());
         if (menuHiding == false) {
             menuHiding = true;
             $(".top-menu-small").slideUp("fast", function () {
@@ -546,7 +545,10 @@ function BuildUrlHash() {
     if (g_tags != null && g_tags.length > 0) {
         hash += (hash == "" ? "" : "&") + "tags=" + g_tags.join(",");
     }
-    window.location.hash = hash;
+    if (hash != "")
+        window.location.hash = hash;
+    else
+        window.location.hash = "_";
 }
 
 function TriggerProductPopup(productid) {
@@ -717,7 +719,7 @@ function ShowGuide() {
             {
                 selector: '.product-list .product-card:first-child',
                 description: 'This is an awesome bag..!',
-                showNext: true,
+                showNext: true, 
                 showSkip: true,
                 margin: 0,
                 skipButton: { text: "Skip Help" }
@@ -749,13 +751,13 @@ function ShowGuide() {
               description: 'You can type here to search<br/> and add more tags',
               showSkip: true,
               skipButton: { text: "Skip Help" },
-              showNext: true,
+              showNext: false,
               margin: 400,
               margin:10
           },
            {
-               selector: '.select2-selection',
-               description: 'Start typing..<br/> Select tag with arrow keys and hit enter to add it',
+               selector: '.select2-container',
+               description: 'Start typing..<br/> Select tag with arrow keys<br/> and hit enter to add it',
                showSkip: true,
                skipButton: { text: "Skip Help" },
                showNext: true,
@@ -765,19 +767,43 @@ function ShowGuide() {
                top: 203
            },
            {
+               event:'click',
                selector: '.select2-selection .select2-selection__choice__remove:first-child',
+               event_selector: '.select2-selection .select2-selection__choice__remove:first-child',
                description: 'Clicking on cross button of the tag will remove it',
+               shape: 'circle',
+               radius: 15,
                showSkip: true,
                skipButton: { text: "Skip Help" },
                showNext: true,
+               onBeforeStart: function () {
+                   if (g_tags == null || g_tags.length == 0) {
+                       $("#main-search option[value=" +  $("#main-search option:first-child").val() + "]").attr('selected', true);
+                       $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
+                       $('.select2').bind('click', '.select2-selection__choice__remove', function () {
+                           if (enjoyhint_instance.getCurrentStep == 5)
+                            $(".enjoyhint_next_btn").click();
+                       });
+                       $("#main-search").trigger("change");
+                   }
+               }
            },
-           {
-               selector: '.select2-selection .select2-selection__clear',
-               description: 'Clicking this cross button will remove all tags',
-               showSkip: true,
-               skipButton: { text: "Skip Help" },
-               showNext: true,
-           },
+           //{
+           //    selector: '.select2-selection .select2-selection__clear',
+           //    description: 'Clicking this cross button will remove all tags',
+           //    shape: 'circle',
+           //    radius: 20,
+           //    showSkip: true,
+           //    skipButton: { text: "Skip Help" },
+           //    showNext: true,
+           //    onBeforeStart: function () {
+           //        setTimeout(function(){
+           //            $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
+           //            $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
+           //            $("#main-search").trigger("change");
+           //        },1000);
+           //    }
+           //},
           {
               event: 'click',
               selector: '.price-display',
@@ -829,7 +855,7 @@ function ShowGuide() {
           },
            {
                selector: '#product-popup #product-popup-right-column #btn-buy',
-               description: "Clicking on \"Buy\" button<br/> will open seller's website.<br/><text style='color: #fff'>Happy Shopping!</text>",
+               description: "\"Buy\" button will open <br/>seller's website. Happy Shopping!",
                showSkip: true,
                showNext: false,
                skipButton: { className: "bg-primary", text: "End Help" },
