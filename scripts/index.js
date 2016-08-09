@@ -22,15 +22,16 @@ sliderRunning = false,
 overSlider = false;
 
 $(document).scroll(function () {
-    if ($(document).scrollTop() < 10) {
-        if (menuHiding == false && g_popupOpened == false) {
+    $("#main-search").select2("close");
+    if ($(document).scrollTop() <= 10) {
+        if (menuHiding == false && g_popupOpened == false && guide_running == false) {
             menuHiding = true;
             $(".top-menu-small").slideDown("fast",function () {
                 menuHiding = false;
             });
         }
     }
-    if ($(document).scrollTop() >= 10) {
+    if ($(document).scrollTop() > 10) {
         if (menuHiding == false) {
             menuHiding = true;
             $(".top-menu-small").slideUp("fast", function () {
@@ -168,6 +169,8 @@ function ProcessUrlParams() {
 }
 
 $(window).on('hashchange', function () {
+    //Show Page Loader
+    ShowPageLoader();
     g_dynamic_tag_change = true;
     newFilterApplied = true;
     if (g_load_bags)
@@ -306,6 +309,7 @@ function loadTags() {
     $("#main-search").select2({
         placeholder: "Describe your ideal handbag here... (e.g.: small black crossbody michael kors)",
         data: tagsData,
+        minimumInputLength:0,
         allowClear: true,
         templateSelection: function (data,a) {
             a.addClass(fnColorTag(data.category_id));
@@ -389,19 +393,22 @@ Handlebars.registerHelper('titleCase', function (name) {
 
 
 function ShowMore() {
+    ShowPageLoader();
+
     newFilterApplied = false;
 
     //Disabling Show More button
     $("#show-more-panel button").attr("disabled", true);
 
     //Loading button
-    $("#show-more-panel button").html("<i class='fa fa-spinner fa-spin'></i> Wait a moment..");
+    $("#show-more-panel button").html("Wait a moment..");
 
     //Fetch Product
     GetProducts();
 }
 
 function GetProducts() {
+    
     g_load_bags = true;
     //Show bags view in case About us is openend
 
@@ -431,7 +438,6 @@ function GetProducts() {
             }
         },
         success: function (data) {
-
             //Setting product id to fetch next result from
             if (data.length > 0) {
                 g_result_from_product_id = data[data.length - 1].id + 1
@@ -448,9 +454,11 @@ function GetProducts() {
 
             if (newFilterApplied) {
                 $(".product-list").html(template({ products: data }));
-                $('html,body').animate({
-                    scrollTop: 0
-                }, 500);
+                if (guide_running == false) {
+                    $('html,body').animate({
+                        scrollTop: 0
+                    }, 500);
+                }
             }
             else
                 $(".product-list").append(template({ products: data }));
@@ -468,15 +476,12 @@ function GetProducts() {
                 g_load_bags = true;
                 g_dynamic_tag_change = true;
                 flyToElement($(this), $('#centerpoint_search'));
-                setTimeout(function (tag) {
-                    return function () {
-                        if ($.inArray(tag.attr('tag-id'), g_tags) < 0) {
-                            if (g_tags == null) g_tags = [];
-                            g_tags.push(tag.attr('tag-id'));
-                        }
-                        BuildUrlHash();
-                    };
-                }($(this)), 500);
+              
+                if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
+                    if (g_tags == null) g_tags = [];
+                    g_tags.push($(this).attr('tag-id'));
+                }
+                BuildUrlHash();
             });
 
             //Initialize sliding images for each product
@@ -508,10 +513,8 @@ function GetProducts() {
                 $(this).carousel('next');
             });
 
-            if ($('[data-toggle="tooltip"]')[0]) {
-                $('[data-toggle="tooltip"]').tooltip();
-            }
-            HideInitialLoader();
+            //Hide Page Loader
+            HidePageLoader();
 
             //Reset
             g_hashchanged = false;
@@ -520,19 +523,16 @@ function GetProducts() {
     });
 }
 
-function HideInitialLoader() {
-    if (!$('html').hasClass('ismobile')) {
-        if ($('.page-loader')[0]) {
-            setTimeout(function () {
-                $('.page-loader').fadeOut();
-            }, 500);
+function ShowPageLoader() {
+    $('.page-loader').show();
+}
 
-        }
-    }
+function HidePageLoader() {
+    $('.page-loader').hide();
 }
 
 function BuildUrlHash() {
-    
+   
     var hash = "";
     if (g_aboutus_open == true)
         hash += "aboutus=" + g_aboutus_open;
@@ -545,18 +545,27 @@ function BuildUrlHash() {
     if (g_tags != null && g_tags.length > 0) {
         hash += (hash == "" ? "" : "&") + "tags=" + g_tags.join(",");
     }
-    window.location.hash = hash;
+    if (hash != "")
+        window.location.hash = hash;
+    else
+        window.location.hash = "_";
 }
 
 function TriggerProductPopup(productid) {
-    g_open_productid = productid;
-    g_load_bags = false;
-    BuildUrlHash();
+    if (!guide_running) {
+        g_open_productid = productid;
+        g_load_bags = false;
+        BuildUrlHash();
+    }
+    else if (guide_running && guide_running_allow_product_click) {
+        g_open_productid = productid;
+        g_load_bags = false;
+        BuildUrlHash();
+    }
 }
 
 function ShowProductPopup(productid) {
-    $("#product-popup-loader").fadeIn("fast", function () {
-        $("body").css("overflow-y", "hidden");
+       
         $.ajax({
             url: g_api + '/api/products/' + productid,
             success: function (product) {
@@ -571,18 +580,19 @@ function ShowProductPopup(productid) {
                     },
                     callbacks: {
                         beforeOpen: function () {
-                            $("#product-popup-loader").hide();
+                            $("body").addClass("showing-product");
+                            HidePageLoader();
                             this.st.mainClass = "mfp-zoom-in";
                         },
                         beforeClose: function () {
                             g_open_productid = 0;
                             g_load_bags = false;
                             g_load_popup = false;
-                            $("#product-popup-loader").hide();
                             BuildUrlHash();
                         },
-                        close: function(){
-                            $("body").css("overflow-y", "auto");
+                        close: function () {
+                            HidePageLoader();
+                            $("body").removeClass("showing-product");
                             setTimeout(function () {
                                 g_popupOpened = false;
                                 g_load_bags = true;
@@ -597,15 +607,11 @@ function ShowProductPopup(productid) {
                                 g_dynamic_tag_change = true;
                                 flyToElement($(this), $('#centerpoint_search'));
 
-                                setTimeout(function (tag) {
-                                    return function () {
-                                        if ($.inArray(tag.attr('tag-id'), g_tags) < 0) {
-                                            if (g_tags == null) g_tags = [];
-                                            g_tags.push(tag.attr('tag-id'));
-                                        }
-                                        BuildUrlHash();
-                                    };
-                                }($(this)), 500);
+                                if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
+                                    if (g_tags == null) g_tags = [];
+                                    g_tags.push($(this).attr('tag-id'));
+                                }
+                                BuildUrlHash();
                             });
                             if(!$('html').hasClass('ismobile')) {
                                 $('#product-popup [data-imagezoom]').imageZoom();
@@ -627,7 +633,6 @@ function ShowProductPopup(productid) {
                 alert('error fetching product')
             }
         });
-    });
 }
 
 function ThumbnailScroll(direction) {
@@ -673,4 +678,193 @@ function ShowAboutUsView() {
 function ShowBagsView() {
     g_aboutus_open = false;
     BuildUrlHash();
+}
+
+var guide_running = false;
+var guide_running_allow_product_click = false;
+
+function ShowGuide() {
+    $("#helper").tooltip("hide");
+    
+        //initialize instance
+        var enjoyhint_instance = new EnjoyHint({
+            onStart: function () {
+                guide_running = true;
+                setTimeout(function () {
+                    $("#helper").removeClass("animated animated-short slideInUp").addClass("animated animated-short zoomOut");
+                }, 1000);
+            },
+            onSkip: function () {
+                guide_running = false;
+                guide_running_allow_product_click = false;
+                $.magnificPopup.close();
+                setTimeout(function () {
+                    $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short slideInUp");
+                }, 1000);
+            },
+            onStop: function () {
+                guide_running = false;
+                guide_running_allow_product_click = false;
+                $.magnificPopup.close();
+                setTimeout(function () {
+                    $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short slideInUp");
+                }, 1000);
+            }
+        });
+
+        //simple config. 
+        //Only one step - highlighting(with description) "New" button 
+        //hide EnjoyHint after a click on the button.
+        var enjoyhint_script_steps = [
+            {
+                selector: '.product-list .product-card:first-child',
+                description: 'This is an awesome bag..!',
+                showNext: true, 
+                showSkip: true,
+                margin: 0,
+                skipButton: { text: "Skip Help" }
+            },
+             {
+                 event: 'click',
+                 selector: '.product-list div:first-child .card-header',
+                 event_selector: '.product-list div:first-child .card-header .carousel-control',
+                 description: 'Hover or click on slider buttons <br/>to see more images of the bag',
+                 showSkip: true,
+                 skipButton: { text: "Skip Help" },
+                 margin: 0
+             },
+            {
+                timeout: 2000,
+                event: 'click',
+                selector: '.product-list div:first-child .product-details',
+                event_selector: '.product-list div:first-child .product-details .tags-container .tag',
+                description: 'Select tag(s) which match<br/> with your ideal Bag.',
+                showSkip: true,
+                skipButton: { text: "Skip Help" },
+                showNext: false,
+                margin: 0
+            },
+          {
+              event: 'click',
+              timeout: 400,
+              selector: '.select2-selection',
+              description: 'You can type here to search<br/> and add more tags',
+              showSkip: true,
+              skipButton: { text: "Skip Help" },
+              showNext: false,
+              margin: 400,
+              margin:10
+          },
+           {
+               selector: '.select2-container',
+               description: 'Start typing..<br/> Select tag with arrow keys<br/> and hit enter to add it',
+               showSkip: true,
+               skipButton: { text: "Skip Help" },
+               showNext: true,
+               margin: 415,
+               left: 202,
+               right: 202,
+               top: 203
+           },
+           {
+               event:'click',
+               selector: '.select2-selection .select2-selection__choice__remove:first-child',
+               event_selector: '.select2-selection .select2-selection__choice__remove:first-child',
+               description: 'Clicking on cross button of the tag will remove it',
+               shape: 'circle',
+               radius: 15,
+               showSkip: true,
+               skipButton: { text: "Skip Help" },
+               showNext: true,
+               onBeforeStart: function () {
+                   if (g_tags == null || g_tags.length == 0) {
+                       $("#main-search option[value=" +  $("#main-search option:first-child").val() + "]").attr('selected', true);
+                       $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
+                       $('.select2').bind('click', '.select2-selection__choice__remove', function () {
+                           if (enjoyhint_instance.getCurrentStep == 5)
+                            $(".enjoyhint_next_btn").click();
+                       });
+                       $("#main-search").trigger("change");
+                   }
+               }
+           },
+           //{
+           //    selector: '.select2-selection .select2-selection__clear',
+           //    description: 'Clicking this cross button will remove all tags',
+           //    shape: 'circle',
+           //    radius: 20,
+           //    showSkip: true,
+           //    skipButton: { text: "Skip Help" },
+           //    showNext: true,
+           //    onBeforeStart: function () {
+           //        setTimeout(function(){
+           //            $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
+           //            $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
+           //            $("#main-search").trigger("change");
+           //        },1000);
+           //    }
+           //},
+          {
+              event: 'click',
+              selector: '.price-display',
+              description: 'Want to see Bags within your budget?<br/> Click on this Price filter',
+              showSkip: true,
+              skipButton: { text: "Skip Help" },
+              showNext: false,
+              margin: 0
+          },
+          {
+              selector: '.price-menu',
+              description: 'You can select a price range <br/>to see Bags within your budget',
+              showSkip: true,
+              skipButton: { text: "Skip Help" },
+              showNext: true,
+              margin: 0
+          },
+          {
+              event: 'click',
+              selector: '.product-list div:first-child .card-header .carousel',
+              event_selector: '.product-list div:first-child .card-header .carousel .item',
+              description: 'Click on images to see the Bag details',
+              showSkip: true,
+              skipButton: { text: "Skip Help" },
+              margin: 0,
+              onBeforeStart: function () {
+                  guide_running_allow_product_click = true;
+              }
+          },
+          {
+              timeout: 1500,
+              selector: '#product-popup #product-gallery',
+              description: "Check out Image gallery of the Bag,<br/> where you can hover the<br/> cursor to see magnified image.",
+              showSkip: true,
+              showNext: true,
+              skipButton: { text: "Skip Help" },
+              margin: 10,
+              onBeforeStart: function () {
+                  guide_running_allow_product_click = false;
+              }
+          },
+          {
+              selector: '#product-popup #product-popup-right-column',
+              description: 'Details of this Bag',
+              showSkip: true,
+              showNext: true,
+              skipButton: { text: "Skip Help" },
+              margin: 25
+          },
+           {
+               selector: '#product-popup #product-popup-right-column #btn-buy',
+               description: "\"Buy\" button will open <br/>seller's website. Happy Shopping!",
+               showSkip: true,
+               showNext: false,
+               skipButton: { className: "bg-primary", text: "End Help" },
+           }
+        ];
+
+        //set script config
+        enjoyhint_instance.set(enjoyhint_script_steps);
+
+        //run Enjoyhint script
+        enjoyhint_instance.run();
 }
