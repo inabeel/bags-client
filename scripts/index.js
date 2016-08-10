@@ -724,17 +724,7 @@ function ShowGuide() {
                 margin: 0,
                 skipButton: { text: "Skip Help" }
             },
-             {
-                 event: 'click',
-                 selector: '.product-list div:first-child .card-header',
-                 event_selector: '.product-list div:first-child .card-header .carousel-control',
-                 description: 'Hover or click on slider buttons <br/>to see more images of the bag',
-                 showSkip: true,
-                 skipButton: { text: "Skip Help" },
-                 margin: 0
-             },
             {
-                timeout: 2000,
                 event: 'click',
                 selector: '.product-list div:first-child .product-details',
                 event_selector: '.product-list div:first-child .product-details .tags-container .tag',
@@ -788,22 +778,6 @@ function ShowGuide() {
                    }
                }
            },
-           //{
-           //    selector: '.select2-selection .select2-selection__clear',
-           //    description: 'Clicking this cross button will remove all tags',
-           //    shape: 'circle',
-           //    radius: 20,
-           //    showSkip: true,
-           //    skipButton: { text: "Skip Help" },
-           //    showNext: true,
-           //    onBeforeStart: function () {
-           //        setTimeout(function(){
-           //            $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
-           //            $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
-           //            $("#main-search").trigger("change");
-           //        },1000);
-           //    }
-           //},
           {
               event: 'click',
               selector: '.price-display',
@@ -817,49 +791,10 @@ function ShowGuide() {
               selector: '.price-menu',
               description: 'You can select a price range <br/>to see Bags within your budget',
               showSkip: true,
-              skipButton: { text: "Skip Help" },
-              showNext: true,
+              skipButton: { className: "bg-primary", text: "End Help" },
+              showNext: false,
               margin: 0
-          },
-          {
-              event: 'click',
-              selector: '.product-list div:first-child .card-header .carousel',
-              event_selector: '.product-list div:first-child .card-header .carousel .item',
-              description: 'Click on images to see the Bag details',
-              showSkip: true,
-              skipButton: { text: "Skip Help" },
-              margin: 0,
-              onBeforeStart: function () {
-                  guide_running_allow_product_click = true;
-              }
-          },
-          {
-              timeout: 1500,
-              selector: '#product-popup #product-gallery',
-              description: "Check out Image gallery of the Bag,<br/> where you can hover the<br/> cursor to see magnified image.",
-              showSkip: true,
-              showNext: true,
-              skipButton: { text: "Skip Help" },
-              margin: 10,
-              onBeforeStart: function () {
-                  guide_running_allow_product_click = false;
-              }
-          },
-          {
-              selector: '#product-popup #product-popup-right-column',
-              description: 'Details of this Bag',
-              showSkip: true,
-              showNext: true,
-              skipButton: { text: "Skip Help" },
-              margin: 25
-          },
-           {
-               selector: '#product-popup #product-popup-right-column #btn-buy',
-               description: "\"Buy\" button will open <br/>seller's website. Happy Shopping!",
-               showSkip: true,
-               showNext: false,
-               skipButton: { className: "bg-primary", text: "End Help" },
-           }
+          }
         ];
 
         //set script config
