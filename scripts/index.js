@@ -24,7 +24,7 @@ overSlider = false;
 $(document).scroll(function () {
     $("#main-search").select2("close");
     if ($(document).scrollTop() <= 10) {
-        if (menuHiding == false && g_popupOpened == false && guide_running == false) {
+        if (menuHiding == false && g_popupOpened == false && helptour_running == false) {
             menuHiding = true;
             $(".top-menu-small").slideDown("fast",function () {
                 menuHiding = false;
@@ -287,6 +287,14 @@ function getTags() {
                     g_tags = $("#main-search").val();
                     BuildUrlHash();
                 }
+
+                //if Help Tour is running
+                if (helptour_running == true) {
+                    if (adding_tag_in_helptour == true) {
+                        //Move to next step in help tour
+                        $(".enjoyhint_next_btn").click();
+                    }
+                }
             });
 
             $("#main-search").on("select2:unselect", function (e) {
@@ -454,7 +462,7 @@ function GetProducts() {
 
             if (newFilterApplied) {
                 $(".product-list").html(template({ products: data }));
-                if (guide_running == false) {
+                if (helptour_running == false) {
                     $('html,body').animate({
                         scrollTop: 0
                     }, 500);
@@ -518,6 +526,13 @@ function GetProducts() {
 
             //Reset
             g_hashchanged = false;
+
+            if (localStorage.getItem("zoltu-bags-helptour-seen").toString() != "true") {
+                localStorage.setItem("zoltu-bags-helptour-seen", "true");
+                setTimeout(function(){
+                    ShowGuide();
+                },500);
+            }
         },
         error: function () { }
     });
@@ -552,12 +567,12 @@ function BuildUrlHash() {
 }
 
 function TriggerProductPopup(productid) {
-    if (!guide_running) {
+    if (!helptour_running) {
         g_open_productid = productid;
         g_load_bags = false;
         BuildUrlHash();
     }
-    else if (guide_running && guide_running_allow_product_click) {
+    else if (helptour_running && helptour_running_allow_product_click) {
         g_open_productid = productid;
         g_load_bags = false;
         BuildUrlHash();
@@ -680,31 +695,32 @@ function ShowBagsView() {
     BuildUrlHash();
 }
 
-var guide_running = false;
-var guide_running_allow_product_click = false;
+var helptour_running = false;
+var helptour_running_allow_product_click = false;
+var helptour_instance;
 
 function ShowGuide() {
     $("#helper").tooltip("hide");
     
         //initialize instance
-        var enjoyhint_instance = new EnjoyHint({
+         helptour_instance = new EnjoyHint({
             onStart: function () {
-                guide_running = true;
+                helptour_running = true;
                 setTimeout(function () {
                     $("#helper").removeClass("animated animated-short slideInUp").addClass("animated animated-short zoomOut");
                 }, 1000);
             },
             onSkip: function () {
-                guide_running = false;
-                guide_running_allow_product_click = false;
+                helptour_running = false;
+                helptour_running_allow_product_click = false;
                 $.magnificPopup.close();
                 setTimeout(function () {
                     $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short slideInUp");
                 }, 1000);
             },
             onStop: function () {
-                guide_running = false;
-                guide_running_allow_product_click = false;
+                helptour_running = false;
+                helptour_running_allow_product_click = false;
                 $.magnificPopup.close();
                 setTimeout(function () {
                     $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short slideInUp");
@@ -716,15 +732,16 @@ function ShowGuide() {
         //Only one step - highlighting(with description) "New" button 
         //hide EnjoyHint after a click on the button.
         var enjoyhint_script_steps = [
-            {
+           {
                 selector: '.product-list .product-card:first-child',
                 description: 'This is an awesome bag..!',
                 showNext: true, 
                 showSkip: true,
                 margin: 0,
-                skipButton: { text: "Skip Help" }
+                skipButton: { text: "Skip Help" },
+                onBeforeStart: function () { adding_tag_in_helptour = false; }
             },
-            {
+           {
                 event: 'click',
                 selector: '.product-list div:first-child .product-details',
                 event_selector: '.product-list div:first-child .product-details .tags-container .tag',
@@ -734,17 +751,17 @@ function ShowGuide() {
                 showNext: false,
                 margin: 0
             },
-          {
-              event: 'click',
-              timeout: 400,
-              selector: '.select2-selection',
-              description: 'You can type here to search<br/> and add more tags',
-              showSkip: true,
-              skipButton: { text: "Skip Help" },
-              showNext: false,
-              margin: 400,
-              margin:10
-          },
+           {
+                event: 'click',
+                timeout: 400,
+                selector: '.select2-selection',
+                description: 'You can type here to search<br/> and add more tags',
+                showSkip: true,
+                skipButton: { text: "Skip Help" },
+                showNext: false,
+                margin: 400,
+                margin:10
+            },
            {
                selector: '.select2-container',
                description: 'Start typing..<br/> Select tag with arrow keys<br/> and hit enter to add it',
@@ -754,10 +771,10 @@ function ShowGuide() {
                margin: 415,
                left: 202,
                right: 202,
-               top: 203
+               top: 203,
+               onBeforeStart: function () { adding_tag_in_helptour = true; }
            },
            {
-               event:'click',
                selector: '.select2-selection .select2-selection__choice__remove:first-child',
                event_selector: '.select2-selection .select2-selection__choice__remove:first-child',
                description: 'Clicking on cross button of the tag will remove it',
@@ -771,14 +788,15 @@ function ShowGuide() {
                        $("#main-search option[value=" +  $("#main-search option:first-child").val() + "]").attr('selected', true);
                        $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
                        $('.select2').bind('click', '.select2-selection__choice__remove', function () {
-                           if (enjoyhint_instance.getCurrentStep == 5)
+                           if (helptour_instance.getCurrentStep == 5)
                             $(".enjoyhint_next_btn").click();
                        });
                        $("#main-search").trigger("change");
                    }
+                   adding_tag_in_helptour = false;
                }
            },
-          {
+           {
               event: 'click',
               selector: '.price-display',
               description: 'Want to see Bags within your budget?<br/> Click on this Price filter',
@@ -787,7 +805,7 @@ function ShowGuide() {
               showNext: false,
               margin: 0
           },
-          {
+           {
               selector: '.price-menu',
               description: 'You can select a price range <br/>to see Bags within your budget',
               showSkip: true,
@@ -798,8 +816,8 @@ function ShowGuide() {
         ];
 
         //set script config
-        enjoyhint_instance.set(enjoyhint_script_steps);
+        helptour_instance.set(enjoyhint_script_steps);
 
         //run Enjoyhint script
-        enjoyhint_instance.run();
+        helptour_instance.run();
 }
