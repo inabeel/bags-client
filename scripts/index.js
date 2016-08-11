@@ -19,24 +19,31 @@ g_aboutus_open = false,
 visibleTagCnt = 5, //number of visible tags on each product tile
 sliderInterval,
 sliderRunning = false,
-overSlider = false;
+overSlider = false,
+page_loaded = false;
+
+$(document).ready(function () {
+    page_loaded = true;
+})
 
 $(document).scroll(function () {
     $("#main-search").select2("close");
-    if ($(document).scrollTop() <= 10) {
-        if (menuHiding == false && g_popupOpened == false && helptour_running == false) {
-            menuHiding = true;
-            $(".top-menu-small").slideDown("fast",function () {
-                menuHiding = false;
-            });
+    if (page_loaded == true) {
+        if ($(document).scrollTop() <= 10) {
+            if (menuHiding == false && g_popupOpened == false && helptour_running == false) {
+                menuHiding = true;
+                $(".top-menu-small").slideDown("fast", function () {
+                    menuHiding = false;
+                });
+            }
         }
-    }
-    if ($(document).scrollTop() > 10) {
-        if (menuHiding == false) {
-            menuHiding = true;
-            $(".top-menu-small").slideUp("fast", function () {
-                menuHiding = false;
-            });
+        if ($(document).scrollTop() > 10) {
+            if (menuHiding == false) {
+                menuHiding = true;
+                $(".top-menu-small").slideUp("fast", function () {
+                    menuHiding = false;
+                });
+            }
         }
     }
 });
@@ -527,7 +534,7 @@ function GetProducts() {
             //Reset
             g_hashchanged = false;
 
-            if (localStorage.getItem("zoltu-bags-helptour-seen").toString() != "true") {
+            if (localStorage.getItem("zoltu-bags-helptour-seen") != "true") {
                 localStorage.setItem("zoltu-bags-helptour-seen", "true");
                 setTimeout(function(){
                     ShowGuide();
@@ -655,7 +662,6 @@ function ThumbnailScroll(direction) {
         $(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, 300);
     }
     if (direction == "right") {
-        console.dir($(this).scrollLeft() + 66);
         $(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, 300);
     }
 }
