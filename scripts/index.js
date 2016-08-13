@@ -295,12 +295,13 @@ function getTags() {
                     g_tags = $("#main-search").val();
                     BuildUrlHash();
                 }
-
                 //if Help Tour is running
                 if (helptour_running == true) {
                     if (adding_tag_in_helptour == true) {
                         //Move to next step in help tour
-                        $(".enjoyhint_next_btn").click();
+                        if (helptour_instance.getCurrentStep() == 3 || helptour_instance.getCurrentStep() == 5) {
+                            $(".enjoyhint_next_btn").click();
+                        }
                     }
                 }
             });
@@ -777,7 +778,9 @@ function ShowGuide() {
                left: 202,
                right: 202,
                top: 203,
-               onBeforeStart: function () { adding_tag_in_helptour = true; }
+               onBeforeStart: function () {
+                   adding_tag_in_helptour = true;
+               }
            },
            {
                event:'click',
@@ -790,20 +793,17 @@ function ShowGuide() {
                skipButton: { text: "Skip Help" },
                showNext: true,
                onBeforeStart: function () {
-                   console.log("step - 5");
-                   console.log("g_tags:" + g_tags.length);
+                   adding_tag_in_helptour = false;
                    if (g_tags == null || g_tags.length == 0) {
                        $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
                        $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
                        $('.select2').bind('click', '.select2-selection__choice__remove', function () {
-                           console.log("cross button step initialized.");
-                           console.log("getCurrentStep - " + helptour_instance.getCurrentStep);
-                           if (helptour_instance.getCurrentStep == 5)
-                            $(".enjoyhint_next_btn").click();
+                           if (helptour_instance.getCurrentStep() == 5) {
+                               $(".enjoyhint_next_btn").click();
+                           }
                        });
                        $("#main-search").trigger("change");
                    }
-                   adding_tag_in_helptour = false;
                }
            },
            {
