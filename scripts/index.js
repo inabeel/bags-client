@@ -471,9 +471,9 @@ function GetProducts() {
             if (newFilterApplied) {
                 $(".product-list").html(template({ products: data }));
                 if (helptour_running == false) {
-                    $('html,body').animate({
+                    $('html,body').stop().animate({
                         scrollTop: 0
-                    }, 500);
+                    }, { duration: 500, queue: false });
                 }
             }
             else
@@ -659,10 +659,10 @@ function ShowProductPopup(productid) {
 
 function ThumbnailScroll(direction) {
     if (direction == "left") {
-        $(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, 300);
+        $(".product-popup .carousel .thumbnail-scroll").stop().animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, { duration: 300, queue: false });
     }
     if (direction == "right") {
-        $(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, 300);
+        $(".product-popup .carousel .thumbnail-scroll").stop().animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, { duration: 300, queue: false });
     }
 }
 

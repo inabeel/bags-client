@@ -19,7 +19,7 @@ function flyToElement(flyer, flyingTo) {
 		top: gotoY,
 		width: $(flyer).width(),
 		height: $(flyer).height()
-	}, 500,
+	}, { duration: 500, queue: false },
 	function () {
 		$(flyingTo).fadeOut('fast', function () {
 			$(flyingTo).fadeIn('fast', function () {
