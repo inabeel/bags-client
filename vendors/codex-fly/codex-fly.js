@@ -15,18 +15,19 @@ function flyToElement(flyer, flyingTo) {
 	var gotoY = $(flyingTo).offset().top + ($(flyingTo).height() / 2) - ($(flyer).height()/divider)/2;
 	 
 	$(flyerClone).animate({
-		left: gotoX,
-		top: gotoY,
-		width: $(flyer).width(),
-		height: $(flyer).height()
-	}, { duration: 500, queue: false },
-	function () {
-		$(flyingTo).fadeOut('fast', function () {
-			$(flyingTo).fadeIn('fast', function () {
-				$(flyerClone).fadeOut('fast', function () {
-					$(flyerClone).remove();
-				});
-			});
-		});
+	    left: gotoX,
+	    top: gotoY,
+	    width: $(flyer).width(),
+	    height: $(flyer).height()
+	}, {
+	    duration: 500, queue: false, complete: function () {
+	        $(flyingTo).fadeOut('fast', function () {
+	            $(flyingTo).fadeIn('fast', function () {
+	                $(flyerClone).fadeOut('fast', function () {
+	                    $(flyerClone).remove();
+	                });
+	            });
+	        });
+	    }
 	});
 }

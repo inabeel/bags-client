@@ -20,7 +20,8 @@ visibleTagCnt = 5, //number of visible tags on each product tile
 sliderInterval,
 sliderRunning = false,
 overSlider = false,
-page_loaded = false;
+page_loaded = false,
+trigger_tags_change = true;
 
 $(document).ready(function () {
     page_loaded = true;
@@ -157,11 +158,12 @@ function ProcessUrlParams() {
 
     $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
     $("#lbl_max_price").html(g_price_max == 10000 ? 'any' : '<i class="zmdi zmdi-money"></i>' + g_price_max);
-
     
-        $("#main-search").select2("val","");
+    trigger_tags_change = false;
+    $("#main-search").select2("val", "");
+    trigger_tags_change = true;
 
-    if (g_dynamic_tag_change = true && urlTags != "") {
+    if (g_dynamic_tag_change == true && urlTags != "") {
         g_tags = urlTags.split(',');
        
         for (var i = 0; i < g_tags.length; i++) {
@@ -171,8 +173,8 @@ function ProcessUrlParams() {
         $("#main-search").trigger("change");
     }
     else {
-        if (g_load_bags)
-            GetProducts();
+            if (g_load_bags)
+                GetProducts();
     }
 }
 
@@ -213,16 +215,18 @@ noUiSlider.create(stepSlider, {
 
 stepSlider.noUiSlider.on("change", function (texts, btn_index, values) {
     //Change global values for Price
+
     g_price_min = Math.round(values[0]);
     if (g_price_min > g_price_max) {
         g_price_max = g_price_max_limit;
     }
-  
+
     g_price_max = (values[1] == 1001) ? 10000 : Math.round(values[1]);
     if (g_price_min > g_price_max) {
         g_price_min = 0;
     }
     BuildUrlHash();
+
 });
 
 var handleLower = stepSlider.querySelector('.noUi-handle-lower');
@@ -281,26 +285,28 @@ function getTags() {
             });
 
             $("#main-search").on("change", function (e) {
-                //reseting product id to 1 to fetch result from start
-                if (g_dynamic_tag_change == true) {
-                    newFilterApplied = true;
-
-                    if (g_load_bags) {
-                        g_result_from_product_id = 1;
-                        GetProducts();
+                if (trigger_tags_change) {
+                    //reseting product id to 1 to fetch result from start
+                    if (g_dynamic_tag_change == true) {
+                        newFilterApplied = true;
+                        if (!g_popupOpened) {
+                            if (g_load_bags) {
+                                g_result_from_product_id = 1;
+                                GetProducts();
+                            }
+                        }
                     }
-
-                }
-                else {
-                    g_tags = $("#main-search").val();
-                    BuildUrlHash();
-                }
-                //if Help Tour is running
-                if (helptour_running == true) {
-                    if (adding_tag_in_helptour == true) {
-                        //Move to next step in help tour
-                        if (helptour_instance.getCurrentStep() == 3 || helptour_instance.getCurrentStep() == 5) {
-                            $(".enjoyhint_next_btn").click();
+                    else {
+                        g_tags = $("#main-search").val();
+                        BuildUrlHash();
+                    }
+                    //if Help Tour is running
+                    if (helptour_running == true) {
+                        if (adding_tag_in_helptour == true) {
+                            //Move to next step in help tour
+                            if (helptour_instance.getCurrentStep() == 3 || helptour_instance.getCurrentStep() == 5) {
+                                $(".enjoyhint_next_btn").click();
+                            }
                         }
                     }
                 }
@@ -405,8 +411,6 @@ Handlebars.registerHelper('titleCase', function (name) {
     return name.substr(0, 1).toUpperCase() + name.substr(1);
 });
 
-
-
 function ShowMore() {
     ShowPageLoader();
 
@@ -433,7 +437,6 @@ function GetProducts() {
         '&min_price=' + g_price_min + '&max_price=' + g_price_max;
 
     //Use selected tags as parameters for api
-    
     if (g_tags && g_tags.length > 0) {
         var tagids = [];
         for (var i = 0; i < g_tags.length; i++) {
@@ -610,17 +613,15 @@ function ShowProductPopup(productid) {
                     },
                     beforeClose: function () {
                         g_open_productid = 0;
-                        g_load_bags = false;
+                        g_load_bags = true;
                         g_load_popup = false;
+                        g_popupOpened = false;
+                        g_dynamic_tag_change = true;
                         BuildUrlHash();
                     },
                     close: function () {
                         HidePageLoader();
                         $("body").removeClass("showing-product");
-                        setTimeout(function () {
-                            g_popupOpened = false;
-                            g_load_bags = true;
-                        }, 1000);
                     },
                     open: function () {
                         g_popupOpened = true;
