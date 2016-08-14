@@ -20,7 +20,8 @@ visibleTagCnt = 5, //number of visible tags on each product tile
 sliderInterval,
 sliderRunning = false,
 overSlider = false,
-page_loaded = false;
+page_loaded = false,
+trigger_tags_change = true;
 
 $(document).ready(function () {
     page_loaded = true;
@@ -68,24 +69,25 @@ var category_colors = ["bgm-red", "bgm-blue", "bgm-green", "bgm-lightgreen", "bg
 
 var categories = [];
 
-$.ajax({
-    url: g_api + '/api/tag_categories',
-    type: 'GET',
-    dataType: 'JSON',
-    success: function (cats) {
-        //assign each category a color
-        $.each(cats, function (index, cat) {
-            var category = cat;
-            category.color = category_colors[index];
-            categories.push(category);
-        });
+$(function () {
+    var xhr_tag_cat = createXHR();
+    xhr_tag_cat.open("GET", g_api + '/api/tag_categories', true);
+    xhr_tag_cat.onreadystatechange = function () {
+        if (xhr_tag_cat.readyState == 4 && xhr_tag_cat.status == 200) {
+            var cats = JSON.parse(xhr_tag_cat.responseText);
 
-        getTags();
-        
-    },
-    error: function () {
-        alert('error in fetching categories');
+            //assign each category a color
+            $.each(cats, function (index, cat) {
+                var category = cat;
+                category.color = category_colors[index];
+                categories.push(category);
+            });
+
+            getTags();
+
+        }
     }
+    xhr_tag_cat.send();
 });
 
 function ProcessUrlParams() {
@@ -156,11 +158,12 @@ function ProcessUrlParams() {
 
     $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
     $("#lbl_max_price").html(g_price_max == 10000 ? 'any' : '<i class="zmdi zmdi-money"></i>' + g_price_max);
-
     
-        $("#main-search").select2("val","");
+    trigger_tags_change = false;
+    $("#main-search").select2("val", "");
+    trigger_tags_change = true;
 
-    if (g_dynamic_tag_change = true && urlTags != "") {
+    if (g_dynamic_tag_change == true && urlTags != "") {
         g_tags = urlTags.split(',');
        
         for (var i = 0; i < g_tags.length; i++) {
@@ -170,8 +173,8 @@ function ProcessUrlParams() {
         $("#main-search").trigger("change");
     }
     else {
-        if (g_load_bags)
-            GetProducts();
+            if (g_load_bags)
+                GetProducts();
     }
 }
 
@@ -212,16 +215,18 @@ noUiSlider.create(stepSlider, {
 
 stepSlider.noUiSlider.on("change", function (texts, btn_index, values) {
     //Change global values for Price
+
     g_price_min = Math.round(values[0]);
     if (g_price_min > g_price_max) {
         g_price_max = g_price_max_limit;
     }
-  
+
     g_price_max = (values[1] == 1001) ? 10000 : Math.round(values[1]);
     if (g_price_min > g_price_max) {
         g_price_min = 0;
     }
     BuildUrlHash();
+
 });
 
 var handleLower = stepSlider.querySelector('.noUi-handle-lower');
@@ -267,11 +272,11 @@ handleUpper.addEventListener('keydown', function (e) {
 });
 
 function getTags() {
-    $.ajax({
-        url: g_api + '/api/tags',
-        type: 'GET',
-        dataType: 'JSON',
-        success: function (tags) {
+    var xhr_tags = createXHR();
+    xhr_tags.open("GET", g_api + '/api/tags', true);
+    xhr_tags.onreadystatechange = function () {
+        if (xhr_tags.readyState == 4 && xhr_tags.status == 200) {
+            var tags = JSON.parse(xhr_tags.responseText);
 
             tagsData = $.map(tags, function (obj, index) {
                 obj.id = obj.id;
@@ -280,26 +285,29 @@ function getTags() {
             });
 
             $("#main-search").on("change", function (e) {
-                //reseting product id to 1 to fetch result from start
-                if (g_dynamic_tag_change == true) {
-                    newFilterApplied = true;
-                    
-                    if (g_load_bags) {
-                        g_result_from_product_id = 1;
-                        GetProducts();
+                if (trigger_tags_change) {
+                    //reseting product id to 1 to fetch result from start
+                    if (g_dynamic_tag_change == true) {
+                        newFilterApplied = true;
+                        if (!g_popupOpened) {
+                            if (g_load_bags) {
+                                g_result_from_product_id = 1;
+                                GetProducts();
+                            }
+                        }
                     }
-                       
-                }
-                else {
-                    g_tags = $("#main-search").val();
-                    BuildUrlHash();
-                }
-
-                //if Help Tour is running
-                if (helptour_running == true) {
-                    if (adding_tag_in_helptour == true) {
-                        //Move to next step in help tour
-                        $(".enjoyhint_next_btn").click();
+                    else {
+                        g_tags = $("#main-search").val();
+                        BuildUrlHash();
+                    }
+                    //if Help Tour is running
+                    if (helptour_running == true) {
+                        if (adding_tag_in_helptour == true) {
+                            //Move to next step in help tour
+                            if (helptour_instance.getCurrentStep() == 3 || helptour_instance.getCurrentStep() == 5) {
+                                $(".enjoyhint_next_btn").click();
+                            }
+                        }
                     }
                 }
             });
@@ -313,11 +321,9 @@ function getTags() {
 
             //Load all tags in the search
             loadTags();
-        },
-        error: function () {
-            alert('error in fetching tags');
         }
-    });
+    }
+    xhr_tags.send();
 }
 
 function loadTags() {
@@ -405,8 +411,6 @@ Handlebars.registerHelper('titleCase', function (name) {
     return name.substr(0, 1).toUpperCase() + name.substr(1);
 });
 
-
-
 function ShowMore() {
     ShowPageLoader();
 
@@ -433,7 +437,6 @@ function GetProducts() {
         '&min_price=' + g_price_min + '&max_price=' + g_price_max;
 
     //Use selected tags as parameters for api
-    
     if (g_tags && g_tags.length > 0) {
         var tagids = [];
         for (var i = 0; i < g_tags.length; i++) {
@@ -443,16 +446,17 @@ function GetProducts() {
     }
 
     //Call api to get products;
-    currentRequest = $.ajax({
-        url: api,
-        type: 'GET',
-        dataType: 'JSON',
-        beforeSend: function () {
-            if (currentRequest != null) {
-                currentRequest.abort();
-            }
-        },
-        success: function (data) {
+
+    if (currentRequest && currentRequest.readyState != 4) {
+        currentRequest.abort();
+    }
+
+    currentRequest = createXHR();
+    currentRequest.open("GET", api, true);
+    currentRequest.onreadystatechange = function () {
+        if (currentRequest.readyState == 4 && currentRequest.status == 200)
+        {
+            var data = JSON.parse(currentRequest.responseText);
             //Setting product id to fetch next result from
             if (data.length > 0) {
                 g_result_from_product_id = data[data.length - 1].id + 1
@@ -470,9 +474,9 @@ function GetProducts() {
             if (newFilterApplied) {
                 $(".product-list").html(template({ products: data }));
                 if (helptour_running == false) {
-                    $('html,body').animate({
+                    $('html,body').stop().animate({
                         scrollTop: 0
-                    }, 500);
+                    }, { duration: 500, queue: false });
                 }
             }
             else
@@ -491,7 +495,7 @@ function GetProducts() {
                 g_load_bags = true;
                 g_dynamic_tag_change = true;
                 flyToElement($(this), $('#centerpoint_search'));
-              
+
                 if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
                     if (g_tags == null) g_tags = [];
                     g_tags.push($(this).attr('tag-id'));
@@ -536,13 +540,13 @@ function GetProducts() {
 
             if (localStorage.getItem("zoltu-bags-helptour-seen") != "true") {
                 localStorage.setItem("zoltu-bags-helptour-seen", "true");
-                setTimeout(function(){
+                setTimeout(function () {
                     ShowGuide();
-                },500);
+                }, 500);
             }
-        },
-        error: function () { }
-    });
+        }
+    };
+    currentRequest.send();
 }
 
 function ShowPageLoader() {
@@ -587,82 +591,79 @@ function TriggerProductPopup(productid) {
 }
 
 function ShowProductPopup(productid) {
-       
-        $.ajax({
-            url: g_api + '/api/products/' + productid,
-            success: function (product) {
-                var template = Handlebars.templates['product-details'];
-                $.magnificPopup.open({
-                    closeBtnInside: true,
-                    removalDelay: 500,
-                    closeOnContentClick: false,
-                    items: {
-                        src: template(product),
-                        type: 'inline'
+    var xhr_product = createXHR();
+    xhr_product.open("GET", g_api + '/api/products/' + productid, true);
+    xhr_product.onreadystatechange = function () {
+        if (xhr_product.readyState == 4 && xhr_product.status == 200) {
+            var product = JSON.parse(xhr_product.responseText);
+            var template = Handlebars.templates['product-details'];
+            $.magnificPopup.open({
+                closeBtnInside: true,
+                removalDelay: 500,
+                closeOnContentClick: false,
+                items: {
+                    src: template(product),
+                    type: 'inline'
+                },
+                callbacks: {
+                    beforeOpen: function () {
+                        $("body").addClass("showing-product");
+                        HidePageLoader();
+                        this.st.mainClass = "mfp-zoom-in";
                     },
-                    callbacks: {
-                        beforeOpen: function () {
-                            $("body").addClass("showing-product");
-                            HidePageLoader();
-                            this.st.mainClass = "mfp-zoom-in";
-                        },
-                        beforeClose: function () {
-                            g_open_productid = 0;
-                            g_load_bags = false;
-                            g_load_popup = false;
-                            BuildUrlHash();
-                        },
-                        close: function () {
-                            HidePageLoader();
-                            $("body").removeClass("showing-product");
-                            setTimeout(function () {
-                                g_popupOpened = false;
-                                g_load_bags = true;
-                            }, 1000);
-                        },
-                        open: function () {
-                            g_popupOpened = true;
-                            //Click event on Tags
-                            $(".product-popup .product-tags .tag").on("click", function () {
-                                g_load_bags = true;
-                                g_load_popup = false;
-                                g_dynamic_tag_change = true;
-                                flyToElement($(this), $('#centerpoint_search'));
-
-                                if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
-                                    if (g_tags == null) g_tags = [];
-                                    g_tags.push($(this).attr('tag-id'));
-                                }
-                                BuildUrlHash();
-                            });
-                            if(!$('html').hasClass('ismobile')) {
-                                $('#product-popup [data-imagezoom]').imageZoom();
-                            }
-                            //Enabling swiping
-                            $("#product-popup .carousel").swiperight(function () {
-                                $(this).carousel('prev');
-                            });
-                            $("#product-popup .carousel").swipeleft(function () {
-                                $(this).carousel('next');
-                            });
-                            $(".mfp-wrap").removeAttr("tabindex");
+                    beforeClose: function () {
+                        g_open_productid = 0;
+                        g_load_bags = true;
+                        g_load_popup = false;
+                        g_popupOpened = false;
+                        g_dynamic_tag_change = true;
+                        BuildUrlHash();
+                    },
+                    close: function () {
+                        HidePageLoader();
+                        $("body").removeClass("showing-product");
+                    },
+                    open: function () {
+                        g_popupOpened = true;
+                        //Click event on Tags
+                        $(".product-popup .product-tags .tag").on("click", function () {
                             g_load_bags = true;
+                            g_load_popup = false;
+                            g_dynamic_tag_change = true;
+                            flyToElement($(this), $('#centerpoint_search'));
+
+                            if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
+                                if (g_tags == null) g_tags = [];
+                                g_tags.push($(this).attr('tag-id'));
+                            }
+                            BuildUrlHash();
+                        });
+                        if (!$('html').hasClass('ismobile')) {
+                            $('#product-popup [data-imagezoom]').imageZoom();
                         }
+                        //Enabling swiping
+                        $("#product-popup .carousel").swiperight(function () {
+                            $(this).carousel('prev');
+                        });
+                        $("#product-popup .carousel").swipeleft(function () {
+                            $(this).carousel('next');
+                        });
+                        $(".mfp-wrap").removeAttr("tabindex");
+                        g_load_bags = true;
                     }
-                });
-            },
-            error: function () {
-                alert('error fetching product')
-            }
-        });
+                }
+            });
+        }
+    }
+    xhr_product.send();
 }
 
 function ThumbnailScroll(direction) {
     if (direction == "left") {
-        $(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, 300);
+        $(".product-popup .carousel .thumbnail-scroll").stop().animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, { duration: 300, queue: false });
     }
     if (direction == "right") {
-        $(".product-popup .carousel .thumbnail-scroll").animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, 300);
+        $(".product-popup .carousel .thumbnail-scroll").stop().animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, { duration: 300, queue: false });
     }
 }
 
@@ -778,9 +779,12 @@ function ShowGuide() {
                left: 202,
                right: 202,
                top: 203,
-               onBeforeStart: function () { adding_tag_in_helptour = true; }
+               onBeforeStart: function () {
+                   adding_tag_in_helptour = true;
+               }
            },
            {
+               event:'click',
                selector: '.select2-selection .select2-selection__choice__remove:first-child',
                event_selector: '.select2-selection .select2-selection__choice__remove:first-child',
                description: 'Clicking on cross button of the tag will remove it',
@@ -790,30 +794,23 @@ function ShowGuide() {
                skipButton: { text: "Skip Help" },
                showNext: true,
                onBeforeStart: function () {
+                   adding_tag_in_helptour = false;
                    if (g_tags == null || g_tags.length == 0) {
-                       $("#main-search option[value=" +  $("#main-search option:first-child").val() + "]").attr('selected', true);
+                       $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
                        $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
                        $('.select2').bind('click', '.select2-selection__choice__remove', function () {
-                           if (helptour_instance.getCurrentStep == 5)
-                            $(".enjoyhint_next_btn").click();
+                           if (helptour_instance.getCurrentStep() == 5) {
+                               $(".enjoyhint_next_btn").click();
+                           }
                        });
                        $("#main-search").trigger("change");
                    }
-                   adding_tag_in_helptour = false;
                }
            },
            {
               event: 'click',
               selector: '.price-display',
-              description: 'Want to see Bags within your budget?<br/> Click on this Price filter',
-              showSkip: true,
-              skipButton: { text: "Skip Help" },
-              showNext: false,
-              margin: 0
-          },
-           {
-              selector: '.price-menu',
-              description: 'You can select a price range <br/>to see Bags within your budget',
+              description: 'Want to see Bags within your budget?<br/> You can select a price range.',
               showSkip: true,
               skipButton: { className: "bg-primary", text: "End Help" },
               showNext: false,
@@ -826,4 +823,13 @@ function ShowGuide() {
 
         //run Enjoyhint script
         helptour_instance.run();
+}
+
+function createXHR() {
+    try { return new XMLHttpRequest(); } catch (e) { }
+    try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e) { }
+    try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); } catch (e) { }
+    try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { }
+    try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { }
+    return null;
 }
