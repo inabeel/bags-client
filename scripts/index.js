@@ -21,7 +21,9 @@ sliderInterval,
 sliderRunning = false,
 overSlider = false,
 page_loaded = false,
-trigger_tags_change = true;
+trigger_tags_change = true,
+g_popup_just_closed = false,
+g_tag_changed_when_popup_open = false;
 
 $(document).ready(function () {
     page_loaded = true;
@@ -145,7 +147,7 @@ function ProcessUrlParams() {
             }
         }
     }
-    g_load_popup = true;
+   
     if (g_price_min == 0 && g_price_max == 10000) {
         $("#min_max_selected").hide();
         $("#lbl_price_filter").show();
@@ -183,9 +185,14 @@ $(window).on('hashchange', function () {
     ShowPageLoader();
     g_dynamic_tag_change = true;
     newFilterApplied = true;
-    if (g_load_bags)
-        g_result_from_product_id = 1;
-    ProcessUrlParams();
+    g_load_popup = true;
+    console.log("g_popup_just_closed" + g_popup_just_closed);
+    if (!(g_popup_just_closed == true && g_tag_changed_when_popup_open == false)) {
+        if (g_load_bags)
+            g_result_from_product_id = 1;
+        ProcessUrlParams();
+    }
+    g_popup_just_closed = false;
 });
 
 //Range slider
@@ -433,6 +440,10 @@ function GetProducts() {
 
     g_dynamic_tag_change = false;
 
+    g_tag_changed_when_popup_open = false;
+
+    
+
     var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count +
         '&min_price=' + g_price_min + '&max_price=' + g_price_max;
 
@@ -616,6 +627,7 @@ function ShowProductPopup(productid) {
                         g_load_bags = true;
                         g_load_popup = false;
                         g_popupOpened = false;
+                        g_popup_just_closed = true;
                         g_dynamic_tag_change = true;
                         BuildUrlHash();
                     },
@@ -627,6 +639,8 @@ function ShowProductPopup(productid) {
                         g_popupOpened = true;
                         //Click event on Tags
                         $(".product-popup .product-tags .tag").on("click", function () {
+                            //this will allow data reload + the scrolling up the page after popup is closed, because tags are changed
+                            g_tag_changed_when_popup_open = true;
                             g_load_bags = true;
                             g_load_popup = false;
                             g_dynamic_tag_change = true;
@@ -832,4 +846,29 @@ function createXHR() {
     try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { }
     try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e) { }
     return null;
+}
+
+function ShareLink(channel, entity) {
+    var url = "product";
+
+    if(entity == "product")
+        url = window.location.href.replace(window.location.hash, "") + "#product_id=" + g_open_productid;
+    else if(entity == "search")
+        url = window.location.href;
+
+    switch (channel) {
+        case 'facebook':
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, "_blank");
+            break;
+        case 'twitter':
+            window.open('https://twitter.com/intent/tweet?url='+ url, "_blank");
+            break;
+        case 'linkedin':
+            window.open('https://www.linkedin.com/shareArticle?url=' + url, "_blank");
+            break;
+        case 'googleplus':
+            window.open('https://plus.google.com/share?url=' + url, "_blank");
+            break;
+        
+    }
 }

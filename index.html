@@ -206,10 +206,20 @@
 			</svg>
 		</div>
 	</div>
-
-	<a href="javascript:void(0)" id="helper" onclick="ShowGuide();" data-toggle="tooltip" data-placement="top" title="Help Tour"  class="animated animated-short slideInUp">
+	<div id="btn_share" class="dropup dropdown">
+		<button class="btn btn-danger btn-icon dropdown-toggle" type="button" id="social-share-dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class="fa fa-share-alt"></i>
+		</button>
+		<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown2">
+			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-primary"></i>&nbsp;&nbsp;Facebook</a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('twitter','search');"><i class="fa fa-twitter-square text-info"></i>&nbsp;&nbsp;Twitter</a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('linkedin','search');"><i class="fa fa-linkedin-square text-primary"></i>&nbsp;&nbsp;LinkedIn</a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus','search');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
+		</ul>
+	</div>
+	<button id="helper" onclick="ShowGuide();" data-toggle="tooltip" data-placement="top" title="Help Tour"  class="animated animated-short slideInUp btn btn-primary btn-icon hidden-xs hidden-sm">
 		<i class="fa fa-question"></i>
-	</a>
+	</button>
 
 	<!-- Javascript Libraries -->
 	<script src="vendors/codex-fly/codex-fly.js"></script>
@@ -227,7 +237,7 @@
 	<script src="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
 	<script src="vendors/handlebars/handlebars.runtime-v4.0.5.js"></script>
-	<script src="scripts/templates/lc_template-min.js"></script>
+	<script src="scripts/templates/templates.min.js"></script>
 
 	<script src="js/functions.js"></script>
 	<script src="js/demo.js"></script>

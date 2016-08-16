@@ -43,8 +43,25 @@
 				<div class="mt20 fs30 fw700" style="color:black;">
 					${{price}}
 				</div>
-				<div class="mt70 text-center">
-					<a id="btn-buy" href="{{purchase_urls.[0]}}" target="_blank" class="btn btn-primary btn-lg" onclick="trackOutboundLink('{{purchase_urls.[0]}}'); return true;"><i class="fa fa-shopping-cart"></i> Buy It From Amazon.com</a>
+				<div class="mt40">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 mt10">
+							<a id="btn-buy" href="{{purchase_urls.[0]}}" target="_blank" class="btn btn-primary btn-lg" onclick="trackOutboundLink('{{purchase_urls.[0]}}'); return true;"><i class="fa fa-shopping-cart"></i> Buy <span class="hidden-xs">It</span> From Amazon<span class="hidden-xs">.com</span></a>
+						</div>
+						<div class="col-xs-12 col-sm-6 mt10">
+							<div class="dropup dropdown">
+							  <button class="btn btn-danger btn-lg dropdown-toggle" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-share-alt"></i> Share..
+							  </button>
+							  <ul class="dropdown-menu social-dropdown" aria-labelledby="social-share-dropdown1">
+								<li><a href="javascript:void(0);" onclick="ShareLink('facebook','product');"><i class="fa fa-facebook-square text-primary"></i>&nbsp;&nbsp;Facebook</a></li>
+								<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'product');"><i class="fa fa-twitter-square text-info"></i>&nbsp;&nbsp;Twitter</a></li>
+								<li><a href="javascript:void(0);" onclick="ShareLink('linkedin', 'product');"><i class="fa fa-linkedin-square text-primary"></i>&nbsp;&nbsp;LinkedIn</a></li>
+								<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'product');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
+							  </ul>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
