@@ -654,6 +654,7 @@ function ShowProductPopup(productid) {
                         });
                         if (!$('html').hasClass('ismobile')) {
                             $('#product-popup [data-imagezoom]').imageZoom();
+                            $("#product-popup-right-column").css('min-height', $("#product-gallery").css("height"));
                         }
                         //Enabling swiping
                         $("#product-popup .carousel").swiperight(function () {
@@ -664,6 +665,7 @@ function ShowProductPopup(productid) {
                         });
                         $(".mfp-wrap").removeAttr("tabindex");
                         g_load_bags = true;
+                        PrepareWaves();
                     }
                 }
             });
@@ -828,7 +830,11 @@ function ShowGuide() {
               showSkip: true,
               skipButton: { className: "bg-primary", text: "End Help" },
               showNext: false,
-              margin: 0
+              margin: 0,
+              onBeforeStart: function () {
+                  helptour_running = false;
+                  helptour_running_allow_product_click = false;
+              }
           }
         ];
 

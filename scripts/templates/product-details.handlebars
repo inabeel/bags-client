@@ -1,7 +1,7 @@
 ﻿<div id="product-popup" class="product-popup white-popup mfp-with-anim">
 	<div class="row">
 		<div class="col-sm-12 col-md-5 col-lg-4">
-			<div id="product-gallery" class="carousel slide mb20" data-ride="carousel" data-interval="false">
+			<div id="product-gallery" class="carousel slide mb10" data-ride="carousel" data-interval="false">
 				<!-- Wrapper for slides -->
 				<div class="carousel-inner" role="listbox">
 					{{#each images}}
@@ -13,7 +13,7 @@
 				<!-- Indicators -->
 				<div class="thumbnail-container">
 					{{#isLengthOf images ">" 3}}
-						<a href="javascript:void(0)" onclick="ThumbnailScroll('left')" class="thumbnail-arrow"><i class="fa fa-angle-left text-primary"></i></a>
+					<a href="javascript:void(0)" onclick="ThumbnailScroll('left')" class="thumbnail-arrow"><i class="fa fa-angle-left text-primary"></i></a>
 					{{/isLengthOf}}
 					<div class="thumbnail-scroll">
 						<ol class="carousel-indicators">
@@ -25,7 +25,7 @@
 						</ol>
 					</div>
 					{{#isLengthOf images ">" 3}}
-						<a href="javascript:void(0)" onclick="ThumbnailScroll('right')" class="thumbnail-arrow"><i class="fa fa-angle-right text-primary"></i></a>
+					<a href="javascript:void(0)" onclick="ThumbnailScroll('right')" class="thumbnail-arrow"><i class="fa fa-angle-right text-primary"></i></a>
 					{{/isLengthOf}}
 				</div>
 			</div>
@@ -37,27 +37,48 @@
 				</div>
 				<div class="product-tags">
 					{{#each tags}}
-						<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
+					<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
 					{{/each}}
 				</div>
 				<div class="mt20 fs30 fw700" style="color:black;">
 					${{price}}
 				</div>
-				<div class="mt40">
+				<div class="product-popup-buttons">
 					<div class="row">
-						<div class="col-xs-12 col-sm-6 mt10">
-							<a id="btn-buy" href="{{purchase_urls.[0]}}" target="_blank" class="btn btn-primary btn-lg" onclick="trackOutboundLink('{{purchase_urls.[0]}}'); return true;"><i class="fa fa-shopping-cart"></i> Buy <span class="hidden-xs">It</span> From Amazon<span class="hidden-xs">.com</span></a>
+						<div class="col-xs-12 col-sm-6 mt20">
+							<div class="popup-buy">
+								<a id="btn-buy" href="{{purchase_urls.[0]}}" target="_blank" class="btn btn-primary btn-lg" onclick="trackOutboundLink('{{purchase_urls.[0]}}'); return true;"><i class="fa fa-shopping-cart"></i> Buy <span class="hidden-xs">It</span> From Amazon<span class="hidden-xs">.com</span></a>
+							</div>
 						</div>
-						<div class="col-xs-12 col-sm-6 mt10">
-							<div class="dropup dropdown">
-							  <button class="btn btn-danger btn-lg dropdown-toggle" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fa fa-share-alt"></i> Share..
-							  </button>
-							  <ul class="dropdown-menu social-dropdown" aria-labelledby="social-share-dropdown1">
-								<li><a href="javascript:void(0);" onclick="ShareLink('facebook','product');"><i class="fa fa-facebook-square text-primary"></i>&nbsp;&nbsp;Facebook</a></li>
-								<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'product');"><i class="fa fa-twitter-square text-info"></i>&nbsp;&nbsp;Twitter</a></li>
-								<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'product');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
-							  </ul>
+						<div class="col-xs-12 col-sm-6 mt20">
+							<div class="popup-social-share">
+								<div class="dropup dropdown inline-block">
+									<button class="btn bgm-indigo btn-lg dropdown-toggle social-share-button" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-facebook"></i>
+									</button>
+									<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown1">
+										<li><a href="javascript:void(0);" onclick="ShareLink('facebook', 'product');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
+										<li><a href="javascript:void(0);" onclick="ShareLink('facebook', 'search');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
+									</ul>
+								</div>
+								<div class="dropup dropdown  inline-block">
+									<button class="btn bgm-lightblue btn-lg dropdown-toggle social-share-button twitter" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-twitter"></i>
+									</button>
+									<ul class="dropdown-menu pull-right social-dropdown " aria-labelledby="social-share-dropdown1">
+										<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'product');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
+										<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'search');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
+									</ul>
+								</div>
+								<div class="dropup dropdown  inline-block">
+									<button class="btn btn-danger btn-lg dropdown-toggle social-share-button googleplus" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-google-plus"></i>
+									</button>
+									<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown1">
+										<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'product');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
+										<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'search');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
