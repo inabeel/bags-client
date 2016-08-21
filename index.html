@@ -83,14 +83,14 @@
 					<div class="hidden-xs col-sm-2 col-md-2 col-lg-2">
 						<img src="images/Zoltu-Logo-Web.png" class="header-logo" />
 					</div>
-					<div class="col-xs-10 col-sm-6 col-md-7 col-lg-7 search-container">
+					<div class="col-xs-10 col-sm-6 col-md-7 col-lg-6 search-container">
 						<div class="tsw-inner main-search">
 							<span id="centerpoint_search" style="position:absolute;left:45%;top:30px;"></span>
 							<i id="top-search-close" class="zmdi zmdi-search"></i>
 							<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
 						</div>
 					</div>
-					<div class="col-xs-2 col-sm-4 col-md-3 col-lg-3 price-filter-container">
+					<div class="col-xs-2 col-sm-4 col-md-3 col-lg-4 price-filter-container">
 						<ul class="top-menu">
 							<li class="dropdown">
 								<a data-toggle="dropdown" href="javascript:void(0)" class="price-display">
@@ -159,17 +159,27 @@
 									</div>
 								</div>
 							</li>
-							<li class="dropdown hidden-xs">
+							<li class="dropdown hidden-xs  hidden-lg">
 								<a data-toggle="dropdown" href="javascript:void(0)">
 									<i class="tm-icon fa fa-share-alt"></i>
 								</a>
-								<ul class="dropdown-menu dm-icon pull-right">
+								<ul class="dropdown-menu dm-icon pull-right ">
 									<li class="skin-switch mb5"> Share this result</li>
 									<li><a href="javascript:void(0);" class="fs15" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-primary"></i>&nbsp;&nbsp;Facebook</a></li>
 									<li><a href="javascript:void(0);" class="fs15" onclick="ShareLink('twitter','search');"><i class="fa fa-twitter-square text-lightblue"></i>&nbsp;&nbsp;Twitter</a></li>
 									<li><a href="javascript:void(0);" class="fs15" onclick="ShareLink('googleplus','search');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
 								</ul>
 							</li>
+							<li  class="hidden-xs hidden-sm hidden-md">
+								<a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="tm-icon fa fa-facebook"></i></a>
+							</li>
+							<li  class="hidden-xs hidden-sm hidden-md">
+								<a href="javascript:void(0);" onclick="ShareLink('twitter', 'search');"><i class="tm-icon fa fa-twitter"></i></a>
+							</li>
+							<li  class="hidden-xs hidden-sm hidden-md">
+								<a href="javascript:void(0);" onclick="ShareLink('googleplus', 'search');"><i class="tm-icon fa fa-google-plus"></i></a>
+							</li>
+
 						</ul>
 					</div>
 				</div>
