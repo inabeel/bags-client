@@ -858,9 +858,9 @@ function ShareLink(channel, entity) {
     var url = "product";
 
     if(entity == "product")
-        url = window.location.href.replace(window.location.hash, "") + "#product_id=" + g_open_productid;
+        url = escape(window.location.href.replace(window.location.hash, "") + "#product_id=" + g_open_productid);
     else if(entity == "search")
-        url = window.location.href;
+        url = escape(window.location.href);
 
     switch (channel) {
         case 'facebook':
