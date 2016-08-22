@@ -55,6 +55,17 @@ Handlebars.registerHelper("colorTag", function (categoryid) {
     return fnColorTag(categoryid);
 });
 
+Handlebars.registerHelper("isSelected", function (categoryid) {
+    var selected = false;
+    for (var i = 0; i < g_tags.length; i++) {
+        if (categoryid == g_tags[i])
+            selected = true;
+    }
+    if (selected) {
+        return "tag-hidden";
+    }
+});
+
 function fnColorTag(categoryid) {
     var color = '';
     $.each(categories, function (index, category) {
@@ -468,8 +479,10 @@ function GetProducts() {
         if (currentRequest.readyState == 4 && currentRequest.status == 200)
         {
             var data = JSON.parse(currentRequest.responseText);
+            
             //Setting product id to fetch next result from
             if (data.length > 0) {
+                data = RemoveSelectedTags(data);
                 g_result_from_product_id = data[data.length - 1].id + 1
             }
 
@@ -855,12 +868,20 @@ function createXHR() {
 }
 
 function ShareLink(channel, entity) {
-    var url = "product";
+    var url = "", tag_names = "";
 
     if(entity == "product")
         url = escape(window.location.href.replace(window.location.hash, "") + "#product_id=" + g_open_productid);
     else if(entity == "search")
         url = escape(window.location.href);
+    url = "https://zoltu.com/#tags=7424eb84-a4da-4dad-642b-08d37f9e78ed,bff8338f-802a-48d3-6430-08d37f9e78ed";
+
+    var s_tags = $("#main-search").val();
+    $.each(s_tags, function (index, tagid) {
+        tag_names += " " + $("#main-search option[value='" + tagid + "'").text().replace(": ", ":");
+    });
+    console.log(url + tag_names);
+    url = escape(tag_names + url);
 
     switch (channel) {
         case 'facebook':
@@ -869,12 +890,26 @@ function ShareLink(channel, entity) {
         case 'twitter':
             window.open('https://twitter.com/intent/tweet?url='+ url, "_blank");
             break;
-        case 'linkedin':
-            window.open('https://www.linkedin.com/shareArticle?url=' + url, "_blank");
-            break;
         case 'googleplus':
             window.open('https://plus.google.com/share?url=' + url, "_blank");
             break;
         
     }
+}
+
+function RemoveSelectedTags(data) {
+    $.each(data, function (index, product) {
+        var tags_to_remove = [];
+        $.each(product.tags, function (index, tag) {
+            $.each(g_tags, function (index, selectedtag) {
+                if (selectedtag == tag.id) {
+                    tags_to_remove.push(tag);
+                }
+            })
+        });
+        $.each(tags_to_remove, function (index, tag) {
+            product.tags.splice(product.tags.indexOf(tag), 1);
+        });
+    });
+    return data;
 }
