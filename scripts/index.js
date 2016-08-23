@@ -197,7 +197,6 @@ $(window).on('hashchange', function () {
     g_dynamic_tag_change = true;
     newFilterApplied = true;
     g_load_popup = true;
-    console.log("g_popup_just_closed" + g_popup_just_closed);
     if (!(g_popup_just_closed == true && g_tag_changed_when_popup_open == false)) {
         if (g_load_bags)
             g_result_from_product_id = 1;
@@ -874,14 +873,6 @@ function ShareLink(channel, entity) {
         url = escape(window.location.href.replace(window.location.hash, "") + "#product_id=" + g_open_productid);
     else if(entity == "search")
         url = escape(window.location.href);
-    url = "https://zoltu.com/#tags=7424eb84-a4da-4dad-642b-08d37f9e78ed,bff8338f-802a-48d3-6430-08d37f9e78ed";
-
-    var s_tags = $("#main-search").val();
-    $.each(s_tags, function (index, tagid) {
-        tag_names += " " + $("#main-search option[value='" + tagid + "'").text().replace(": ", ":");
-    });
-    console.log(url + tag_names);
-    url = escape(tag_names + url);
 
     switch (channel) {
         case 'facebook':
@@ -893,7 +884,6 @@ function ShareLink(channel, entity) {
         case 'googleplus':
             window.open('https://plus.google.com/share?url=' + url, "_blank");
             break;
-        
     }
 }
 
