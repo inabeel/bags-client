@@ -38,16 +38,16 @@
 					<div class="tags-container">
 						{{#if tags}}
 							{{#each tags}}
-								{{#ifCond @index "<=" 4}}
-									<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
+								{{#ifCond @index "<" 5}}
+									<button index="{{@index}}" tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
 								{{/ifCond}}
 							{{/each}}
-							{{#isLengthOf tags ">=" 4}}
+							{{#isLengthOf tags ">" 5}}
 								<div class="dropdown dropup inline-block">
 									<a href="#" class="dropdown-toggle btn btn-sm tag-more btn-default mt10" data-toggle="dropdown" aria-expanded="true">+{{countMoreLength tags}}</a>
 									<ul class="dropdown-menu tags-popup">
 										{{#each tags}}
-											{{#ifCond @index ">" 4}}
+											{{#ifCond @index ">=" 5}}
 												<li>
 													<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
 												</li>
