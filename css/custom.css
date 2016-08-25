@@ -6,9 +6,11 @@
     z-index:1051;
 }
 #top-search-wrap{
-    height:initial !important;
+    height:auto !important;
     background-color:#2196f3;
-    min-height:60px;
+}
+.product-list{
+    line-height:0px;
 }
 .product-list > .col-xs-6,.product-list > .col-sm-4,.product-list > .col-md-3{
     padding-left:5px !important;padding-right:5px !important;
@@ -524,7 +526,7 @@ content: '\f1c3' ;
     height:45px;
 }
 #header{
-    min-height:60px;
+    min-height: initial !important;
 }
 .tsw-inner{
     padding:10px;
@@ -765,4 +767,10 @@ body.showing-product{
 }
 .tag-hidden{
     display:none;
+}
+.product-list .product-card .product-details .price{
+    font-size:26px;
+    color:black;
+    font-weight:700;
+    line-height:normal;
 }

@@ -6,37 +6,7 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 }
 
 $(document).ready(function(){
-    /* --------------------------------------------------------
-        Layout
-    -----------------------------------------------------------*/
-    (function () {
-
-        //Get saved layout type from LocalStorage
-        var layoutStatus = localStorage.getItem('ma-layout-status');
-
-        if(!$('#header-2')[0]) {  //Make it work only on normal headers
-            if (layoutStatus == 1) {
-                $('body').addClass('sw-toggled');
-                $('#tw-switch').prop('checked', true);
-            }
-        }
-
-        $('body').on('change', '#toggle-width input:checkbox', function () {
-            if ($(this).is(':checked')) {
-                setTimeout(function () {
-                    $('body').addClass('toggled sw-toggled');
-                    localStorage.setItem('ma-layout-status', 1);
-                }, 250);
-            }
-            else {
-                setTimeout(function () {
-                    $('body').removeClass('toggled sw-toggled');
-                    localStorage.setItem('ma-layout-status', 0);
-                }, 250);
-            }
-        });
-    })();
-
+   
     /* --------------------------------------------------------
         Scrollbar
     -----------------------------------------------------------*/
