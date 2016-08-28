@@ -693,17 +693,75 @@ body.showing-product{
     overflow:hidden;
 }
 #helper{
-    position:fixed;
-    z-index:1;
-    bottom:20px;
-    right:20px;
-    font-size:18px;
+    position: fixed;
+    bottom: 50px;
+    right: 0px;
+    z-index: 2000;
+    height: 45px;
+    display: table;
+    width: 45px;
+    font-size: 25px;
+    line-height: 45px;
+    color: white;
+    text-align:center;
+    background-color: #2196f3;
 }
 #btn_share_floating{
     position:fixed;
     z-index:1;
-    bottom:20px;
-    right:20px;
+    right:0px;
+    position: fixed;
+    bottom: 50px;
+    z-index: 2000;
+    display: table;
+}
+#btn_share_floating .dropdown-toggle{
+    height: 45px;
+    width: 45px;
+    line-height:45px;
+    background-color: #2196f3;
+    display:block;
+    text-align:center;
+   font-size: 25px;
+   color:white;
+   cursor:pointer;
+}
+.help-slider {
+    position: fixed;
+    bottom: 50px;
+    right: -100px;
+    z-index: 2000;
+    height: 45px;
+    display: table;
+    width: 145px;
+    cursor:pointer;
+}
+.help-slider .btn-visible {
+    text-align: center;
+    display: table-cell;
+    vertical-align: top;
+    width: 45px;
+}
+.help-slider .btn-visible .btn-help {
+    width: 45px;
+    height: 45px;
+    font-size: 25px;
+    line-height: 45px;
+    color: white;
+    background-color: #2196f3;
+}
+.help-slider .btn-hidden {
+    display: table-cell;
+    height: 45px;
+    overflow: hidden;
+    position: relative;
+    background-color:#2196f3;
+    line-height:45px;
+    color:white;
+    font-size:12px;
+    font-weight:500;
+    text-align:center;
+    font-weight:600;
 }
 #btn_share_floating .tiny-icon{
     position: absolute;

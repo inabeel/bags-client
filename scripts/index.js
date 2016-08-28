@@ -27,6 +27,16 @@ g_tag_changed_when_popup_open = false;
 
 $(document).ready(function () {
     page_loaded = true;
+
+    //Help button sliding
+    $(".help-slider").on('mouseenter', function () {
+        $(".help-slider").stop().animate({ "right": "0px" }, { duration: 300, queue: false });
+        $(".help-slider .btn-help").stop().css({ "backgroundColor": "rgb(26,120,195)" }, { duration: 300, queue: false });
+    });
+    $(".help-slider").on('mouseleave', function () {
+        $(".help-slider").stop().animate({ "right": "-100px" });
+        $(".help-slider .btn-help").css({ "backgroundColor": "#2196f3" });
+    });
 })
 
 $(document).scroll(function () {

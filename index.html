@@ -228,9 +228,9 @@
 		</div>
 	</div>
 	<div id="btn_share_floating" class="dropup dropdown visible-xs">
-		<button class="btn btn-primary btn-icon dropdown-toggle" type="button" id="social-share-dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<a class="dropdown-toggle" id="social-share-dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<i class="fa fa-share-alt"></i>
-		</button>
+		</a>
 		<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown2">
 			<li class="share-title mb5"> Share this result</li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-primary"></i>&nbsp;&nbsp;Facebook</a></li>
@@ -238,9 +238,17 @@
 			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus','search');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
 		</ul>
 	</div>
-	<button id="helper" onclick="ShowGuide();" data-toggle="tooltip" data-placement="top" title="Help Tour"  class="animated animated-short slideInUp btn btn-primary btn-icon hidden-xs hidden-sm">
-		<i class="fa fa-question"></i>
-	</button>
+
+	<div onclick="ShowGuide();"  class="help-slider hidden-xs">
+		<div class="btn-visible">
+			<div  class="btn-help">
+				<i class="fa fa-question"></i>
+			</div>
+		</div>
+		<div class="btn-hidden">
+			Help Tour
+		</div>
+	</div>
 
 	<!-- Javascript Libraries -->
 	<script src="vendors/codex-fly/codex-fly.js"></script>
@@ -266,6 +274,17 @@
 	<script src="vendors/zoom-demo/imagezoom.js"></script>
 
 	<script src="scripts/index.js"></script>
-	
+	<script type="text/javascript"> 
+		window._urq = window._urq || []; 
+		_urq.push(['setGACode', 'UA-66024947-3']); 
+		_urq.push(['setPerformInitialShorctutAnimation', false]); 
+		_urq.push(['initSite', '2ac05ea6-d468-4e5a-8091-d465e4bc6741']); 
+
+		(function() { 
+			var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true; 
+			ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js'); 
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s); 
+		})();
+	</script>
 </body>
 </html>
