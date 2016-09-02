@@ -86,8 +86,9 @@
 					<div class="col-xs-10 col-sm-6 col-md-7 col-lg-6 search-container">
 						<div class="tsw-inner main-search">
 							<span id="centerpoint_search" style="position:absolute;left:45%;top:30px;"></span>
-							<i id="top-search-close" class="zmdi zmdi-search"></i>
+							
 							<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
+							<!--<button id="btn-search" type="button" onclick="MatchKeywords($('.select2-search__field'))" class="btn bgm-amber btn-sm btn-link"><i class="fa fa-search"></i></button>-->
 						</div>
 					</div>
 					<div class="col-xs-2 col-sm-4 col-md-3 col-lg-4 price-filter-container">
@@ -239,13 +240,16 @@
 		</ul>
 	</div>
 
-	<div onclick="ShowGuide();"  class="help-slider hidden-xs">
-		<div class="btn-visible">
-			<div  class="btn-help">
+	<div class="help-slider-clone  hidden-xs"  data-viewport="body" data-container=".help-slider-clone" data-toggle="popover" data-placement="top" data-trigger="manual"
+			  data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your perfect bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!"></div>
+
+	<div class="help-slider hidden-xs">
+		<div id="helper" class="btn-visible">
+			<div  class="btn-help" onclick="ShowHelpTour();">
 				<i class="fa fa-question"></i>
 			</div>
 		</div>
-		<div class="btn-hidden">
+		<div class="btn-hidden" onclick="ShowHelpTour();">
 			Help Tour
 		</div>
 	</div>
@@ -278,7 +282,7 @@
 		window._urq = window._urq || []; 
 		_urq.push(['setGACode', 'UA-66024947-3']); 
 		_urq.push(['setPerformInitialShorctutAnimation', false]); 
-		_urq.push(['initSite', '2ac05ea6-d468-4e5a-8091-d465e4bc6741']); 
+		_urq.push(['initSite', '8005a4d2-5d8c-4466-95ed-0dbaf1620030']); 
 
 		(function() { 
 			var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true; 
