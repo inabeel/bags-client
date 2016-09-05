@@ -27,7 +27,11 @@ g_tag_changed_when_popup_open = false,
 helptour_running = false, //Turns to true during the Help tour running
 helptour_running_allow_product_click = false, //It decides whether to allow product click when Help tour is running
 helptour_instance, //Help tour instance
-search_matching_tags = []; //Holds the matching tags for smart search
+search_matching_tags = [], //Holds the matching tags for smart search
+full_keyword_str = "", //This holds the original search text when user hit "Enter" key in search box
+hide_pnl_confirm_tags = true,
+duplicate_tags = [],
+partial_matched_tags = [];
 
 $(document).ready(function () {
     page_loaded = true;
@@ -399,7 +403,7 @@ function loadTags() {
 
     $(document).on('keyup keypress keydown', ".select2-search__field", function (e) {
         if (e.which == 13) {
-            MatchKeywords(e.target);
+            ExecuteSmartSearch(e.target);
         }
     });
 
@@ -486,7 +490,10 @@ function GetProducts() {
 
     g_tag_changed_when_popup_open = false;
 
-   
+    if (hide_pnl_confirm_tags)
+        $("#pnl_confirm_tags").empty().hide();
+
+    hide_pnl_confirm_tags = true;
 
     var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count +
         '&min_price=' + g_price_min + '&max_price=' + g_price_max;
@@ -782,6 +789,7 @@ function ShowHelpTour() {
             helptour_running_allow_product_click = false;
             $.magnificPopup.close();
             localStorage.setItem("helptour-seen", "true");
+            $("#main-search").select2("val", "");
             setTimeout(function () {
                 $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
             }, 1000);
@@ -791,6 +799,7 @@ function ShowHelpTour() {
             helptour_running_allow_product_click = false;
             $.magnificPopup.close();
             localStorage.setItem("helptour-seen", "true");
+            $("#main-search").select2("val", "");
             setTimeout(function () {
                 $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
             }, 1000);
@@ -803,7 +812,7 @@ function ShowHelpTour() {
     var enjoyhint_script_steps = [
         {
             selector: '.product-list .product-card:first-child',
-            description: "Each Bag has multiple images and tags mentioning it's properties.",
+            description: "Each Bag has images and tags mentioning its properties.",
             showNext: true, 
             showSkip: true,
             margin: 0,
@@ -943,43 +952,84 @@ function SkipHelpTourNotification() {
     $(".help-slider-clone").popover("destroy");
 }
 
-function MatchKeywords(txtbox) {
+function ExecuteSmartSearch(txtbox) {
     var keyword_str = $(txtbox).val().trim();
     var keyword_arr = keyword_str.split(" ");
     var matched_tags = [];
     if (keyword_str.length > 0) {
 
         search_matching_tags = [];
+        var search_tags_without_duplicate = [];
+        duplicate_tags = [];
+        partial_matched_tags = [];
+        full_keyword_str = keyword_str;
 
         SplitBackwardAndMatch(keyword_str);
 
         for (var i = 0; i < search_matching_tags.length; i++) {
-            var is_subset = false;
+            var tag_exclude = false;
             for (var j = 0; j < search_matching_tags.length; j++) {
                 if (search_matching_tags[i].id != search_matching_tags[j].id) {
                     if (search_matching_tags[i].name != search_matching_tags[j].name) {
-                        if (search_matching_tags[j].name.indexOf(search_matching_tags[i].name) >= 0) {
-                            is_subset = true;
+                        if (search_matching_tags[j].name.indexOf(search_matching_tags[i].name) > 0) {
+                            tag_exclude = true;
                         }
+                    }
+                    else if (search_matching_tags[i].id != search_matching_tags[j].id) {
+                        tag_exclude = true;
+                        duplicate_tags.push(search_matching_tags[i]);
                     }
                 }
             }
-            if (!is_subset) {
-                if ($.inArray(search_matching_tags[i].id, g_tags) < 0) {
+            if (!tag_exclude) {
+                search_tags_without_duplicate.push(search_matching_tags[i]);
+            }
+        }
+
+        for (var i = 0; i < keyword_arr.length; i++) {
+            var similar_tags = $.grep(search_tags_without_duplicate, function (e) { return e.name.indexOf(keyword_arr[i]) == 0; });
+            if (similar_tags.length >= 2) {
+                for (var j = 0; j < similar_tags.length; j++) {
+                    partial_matched_tags.push(similar_tags[j]);
+                }
+            }
+            else if (similar_tags.length == 1) {
+                if ($.inArray(similar_tags[0].id, g_tags) < 0) {
                     if (g_tags == null) g_tags = [];
-                    g_tags.push(search_matching_tags[i].id);
+                    g_tags.push(similar_tags[0].id);
                 }
             }
         }
 
+        if (duplicate_tags.length > 0 || partial_matched_tags.length > 0) {
+            hide_pnl_confirm_tags = false;
+            var template = Handlebars.templates['confirm-tags'];
+            $("#pnl_confirm_tags").html(template({
+                duplicate_tags: duplicate_tags,
+                partial_matched_tags: partial_matched_tags
+            })).show();
+            $("#pnl_confirm_tags .tag").click(function () {
+                if (duplicate_tags.length > 0 && partial_matched_tags.length > 0) {
+                    hide_pnl_confirm_tags = false;
+                }
+                g_load_bags = true;
+                flyToElement($(this), $('#centerpoint_search'));
+
+                if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
+                    if (g_tags == null) g_tags = [];
+                    g_tags.push($(this).attr('tag-id'));
+                }
+                
+                BuildUrlHash();
+            });
+        }
+       
         g_load_bags = true;
         g_manual_tag_change = true;
         $(txtbox).val("");
         BuildUrlHash();
     }
 }
-
-
 
 function SplitBackwardAndMatch(keyword_str) {
     // Backward splitting
