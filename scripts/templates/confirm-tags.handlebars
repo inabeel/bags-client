@@ -1,10 +1,56 @@
 <div class="tags alert alert-dismissible">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-	<div><i class="fa fa-question-circle text-danger"></i> You mean by</div>
-	{{#each duplicate_tags}}
-		<button  tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
-	{{/each}}
-	{{#each partial_matched_tags}}
-		<button  tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
-	{{/each}}
+	{{#isLengthOf duplicate_conflicts ">" 0}}
+		<div class="mt15"><i class="fa fa-search"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
+	{{/isLengthOf}}
+	{{#isLengthOf partial_conflicts ">" 0}}
+		<div class="mt15"><i class="fa fa-search"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
+	{{/isLengthOf}}
+	<table id="list-confirm-tags" class="mt10">
+		{{#each duplicate_conflicts}}
+			<tr class="conflict-row">
+				<td class="conflict-remove-row">
+					<a class="btn-remove-row" href="javascript:void(0);" onclick="RemoveConflictRow(this)">×</a>
+				</td>
+				<td class="search-keyword">
+					<i>{{keyword}} :</i>
+				</td>
+				<td>
+					{{#each tags}}
+						<button  tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
+					{{/each}}
+				</td>
+			</tr>
+		{{/each}}
+	
+		{{#each partial_conflicts}}
+			<tr>
+				<td class="conflict-remove-row">
+					<a class="btn-remove-row" href="javascript:void(0);" onclick="RemoveConflictRow(this)">×</a>
+				</td>
+				<td class="search-keyword">
+					<i>{{keyword}} :</i>
+				</td>
+				<td>
+					{{#each tags}}
+						<button  tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
+					{{/each}}
+				</td>
+			</tr>
+		{{/each}}
+
+		{{#each unmatched_keywords}}
+			<tr>
+				<td class="conflict-remove-row">
+					<a class="btn-remove-row" href="javascript:void(0);" onclick="RemoveConflictRow(this)">×</a>
+				</td>
+				<td class="search-keyword">
+					<i>{{keyword}} :</i>
+				</td>
+				<td class="no-match-text">
+					We couldn't find any match.
+				</td>
+			</tr>
+		{{/each}}
+	</table>
 </div>

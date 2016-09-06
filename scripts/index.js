@@ -29,9 +29,8 @@ helptour_running_allow_product_click = false, //It decides whether to allow prod
 helptour_instance, //Help tour instance
 search_matching_tags = [], //Holds the matching tags for smart search
 full_keyword_str = "", //This holds the original search text when user hit "Enter" key in search box
-hide_pnl_confirm_tags = true,
-duplicate_tags = [],
-partial_matched_tags = [];
+duplicate_conflicts = [],
+partial_conflicts = [];
 
 $(document).ready(function () {
     page_loaded = true;
@@ -370,7 +369,8 @@ function loadTags() {
     $("#main-search").select2({
         placeholder: "e.g.: small black crossbody michael kors",
         data: g_tagsData,
-        minimumInputLength:0,
+        closeOnSelect: true,
+        minimumInputLength: 0,
         allowClear: true,
         templateSelection: function (data,a) {
             a.addClass(fnColorTag(data.category_id));
@@ -394,11 +394,9 @@ function loadTags() {
             }
         },
     });
-    $("#main-search").on("select2-open", function () {
-        alert("open");
-    });
-    $("#main-search").on("select2-close", function () {
-        alert("close");
+
+    $("#main-search").on('select2:select', function (evt) {
+        $(".select2-search__field").val('');
     });
 
     $(document).on('keyup keypress keydown', ".select2-search__field", function (e) {
@@ -490,10 +488,7 @@ function GetProducts() {
 
     g_tag_changed_when_popup_open = false;
 
-    if (hide_pnl_confirm_tags)
-        $("#pnl_confirm_tags").empty().hide();
-
-    hide_pnl_confirm_tags = true;
+    //$("#pnl_confirm_tags").empty().hide();
 
     var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count +
         '&min_price=' + g_price_min + '&max_price=' + g_price_max;
@@ -960,8 +955,9 @@ function ExecuteSmartSearch(txtbox) {
 
         search_matching_tags = [];
         var search_tags_without_duplicate = [];
-        duplicate_tags = [];
-        partial_matched_tags = [];
+        duplicate_conflicts = [];
+        partial_conflicts = [];
+        var unmatched_keywords = [];
         full_keyword_str = keyword_str;
 
         SplitBackwardAndMatch(keyword_str);
@@ -977,7 +973,7 @@ function ExecuteSmartSearch(txtbox) {
                     }
                     else if (search_matching_tags[i].id != search_matching_tags[j].id) {
                         tag_exclude = true;
-                        duplicate_tags.push(search_matching_tags[i]);
+                        duplicate_conflicts.push(search_matching_tags[i]);
                     }
                 }
             }
@@ -988,30 +984,52 @@ function ExecuteSmartSearch(txtbox) {
 
         for (var i = 0; i < keyword_arr.length; i++) {
             var similar_tags = $.grep(search_tags_without_duplicate, function (e) { return e.name.indexOf(keyword_arr[i]) == 0; });
-            if (similar_tags.length >= 2) {
-                for (var j = 0; j < similar_tags.length; j++) {
-                    partial_matched_tags.push(similar_tags[j]);
-                }
+            switch (similar_tags.length) {
+                case 0:
+                    break;
+                case 1:
+                    if ($.inArray(similar_tags[0].id, g_tags) < 0) {
+                        if (g_tags == null) g_tags = [];
+                        g_tags.push(similar_tags[0].id);
+                    }
+                    break;
+                default:
+                    var partial_conflict = {
+                        keyword: keyword_arr[i],
+                        tags: similar_tags
+                    };
+                    partial_conflicts.push(partial_conflict);
+                    break;
             }
-            else if (similar_tags.length == 1) {
-                if ($.inArray(similar_tags[0].id, g_tags) < 0) {
-                    if (g_tags == null) g_tags = [];
-                    g_tags.push(similar_tags[0].id);
-                }
+            var tags_with_keywords = $.grep(search_matching_tags, function (e) { return e.name.indexOf(keyword_arr[i]) == 0; });
+            if (tags_with_keywords.length == 0) {
+                unmatched_keywords.push({ keyword: keyword_arr[i] });
             }
         }
 
-        if (duplicate_tags.length > 0 || partial_matched_tags.length > 0) {
-            hide_pnl_confirm_tags = false;
+        if (duplicate_conflicts.length > 0 || partial_conflicts.length > 0 || unmatched_keywords.length > 0) {
+
             var template = Handlebars.templates['confirm-tags'];
+
+            if (duplicate_conflicts.length > 0) {
+                duplicate_conflicts = Enumerable.From(duplicate_conflicts)
+                .GroupBy("$.name", null,
+                         function (key, g) {
+                             return {
+                                 keyword: key,
+                                 tags: g.source
+                             }
+                         })
+                .ToArray();
+            }
+
             $("#pnl_confirm_tags").html(template({
-                duplicate_tags: duplicate_tags,
-                partial_matched_tags: partial_matched_tags
+                duplicate_conflicts: duplicate_conflicts,
+                partial_conflicts: partial_conflicts,
+                unmatched_keywords: unmatched_keywords
             })).show();
+
             $("#pnl_confirm_tags .tag").click(function () {
-                if (duplicate_tags.length > 0 && partial_matched_tags.length > 0) {
-                    hide_pnl_confirm_tags = false;
-                }
                 g_load_bags = true;
                 flyToElement($(this), $('#centerpoint_search'));
 
@@ -1019,7 +1037,12 @@ function ExecuteSmartSearch(txtbox) {
                     if (g_tags == null) g_tags = [];
                     g_tags.push($(this).attr('tag-id'));
                 }
-                
+
+                //remove the conflict row
+                $(this).parent().parent().remove();
+                if ($("#pnl_confirm_tags").find("#list-confirm-tags tr").length == 0)
+                    $("#pnl_confirm_tags").empty().hide();
+
                 BuildUrlHash();
             });
         }
@@ -1059,4 +1082,10 @@ function SplitBackwardAndMatch(keyword_str) {
             SplitBackwardAndMatch(rest_str);
         }
     }
+}
+
+function RemoveConflictRow(btn) {
+    $(btn).parent().parent().remove();
+    if ($("#pnl_confirm_tags").find("#list-confirm-tags tr").length == 0)
+        $("#pnl_confirm_tags").empty().hide();
 }
