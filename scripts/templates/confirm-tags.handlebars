@@ -3,8 +3,10 @@
 	{{#isLengthOf duplicate_conflicts ">" 0}}
 		<div class="mt15"><i class="fa fa-search"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
 	{{/isLengthOf}}
-	{{#isLengthOf partial_conflicts ">" 0}}
-		<div class="mt15"><i class="fa fa-search"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
+	{{#isLengthOf duplicate_conflicts "==" 0}}
+		{{#isLengthOf partial_conflicts ">" 0}}
+			<div class="mt15"><i class="fa fa-search"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
+		{{/isLengthOf}}
 	{{/isLengthOf}}
 	<table id="list-confirm-tags" class="mt10">
 		{{#each duplicate_conflicts}}

@@ -355,6 +355,7 @@ function getTags() {
                     g_load_popup = false;
                 $("#main-search option[value='" + e.params.data.id + "'").prop('selected', false);
                 $("#main-search").trigger("change");
+                $("#pnl_confirm_tags").empty().hide();
             });
 
             //Load all tags in the search
@@ -487,8 +488,6 @@ function GetProducts() {
     g_manual_tag_change = false;
 
     g_tag_changed_when_popup_open = false;
-
-    //$("#pnl_confirm_tags").empty().hide();
 
     var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count +
         '&min_price=' + g_price_min + '&max_price=' + g_price_max;
@@ -962,16 +961,19 @@ function ExecuteSmartSearch(txtbox) {
 
         SplitBackwardAndMatch(keyword_str);
 
+        console.log("search_matching_tags -");
+        console.dir(search_matching_tags);
+
         for (var i = 0; i < search_matching_tags.length; i++) {
             var tag_exclude = false;
             for (var j = 0; j < search_matching_tags.length; j++) {
                 if (search_matching_tags[i].id != search_matching_tags[j].id) {
                     if (search_matching_tags[i].name != search_matching_tags[j].name) {
-                        if (search_matching_tags[j].name.indexOf(search_matching_tags[i].name) > 0) {
+                        if (search_matching_tags[j].name.indexOf(search_matching_tags[i].name) >= 0) {
                             tag_exclude = true;
                         }
                     }
-                    else if (search_matching_tags[i].id != search_matching_tags[j].id) {
+                    else {
                         tag_exclude = true;
                         duplicate_conflicts.push(search_matching_tags[i]);
                     }
@@ -1001,7 +1003,7 @@ function ExecuteSmartSearch(txtbox) {
                     partial_conflicts.push(partial_conflict);
                     break;
             }
-            var tags_with_keywords = $.grep(search_matching_tags, function (e) { return e.name.indexOf(keyword_arr[i]) == 0; });
+            var tags_with_keywords = $.grep(search_matching_tags, function (e) { return e.name.indexOf(keyword_arr[i]) >= 0; });
             if (tags_with_keywords.length == 0) {
                 unmatched_keywords.push({ keyword: keyword_arr[i] });
             }
@@ -1046,6 +1048,9 @@ function ExecuteSmartSearch(txtbox) {
                 BuildUrlHash();
             });
         }
+        else {
+            $("#pnl_confirm_tags").empty().hide();
+        }
        
         g_load_bags = true;
         g_manual_tag_change = true;
@@ -1066,7 +1071,14 @@ function SplitBackwardAndMatch(keyword_str) {
 
         if (result1.length > 0) {
             for (var i = 0; i < result1.length; i++) {
-                search_matching_tags.push(result1[i]);
+                if (result1[i].name != last_word) {
+                    var extraText = result1[i].name.replace(last_word, "").trim();
+                    if (keyword_str.replace(last_word, "").indexOf(extraText) < 0)
+                        search_matching_tags.push(result1[i]);
+                }
+                else {
+                    search_matching_tags.push(result1[i]);
+                }
             }
         }
     }
@@ -1075,7 +1087,14 @@ function SplitBackwardAndMatch(keyword_str) {
 
         if (result2.length > 0) {
             for (var i = 0; i < result2.length; i++) {
-                search_matching_tags.push(result2[i]);
+                if (result2[i].name != rest_str) {
+                    var extraText = result2[i].name.replace(rest_str, "").trim();
+                    if (keyword_str.replace(rest_str, "").indexOf(extraText) < 0)
+                        search_matching_tags.push(result2[i]);
+                }
+                else {
+                    search_matching_tags.push(result2[i]);
+                }
             }
         }
         else {
