@@ -60,7 +60,6 @@
 </head>
 <body>
 	<header id="header" class="clearfix search-toggled" data-current-skin="blue">
-
 		<!-- Top Search Content -->
 		<div id="top-search-wrap">
 			<div class="top-menu-small">
@@ -86,8 +85,8 @@
 					<div class="col-xs-10 col-sm-6 col-md-7 col-lg-6 search-container">
 						<div class="tsw-inner main-search">
 							<span id="centerpoint_search" style="position:absolute;left:45%;top:30px;"></span>
-							<i id="top-search-close" class="zmdi zmdi-search"></i>
 							<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
+							<button id="btn-search" type="button" onclick="ExecuteSmartSearch($('.select2-search__field'))" class="btn bgm-amber btn-sm btn-link"><i class="fa fa-search"></i></button>
 						</div>
 					</div>
 					<div class="col-xs-2 col-sm-4 col-md-3 col-lg-4 price-filter-container">
@@ -190,6 +189,9 @@
 	<section id="main" data-layout="layout-1">
 		<section id="content">
 			<div class="container">
+				<div id="pnl_confirm_tags">
+
+				</div>
 				<div class="product-list">
 
 				</div>
@@ -228,9 +230,9 @@
 		</div>
 	</div>
 	<div id="btn_share_floating" class="dropup dropdown visible-xs">
-		<button class="btn btn-primary btn-icon dropdown-toggle" type="button" id="social-share-dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<a class="dropdown-toggle" id="social-share-dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<i class="fa fa-share-alt"></i>
-		</button>
+		</a>
 		<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown2">
 			<li class="share-title mb5"> Share this result</li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-primary"></i>&nbsp;&nbsp;Facebook</a></li>
@@ -238,15 +240,26 @@
 			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus','search');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
 		</ul>
 	</div>
-	<button id="helper" onclick="ShowGuide();" data-toggle="tooltip" data-placement="top" title="Help Tour"  class="animated animated-short slideInUp btn btn-primary btn-icon hidden-xs hidden-sm">
-		<i class="fa fa-question"></i>
-	</button>
+
+	<div class="help-slider-clone  hidden-xs"  data-viewport="body" data-container=".help-slider-clone" data-toggle="popover" data-placement="top" data-trigger="manual"
+			  data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your perfect bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!"></div>
+
+	<div class="help-slider hidden-xs">
+		<div id="helper" class="btn-visible">
+			<div  class="btn-help" onclick="ShowHelpTour();">
+				<i class="fa fa-question"></i>
+			</div>
+		</div>
+		<div class="btn-hidden" onclick="ShowHelpTour();">
+			Help Tour
+		</div>
+	</div>
 
 	<!-- Javascript Libraries -->
 	<script src="vendors/codex-fly/codex-fly.js"></script>
 	<script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="vendors/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-
+	<script src="vendors/linqjs/linq.min.js"></script>
 	<script src="vendors/bower_components/flot/jquery.flot.js"></script>
 	<script src="vendors/bower_components/flot/jquery.flot.resize.js"></script>
 	<script src="vendors/enjoyhint/enjoyhint.min.js"></script>
@@ -262,10 +275,21 @@
 
 	<script src="js/functions.js"></script>
 	<script src="js/demo.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.js"></script>
+	<script src="vendors/select2/select2.min.js"></script>
 	<script src="vendors/zoom-demo/imagezoom.js"></script>
 
 	<script src="scripts/index.js"></script>
-	
+	<script type="text/javascript"> 
+		window._urq = window._urq || []; 
+		_urq.push(['setGACode', 'UA-66024947-3']); 
+		_urq.push(['setPerformInitialShorctutAnimation', false]); 
+		_urq.push(['initSite', '8005a4d2-5d8c-4466-95ed-0dbaf1620030']); 
+
+		(function() { 
+			var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true; 
+			ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js'); 
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s); 
+		})();
+	</script>
 </body>
 </html>

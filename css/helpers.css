@@ -194,6 +194,10 @@
     padding-right: 0px;
 }
 
+.pr5 {
+    padding-right: 5px;
+}
+
 .pr6 {
     padding-right: 6px;
 }
@@ -240,6 +244,10 @@
 
 .pt6 {
     padding-top: 6px !important;
+}
+
+.pt8 {
+    padding-top: 8px;
 }
 
 .pt10 {
@@ -400,6 +408,9 @@
 .fw300 {
     font-weight:300;
 }
+.fw400 {
+    font-weight:400;
+}
 .fw500 {
     font-weight:500;
 }
@@ -414,4 +425,7 @@
 }
 .br50p{
     border-radius:50%;
+}
+.text-111{
+    color:#111 !important;
 }

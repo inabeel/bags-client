@@ -1,7 +1,7 @@
 ﻿var g_api = 'https://bags-api.zoltu.com',
 g_result_from_product_id = 1,
 g_tags = [], //holds selected tags
-tagsData = [], //holds tags data returned by api
+g_tagsData = [], //holds tags data returned by api
 g_page_count = 24, //number of items to load by each api (by_tags) call
 newFilterApplied = true, //indicates that a filter applied which should reload the bags data
 currentRequest = null,
@@ -12,7 +12,7 @@ g_open_productid = 0,
 g_popupOpened = false,
 menuHiding = false,
 g_hashchanged = false,
-g_dynamic_tag_change = true, //This indicates that url hash is changed manually (and not by back/forward of browser)
+g_manual_tag_change = true, //This indicates that url hash is changed manually (and not by back/forward of browser)
 g_load_bags = true, //This verify whether to load bags or not while Url hash changes
 g_load_popup = true, //This verify whether to load popup or not while Url hash changes
 g_aboutus_open = false,
@@ -23,10 +23,31 @@ overSlider = false,
 page_loaded = false,
 trigger_tags_change = true,
 g_popup_just_closed = false,
-g_tag_changed_when_popup_open = false;
+g_tag_changed_when_popup_open = false,
+helptour_running = false, //Turns to true during the Help tour running
+helptour_running_allow_product_click = false, //It decides whether to allow product click when Help tour is running
+helptour_instance, //Help tour instance
+search_matching_tags = [], //Holds the matching tags for smart search
+full_keyword_str = "", //This holds the original search text when user hit "Enter" key in search box
+duplicate_conflicts = [],
+partial_conflicts = [];
 
 $(document).ready(function () {
     page_loaded = true;
+
+    //Help button sliding
+    $(".help-slider .btn-help").on('mouseenter', function () {
+        if (localStorage.getItem("helptour-seen") == "true") {
+            $(".help-slider").stop().animate({ "right": "0px" }, { duration: 300, queue: false });
+            $(".help-slider .btn-help").css({ "backgroundColor": "#FF9800" });
+        }
+    });
+    $(".help-slider").on('mouseleave', function () {
+        if (localStorage.getItem("helptour-seen") == "true") {
+            $(".help-slider").stop().animate({ "right": "-100px" });
+            $(".help-slider .btn-help").css({ "backgroundColor": "#FFC107" });
+        }
+    });
 })
 
 $(document).scroll(function () {
@@ -146,9 +167,8 @@ function ProcessUrlParams() {
                     break;
                 case "product_id":
                     g_open_productid = value1;
-                    if (g_load_popup)
-                        if (value1 > 0)
-                            ShowProductPopup(value1);
+                    if (g_popupOpened == false && g_load_popup && value1 > 0)
+                        ShowProductPopup(value1);
                     break;
                 case "tags":
                     if (value1 != null && value1.length > 0) {
@@ -176,7 +196,7 @@ function ProcessUrlParams() {
     $("#main-search").select2("val", "");
     trigger_tags_change = true;
 
-    if (g_dynamic_tag_change == true && urlTags != "") {
+    if (g_manual_tag_change == true && urlTags != "") {
         g_tags = urlTags.split(',');
        
         for (var i = 0; i < g_tags.length; i++) {
@@ -192,21 +212,22 @@ function ProcessUrlParams() {
 }
 
 $(window).on('hashchange', function () {
-    //Show Page Loader
-    ShowPageLoader();
-    g_dynamic_tag_change = true;
-    newFilterApplied = true;
     g_load_popup = true;
     if (!(g_popup_just_closed == true && g_tag_changed_when_popup_open == false)) {
+        ShowPageLoader();
+        newFilterApplied = true;
+        g_manual_tag_change = true;
         if (g_load_bags)
             g_result_from_product_id = 1;
         ProcessUrlParams();
+    }
+    else {
+        g_manual_tag_change = false;
     }
     g_popup_just_closed = false;
 });
 
 //Range slider
-
 var stepSlider = document.getElementById('price-slider');
 
 noUiSlider.create(stepSlider, {
@@ -295,7 +316,7 @@ function getTags() {
         if (xhr_tags.readyState == 4 && xhr_tags.status == 200) {
             var tags = JSON.parse(xhr_tags.responseText);
 
-            tagsData = $.map(tags, function (obj, index) {
+            g_tagsData = $.map(tags, function (obj, index) {
                 obj.id = obj.id;
                 obj.text = "#" + obj.category.name + ": " + obj.name;
                 return obj;
@@ -303,11 +324,11 @@ function getTags() {
 
             $("#main-search").on("change", function (e) {
                 if (trigger_tags_change) {
-                    //reseting product id to 1 to fetch result from start
-                    if (g_dynamic_tag_change == true) {
-                        newFilterApplied = true;
+                    newFilterApplied = true;
+                    if (g_manual_tag_change == true) {
                         if (!g_popupOpened) {
                             if (g_load_bags) {
+                                //reseting product id to 1 to fetch result from start
                                 g_result_from_product_id = 1;
                                 GetProducts();
                             }
@@ -334,6 +355,7 @@ function getTags() {
                     g_load_popup = false;
                 $("#main-search option[value='" + e.params.data.id + "'").prop('selected', false);
                 $("#main-search").trigger("change");
+                $("#pnl_confirm_tags").empty().hide();
             });
 
             //Load all tags in the search
@@ -344,10 +366,12 @@ function getTags() {
 }
 
 function loadTags() {
+    
     $("#main-search").select2({
-        placeholder: "Describe your ideal handbag here... (e.g.: small black crossbody michael kors)",
-        data: tagsData,
-        minimumInputLength:0,
+        placeholder: "e.g.: small black crossbody michael kors",
+        data: g_tagsData,
+        closeOnSelect: true,
+        minimumInputLength: 0,
         allowClear: true,
         templateSelection: function (data,a) {
             a.addClass(fnColorTag(data.category_id));
@@ -356,7 +380,9 @@ function loadTags() {
         matcher: function (term, option) {
             if (typeof term.term != 'undefined') { //has terms
                 if (/\S/.test(term.term)) { //if empty or spaces
-                    if (option.name.toUpperCase().indexOf(term.term.toUpperCase()) >= 0 || option.category.name.toUpperCase().indexOf(term.term.toUpperCase()) >= 0) {
+                    if (option.name.toUpperCase().indexOf(term.term.toUpperCase()) >= 0
+                        || option.category.name.toUpperCase().indexOf(term.term.toUpperCase()) >= 0
+                        || option.text.toUpperCase().indexOf(term.term.toUpperCase()) >= 0) {
                         return option;
                     } else {
                         return null;
@@ -369,6 +395,17 @@ function loadTags() {
             }
         },
     });
+
+    $("#main-search").on('select2:select', function (evt) {
+        $(".select2-search__field").val('');
+    });
+
+    $(document).on('keyup keypress keydown', ".select2-search__field", function (e) {
+        if (e.which == 13) {
+            ExecuteSmartSearch(e.target);
+        }
+    });
+
     if (window.location.hash.length > 0)
         ProcessUrlParams();
     else
@@ -448,11 +485,9 @@ function GetProducts() {
     g_load_bags = true;
     //Show bags view in case About us is openend
 
-    g_dynamic_tag_change = false;
+    g_manual_tag_change = false;
 
     g_tag_changed_when_popup_open = false;
-
-    
 
     var api = g_api + '/api/products/by_tags?starting_product_id=' + g_result_from_product_id + '&products_per_page=' + g_page_count +
         '&min_price=' + g_price_min + '&max_price=' + g_price_max;
@@ -497,9 +532,8 @@ function GetProducts() {
             if (newFilterApplied) {
                 $(".product-list").html(template({ products: data }));
                 if (helptour_running == false) {
-                    $('html,body').stop().animate({
-                        scrollTop: 0
-                    }, { duration: 500, queue: false });
+                    if ($('body').scrollTop() > 25)
+                        $('body').scrollTop(25);
                 }
             }
             else
@@ -514,9 +548,8 @@ function GetProducts() {
             }
 
             //Click event on Tags
-            $(".product-list .product-card .card-body .tag").on("click", function () {
+            $(".product-list .product-card .card-body .tag:not('.event-binded')").on("click", function () {
                 g_load_bags = true;
-                g_dynamic_tag_change = true;
                 flyToElement($(this), $('#centerpoint_search'));
 
                 if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
@@ -524,7 +557,7 @@ function GetProducts() {
                     g_tags.push($(this).attr('tag-id'));
                 }
                 BuildUrlHash();
-            });
+            }).addClass("event-binded");
 
             //Initialize sliding images for each product
             $(".carousel").on("mouseover", function (obj) {
@@ -532,7 +565,7 @@ function GetProducts() {
                     sliderRunning = true;
                     sliderInterval = setInterval(function () {
                         $(obj.currentTarget).children(".carousel-control.right").click();
-                    }, 1000);
+                    }, 1500);
                 }
             }).on("mouseleave", function () {
                 sliderRunning = false;
@@ -561,11 +594,17 @@ function GetProducts() {
             //Reset
             g_hashchanged = false;
 
-            if (localStorage.getItem("zoltu-bags-helptour-seen") != "true") {
-                localStorage.setItem("zoltu-bags-helptour-seen", "true");
-                setTimeout(function () {
-                    ShowGuide();
-                }, 500);
+            //Show Help tour button
+            $(".help-slider").css("visibility", "visible");
+            if (localStorage.getItem("helptour-seen") != "true") {
+                if (!helptour_running) {
+                    if (!$(".help-slider-clone").find('div.popover:visible').length) {
+                        //notification is not yet visible
+                        setTimeout(function () {
+                            $(".help-slider-clone").popover("show");
+                        }, 2000);
+                    }
+                }
             }
         }
     };
@@ -601,12 +640,7 @@ function BuildUrlHash() {
 }
 
 function TriggerProductPopup(productid) {
-    if (!helptour_running) {
-        g_open_productid = productid;
-        g_load_bags = false;
-        BuildUrlHash();
-    }
-    else if (helptour_running && helptour_running_allow_product_click) {
+    if (!helptour_running || (helptour_running && helptour_running_allow_product_click)) {
         g_open_productid = productid;
         g_load_bags = false;
         BuildUrlHash();
@@ -620,6 +654,7 @@ function ShowProductPopup(productid) {
         if (xhr_product.readyState == 4 && xhr_product.status == 200) {
             var product = JSON.parse(xhr_product.responseText);
             var template = Handlebars.templates['product-details'];
+            document.title = "Zoltu Bag: " + product.name.substr(0, 1).toUpperCase() + product.name.substr(1) + " : $" + product.price;
             $.magnificPopup.open({
                 closeBtnInside: true,
                 removalDelay: 500,
@@ -640,22 +675,23 @@ function ShowProductPopup(productid) {
                         g_load_popup = false;
                         g_popupOpened = false;
                         g_popup_just_closed = true;
-                        g_dynamic_tag_change = true;
+                        g_manual_tag_change = true;
                         BuildUrlHash();
                     },
                     close: function () {
+                        document.title = "Zoltu Bags";
                         HidePageLoader();
                         $("body").removeClass("showing-product");
                     },
                     open: function () {
                         g_popupOpened = true;
                         //Click event on Tags
-                        $(".product-popup .product-tags .tag").on("click", function () {
+                        $(".product-popup .product-tags .tag:not('.event-binded')").on("click", function () {
                             //this will allow data reload + the scrolling up the page after popup is closed, because tags are changed
                             g_tag_changed_when_popup_open = true;
                             g_load_bags = true;
                             g_load_popup = false;
-                            g_dynamic_tag_change = true;
+                            g_manual_tag_change = true;
                             flyToElement($(this), $('#centerpoint_search'));
 
                             if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
@@ -663,7 +699,8 @@ function ShowProductPopup(productid) {
                                 g_tags.push($(this).attr('tag-id'));
                             }
                             BuildUrlHash();
-                        });
+                        }).addClass("event-binded");
+
                         if (!$('html').hasClass('ismobile')) {
                             $('#product-popup [data-imagezoom]').imageZoom();
                             $("#product-popup-right-column").css('min-height', $("#product-gallery").css("height"));
@@ -730,131 +767,131 @@ function ShowBagsView() {
     BuildUrlHash();
 }
 
-var helptour_running = false;
-var helptour_running_allow_product_click = false;
-var helptour_instance;
-
-function ShowGuide() {
-    $("#helper").tooltip("hide");
+function ShowHelpTour() {
     
-        //initialize instance
-         helptour_instance = new EnjoyHint({
-            onStart: function () {
-                helptour_running = true;
-                setTimeout(function () {
-                    $("#helper").removeClass("animated animated-short slideInUp").addClass("animated animated-short zoomOut");
-                }, 1000);
-            },
-            onSkip: function () {
-                helptour_running = false;
-                helptour_running_allow_product_click = false;
-                $.magnificPopup.close();
-                setTimeout(function () {
-                    $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short slideInUp");
-                }, 1000);
-            },
-            onStop: function () {
-                helptour_running = false;
-                helptour_running_allow_product_click = false;
-                $.magnificPopup.close();
-                setTimeout(function () {
-                    $("#helper").removeClass("animated animated-short zoomOut").addClass("animated animated-short slideInUp");
-                }, 1000);
+    //initialize instance
+    helptour_instance = new EnjoyHint({
+        onStart: function () {
+            helptour_running = true;
+            setTimeout(function () {
+                $(".help-slider-clone").popover("destroy");
+                $(".help-slider").removeClass("animated animated-short slideInRight").addClass("animated animated-short slideOutRight");
+            }, 1000);
+        },
+        onSkip: function () {
+            helptour_running = false;
+            helptour_running_allow_product_click = false;
+            $.magnificPopup.close();
+            localStorage.setItem("helptour-seen", "true");
+            $("#main-search").select2("val", "");
+            setTimeout(function () {
+                $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
+            }, 1000);
+        },
+        onStop: function () {
+            helptour_running = false;
+            helptour_running_allow_product_click = false;
+            $.magnificPopup.close();
+            localStorage.setItem("helptour-seen", "true");
+            $("#main-search").select2("val", "");
+            setTimeout(function () {
+                $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
+            }, 1000);
+        }
+    });
+
+    //simple config. 
+    //Only one step - highlighting(with description) "New" button 
+    //hide EnjoyHint after a click on the button.
+    var enjoyhint_script_steps = [
+        {
+            selector: '.product-list .product-card:first-child',
+            description: "Each Bag has images and tags mentioning its properties.",
+            showNext: true, 
+            showSkip: true,
+            margin: 0,
+            skipButton: { text: "Skip Tour" },
+            onBeforeStart: function () { adding_tag_in_helptour = false; }
+        },
+        {
+            event: 'click',
+            selector: '.product-list div:first-child .product-details',
+            event_selector: '.product-list div:first-child .product-details .tags-container .tag',
+            description: 'Select tag(s) which match<br/> with your ideal Bag.',
+            showSkip: true,
+            skipButton: { text: "Skip Tour" },
+            showNext: true,
+            margin: 0
+        },
+        {
+            event: 'click',
+            timeout: 400,
+            selector: '.select2-selection',
+            description: 'You can type here to search<br/> and add tags describing your bag',
+            showSkip: true,
+            skipButton: { text: "Skip Tour" },
+            showNext: true,
+            margin: 400,
+            margin:10
+        },
+        {
+            selector: '.select2-container',
+            description: 'Start typing..<br/> Select tag with arrow keys<br/> and hit enter to add it',
+            showSkip: true,
+            skipButton: { text: "Skip Tour" },
+            showNext: true,
+            margin: 415,
+            left: 202,
+            right: 202,
+            top: 203,
+            onBeforeStart: function () {
+                adding_tag_in_helptour = true;
             }
-        });
+        },
+        {
+            event:'click',
+            selector: '.select2-selection .select2-selection__choice__remove:first-child',
+            event_selector: '.select2-selection .select2-selection__choice__remove:first-child',
+            description: 'Clicking on cross button of the tag will remove it',
+            shape: 'circle',
+            radius: 15,
+            showSkip: true,
+            skipButton: { text: "Skip Tour" },
+            showNext: true,
+            onBeforeStart: function () {
+                adding_tag_in_helptour = false;
+                if (g_tags == null || g_tags.length == 0) {
+                    $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
+                    $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
+                    $('.select2').bind('click', '.select2-selection__choice__remove', function () {
+                        if (helptour_instance.getCurrentStep() == 5) {
+                            $(".enjoyhint_next_btn").click();
+                        }
+                    });
+                    $("#main-search").trigger("change");
+                }
+            }
+        },
+        {
+            event: 'click',
+            selector: '.price-display',
+            description: 'Want to see Bags within your budget?<br/> You can select a price range.',
+            showSkip: true,
+            skipButton: { className: "bg-primary", text: "End Tour" },
+            showNext: false,
+            margin: 0,
+            onBeforeStart: function () {
+                helptour_running = false;
+                helptour_running_allow_product_click = false;
+            }
+        }
+    ];
 
-        //simple config. 
-        //Only one step - highlighting(with description) "New" button 
-        //hide EnjoyHint after a click on the button.
-        var enjoyhint_script_steps = [
-           {
-                selector: '.product-list .product-card:first-child',
-                description: 'This is an awesome bag..!',
-                showNext: true, 
-                showSkip: true,
-                margin: 0,
-                skipButton: { text: "Skip Help" },
-                onBeforeStart: function () { adding_tag_in_helptour = false; }
-            },
-           {
-                event: 'click',
-                selector: '.product-list div:first-child .product-details',
-                event_selector: '.product-list div:first-child .product-details .tags-container .tag',
-                description: 'Select tag(s) which match<br/> with your ideal Bag.',
-                showSkip: true,
-                skipButton: { text: "Skip Help" },
-                showNext: false,
-                margin: 0
-            },
-           {
-                event: 'click',
-                timeout: 400,
-                selector: '.select2-selection',
-                description: 'You can type here to search<br/> and add more tags',
-                showSkip: true,
-                skipButton: { text: "Skip Help" },
-                showNext: false,
-                margin: 400,
-                margin:10
-            },
-           {
-               selector: '.select2-container',
-               description: 'Start typing..<br/> Select tag with arrow keys<br/> and hit enter to add it',
-               showSkip: true,
-               skipButton: { text: "Skip Help" },
-               showNext: true,
-               margin: 415,
-               left: 202,
-               right: 202,
-               top: 203,
-               onBeforeStart: function () {
-                   adding_tag_in_helptour = true;
-               }
-           },
-           {
-               event:'click',
-               selector: '.select2-selection .select2-selection__choice__remove:first-child',
-               event_selector: '.select2-selection .select2-selection__choice__remove:first-child',
-               description: 'Clicking on cross button of the tag will remove it',
-               shape: 'circle',
-               radius: 15,
-               showSkip: true,
-               skipButton: { text: "Skip Help" },
-               showNext: true,
-               onBeforeStart: function () {
-                   adding_tag_in_helptour = false;
-                   if (g_tags == null || g_tags.length == 0) {
-                       $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
-                       $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
-                       $('.select2').bind('click', '.select2-selection__choice__remove', function () {
-                           if (helptour_instance.getCurrentStep() == 5) {
-                               $(".enjoyhint_next_btn").click();
-                           }
-                       });
-                       $("#main-search").trigger("change");
-                   }
-               }
-           },
-           {
-              event: 'click',
-              selector: '.price-display',
-              description: 'Want to see Bags within your budget?<br/> You can select a price range.',
-              showSkip: true,
-              skipButton: { className: "bg-primary", text: "End Help" },
-              showNext: false,
-              margin: 0,
-              onBeforeStart: function () {
-                  helptour_running = false;
-                  helptour_running_allow_product_click = false;
-              }
-          }
-        ];
+    //set script config
+    helptour_instance.set(enjoyhint_script_steps);
 
-        //set script config
-        helptour_instance.set(enjoyhint_script_steps);
-
-        //run Enjoyhint script
-        helptour_instance.run();
+    //run Enjoyhint script
+    helptour_instance.run();
 }
 
 function createXHR() {
@@ -902,4 +939,169 @@ function RemoveSelectedTags(data) {
         });
     });
     return data;
+}
+
+function SkipHelpTourNotification() {
+    localStorage.setItem("helptour-seen", "true");
+    $(".help-slider-clone").popover("destroy");
+}
+
+function ExecuteSmartSearch(txtbox) {
+    var keyword_str = $(txtbox).val().trim();
+    var keyword_arr = keyword_str.split(" ");
+    var matched_tags = [];
+    if (keyword_str.length > 0) {
+
+        search_matching_tags = [];
+        var search_tags_without_duplicate = [];
+        duplicate_conflicts = [];
+        partial_conflicts = [];
+        var unmatched_keywords = [];
+        full_keyword_str = keyword_str;
+
+        SplitBackwardAndMatch(keyword_str);
+
+        for (var i = 0; i < search_matching_tags.length; i++) {
+            var tag_exclude = false;
+            for (var j = 0; j < search_matching_tags.length; j++) {
+                if (search_matching_tags[i].id != search_matching_tags[j].id) {
+                    if (search_matching_tags[i].name != search_matching_tags[j].name) {
+                        if (search_matching_tags[j].name.indexOf(search_matching_tags[i].name) >= 0) {
+                            tag_exclude = true;
+                        }
+                    }
+                    else {
+                        tag_exclude = true;
+                        duplicate_conflicts.push(search_matching_tags[i]);
+                    }
+                }
+            }
+            if (!tag_exclude) {
+                search_tags_without_duplicate.push(search_matching_tags[i]);
+            }
+        }
+
+        for (var i = 0; i < keyword_arr.length; i++) {
+            var similar_tags = $.grep(search_tags_without_duplicate, function (e) { return e.name.indexOf(keyword_arr[i]) == 0; });
+            switch (similar_tags.length) {
+                case 0:
+                    break;
+                case 1:
+                    if ($.inArray(similar_tags[0].id, g_tags) < 0) {
+                        if (g_tags == null) g_tags = [];
+                        g_tags.push(similar_tags[0].id);
+                    }
+                    break;
+                default:
+                    var partial_conflict = {
+                        keyword: keyword_arr[i],
+                        tags: similar_tags
+                    };
+                    partial_conflicts.push(partial_conflict);
+                    break;
+            }
+            var tags_with_keywords = $.grep(search_matching_tags, function (e) { return e.name.indexOf(keyword_arr[i]) >= 0; });
+            if (tags_with_keywords.length == 0) {
+                unmatched_keywords.push({ keyword: keyword_arr[i] });
+            }
+        }
+
+        if (duplicate_conflicts.length > 0 || partial_conflicts.length > 0 || unmatched_keywords.length > 0) {
+
+            var template = Handlebars.templates['confirm-tags'];
+
+            if (duplicate_conflicts.length > 0) {
+                duplicate_conflicts = Enumerable.From(duplicate_conflicts)
+                .GroupBy("$.name", null,
+                         function (key, g) {
+                             return {
+                                 keyword: key,
+                                 tags: g.source
+                             }
+                         })
+                .ToArray();
+            }
+
+            $("#pnl_confirm_tags").html(template({
+                duplicate_conflicts: duplicate_conflicts,
+                partial_conflicts: partial_conflicts,
+                unmatched_keywords: unmatched_keywords
+            })).show();
+
+            $("#pnl_confirm_tags .tag").click(function () {
+                g_load_bags = true;
+                flyToElement($(this), $('#centerpoint_search'));
+
+                if ($.inArray($(this).attr('tag-id'), g_tags) < 0) {
+                    if (g_tags == null) g_tags = [];
+                    g_tags.push($(this).attr('tag-id'));
+                }
+
+                //remove the conflict row
+                $(this).parent().parent().remove();
+                if ($("#pnl_confirm_tags").find("#list-confirm-tags tr").length == 0)
+                    $("#pnl_confirm_tags").empty().hide();
+
+                BuildUrlHash();
+            });
+        }
+        else {
+            $("#pnl_confirm_tags").empty().hide();
+        }
+       
+        g_load_bags = true;
+        g_manual_tag_change = true;
+        $(txtbox).val("");
+        BuildUrlHash();
+    }
+}
+
+function SplitBackwardAndMatch(keyword_str) {
+    // Backward splitting
+    var last_word = keyword_str.substr(keyword_str.lastIndexOf(' ') + 1).trim(),
+    rest_str = keyword_str.substr(0, keyword_str.lastIndexOf(' ')).trim(),
+    result1 = [],
+    result2 = [];
+
+    if (last_word.length > 0) {
+        result1 = $.grep(g_tagsData, function (e) { return e.name.indexOf(last_word) == 0; });
+
+        if (result1.length > 0) {
+            for (var i = 0; i < result1.length; i++) {
+                if (result1[i].name != last_word) {
+                    var extraText = result1[i].name.replace(last_word, "").trim();
+                    if (keyword_str.replace(last_word, "").indexOf(extraText) < 0)
+                        search_matching_tags.push(result1[i]);
+                }
+                else {
+                    search_matching_tags.push(result1[i]);
+                }
+            }
+        }
+    }
+    if (rest_str.length > 0) {
+        result2 = $.grep(g_tagsData, function (e) { return e.name.indexOf(rest_str) == 0; });
+
+        if (result2.length > 0) {
+            for (var i = 0; i < result2.length; i++) {
+                if (result2[i].name != rest_str) {
+                    var extraText = result2[i].name.replace(rest_str, "").trim();
+                    if (keyword_str.replace(rest_str, "").indexOf(extraText) < 0)
+                        search_matching_tags.push(result2[i]);
+                }
+                else {
+                    search_matching_tags.push(result2[i]);
+                }
+            }
+        }
+        else {
+            SplitBackwardAndMatch(rest_str);
+        }
+    }
+}
+
+function RemoveConflictRow(btn) {
+    $(btn).parent().parent().remove();
+    if ($("#pnl_confirm_tags").find("#list-confirm-tags tr").length == 0)
+        $("#pnl_confirm_tags").empty().hide();
 }
