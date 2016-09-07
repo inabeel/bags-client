@@ -1002,7 +1002,13 @@ function ExecuteSmartSearch(txtbox) {
             }
             var tags_with_keywords = $.grep(search_matching_tags, function (e) { return e.name.indexOf(keyword_arr[i]) >= 0; });
             if (tags_with_keywords.length == 0) {
-                unmatched_keywords.push({ keyword: keyword_arr[i] });
+                var matchingTags = $.grep(g_tagsData, function (e) { return e.name.indexOf(keyword_arr[i]) == 0; });
+                if (matchingTags.length == 0) {
+                    unmatched_keywords.push({ keyword: keyword_arr[i] });
+                }
+                else {
+                    g_tags.push(matchingTags[0].id);
+                }
             }
         }
 
@@ -1070,8 +1076,13 @@ function SplitBackwardAndMatch(keyword_str) {
             for (var i = 0; i < result1.length; i++) {
                 if (result1[i].name != last_word) {
                     var extraText = result1[i].name.replace(last_word, "").trim();
-                    if (keyword_str.replace(last_word, "").indexOf(extraText) < 0)
+                    if (extraText.length > 2) {
+                        if (keyword_str.replace(last_word, "").indexOf(extraText) < 0)
+                            search_matching_tags.push(result1[i]);
+                    }
+                    else {
                         search_matching_tags.push(result1[i]);
+                    }
                 }
                 else {
                     search_matching_tags.push(result1[i]);
@@ -1086,8 +1097,13 @@ function SplitBackwardAndMatch(keyword_str) {
             for (var i = 0; i < result2.length; i++) {
                 if (result2[i].name != rest_str) {
                     var extraText = result2[i].name.replace(rest_str, "").trim();
-                    if (keyword_str.replace(rest_str, "").indexOf(extraText) < 0)
+                    if (extraText.length > 2) {
+                        if (keyword_str.replace(rest_str, "").indexOf(extraText) < 0)
+                            search_matching_tags.push(result2[i]);
+                    }
+                    else {
                         search_matching_tags.push(result2[i]);
+                    }
                 }
                 else {
                     search_matching_tags.push(result2[i]);
