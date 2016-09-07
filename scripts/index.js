@@ -961,9 +961,6 @@ function ExecuteSmartSearch(txtbox) {
 
         SplitBackwardAndMatch(keyword_str);
 
-        console.log("search_matching_tags -");
-        console.dir(search_matching_tags);
-
         for (var i = 0; i < search_matching_tags.length; i++) {
             var tag_exclude = false;
             for (var j = 0; j < search_matching_tags.length; j++) {
