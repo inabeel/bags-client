@@ -338,15 +338,6 @@ function getTags() {
                         g_tags = $("#main-search").val();
                         BuildUrlHash();
                     }
-                    //if Help Tour is running
-                    if (helptour_running == true) {
-                        if (adding_tag_in_helptour == true) {
-                            //Move to next step in help tour
-                            if (helptour_instance.getCurrentStep() == 3 || helptour_instance.getCurrentStep() == 5) {
-                                $(".enjoyhint_next_btn").click();
-                            }
-                        }
-                    }
                 }
             });
 
@@ -783,7 +774,9 @@ function ShowHelpTour() {
             helptour_running_allow_product_click = false;
             $.magnificPopup.close();
             localStorage.setItem("helptour-seen", "true");
+            $("#main-search").val("");
             $("#main-search").select2("val", "");
+            $("#main-search").trigger("change");
             setTimeout(function () {
                 $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
             }, 1000);
@@ -793,7 +786,9 @@ function ShowHelpTour() {
             helptour_running_allow_product_click = false;
             $.magnificPopup.close();
             localStorage.setItem("helptour-seen", "true");
+            $("#main-search").val("");
             $("#main-search").select2("val", "");
+            $("#main-search").trigger("change");
             setTimeout(function () {
                 $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
             }, 1000);
@@ -811,55 +806,37 @@ function ShowHelpTour() {
             showSkip: true,
             margin: 0,
             skipButton: { text: "Skip Tour" },
-            onBeforeStart: function () { adding_tag_in_helptour = false; }
         },
         {
             event: 'click',
-            selector: '.product-list div:first-child .product-details',
+            selector: '.product-list .product-card:first-child',
+            //selector: '.product-list div:first-child .product-details',
             event_selector: '.product-list div:first-child .product-details .tags-container .tag',
-            description: 'Select tag(s) which match<br/> with your ideal Bag.',
-            showSkip: true,
-            skipButton: { text: "Skip Tour" },
+            description: "When you like something in a bag,<br/> e.g.: <span class='label label-helptour label-primary'>#Style: handbag</span> , click on it's tag and<br/> we will show all the Handbags",
+            showSkip: false,
             showNext: true,
-            margin: 0
+            top: 250,
+            margin:0
         },
         {
-            event: 'click',
             timeout: 400,
             selector: '.select2-selection',
-            description: 'You can type here to search<br/> and add tags describing your bag',
-            showSkip: true,
-            skipButton: { text: "Skip Tour" },
+            description: 'Else here you can describe the Bag you would like to buy.<br/> e.g.: <span class="label-tour-eg">"Small crossbody handbags"</span>',
+            showSkip: false,
             showNext: true,
-            margin: 400,
-            margin:10
-        },
-        {
-            selector: '.select2-container',
-            description: 'Start typing..<br/> Select tag with arrow keys<br/> and hit enter to add it',
-            showSkip: true,
-            skipButton: { text: "Skip Tour" },
-            showNext: true,
-            margin: 415,
-            left: 202,
-            right: 202,
-            top: 203,
-            onBeforeStart: function () {
-                adding_tag_in_helptour = true;
-            }
+            margin: 10,
         },
         {
             event:'click',
             selector: '.select2-selection .select2-selection__choice__remove:first-child',
             event_selector: '.select2-selection .select2-selection__choice__remove:first-child',
-            description: 'Clicking on cross button of the tag will remove it',
+            description: 'We filter bags simply by property tags. <br/>You can remove a filter tag any time.<br/><span class="label-tour-eg">Happy Shopping</span>',
             shape: 'circle',
             radius: 15,
             showSkip: true,
-            skipButton: { text: "Skip Tour" },
-            showNext: true,
+            skipButton: { text: "End Tour" },
+            showNext: false,
             onBeforeStart: function () {
-                adding_tag_in_helptour = false;
                 if (g_tags == null || g_tags.length == 0) {
                     $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
                     $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
@@ -870,21 +847,10 @@ function ShowHelpTour() {
                     });
                     $("#main-search").trigger("change");
                 }
-            }
-        },
-        {
-            event: 'click',
-            selector: '.price-display',
-            description: 'Want to see Bags within your budget?<br/> You can select a price range.',
-            showSkip: true,
-            skipButton: { className: "bg-primary", text: "End Tour" },
-            showNext: false,
-            margin: 0,
-            onBeforeStart: function () {
                 helptour_running = false;
                 helptour_running_allow_product_click = false;
             }
-        }
+        },
     ];
 
     //set script config
