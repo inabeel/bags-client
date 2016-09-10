@@ -130,7 +130,7 @@ function ProcessUrlParams() {
     var urlTags = "";
     g_price_min = 0;
     g_price_max = 10000;
-   
+
     $(".about-section").hide()
     $(".product-list").show();
 
@@ -178,7 +178,7 @@ function ProcessUrlParams() {
             }
         }
     }
-   
+
     if (g_price_min == 0 && g_price_max == 10000) {
         $("#min_max_selected").hide();
         $("#lbl_price_filter").show();
@@ -191,14 +191,14 @@ function ProcessUrlParams() {
 
     $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
     $("#lbl_max_price").html(g_price_max == 10000 ? 'any' : '<i class="zmdi zmdi-money"></i>' + g_price_max);
-    
+
     trigger_tags_change = false;
     $("#main-search").select2("val", "");
     trigger_tags_change = true;
 
     if (g_manual_tag_change == true && urlTags != "") {
         g_tags = urlTags.split(',');
-       
+
         for (var i = 0; i < g_tags.length; i++) {
             $("#main-search option[value=" + g_tags[i] + "]").attr('selected', true);
             $("#main-search option[value=" + g_tags[i] + "]").prop('selected', true);
@@ -357,7 +357,7 @@ function getTags() {
 }
 
 function loadTags() {
-    
+
     $("#main-search").select2({
         placeholder: "e.g.: small black crossbody michael kors",
         data: g_tagsData,
@@ -472,7 +472,7 @@ function ShowMore() {
 }
 
 function GetProducts() {
-    
+
     g_load_bags = true;
     //Show bags view in case About us is openend
 
@@ -504,7 +504,7 @@ function GetProducts() {
         if (currentRequest.readyState == 4 && currentRequest.status == 200)
         {
             var data = JSON.parse(currentRequest.responseText);
-            
+
             //Setting product id to fetch next result from
             if (data.length > 0) {
                 data = RemoveSelectedTags(data);
@@ -611,7 +611,7 @@ function HidePageLoader() {
 }
 
 function BuildUrlHash() {
-   
+
     var hash = "";
     if (g_aboutus_open == true)
         hash += "aboutus=" + g_aboutus_open;
@@ -759,7 +759,7 @@ function ShowBagsView() {
 }
 
 function ShowHelpTour() {
-    
+
     //initialize instance
     helptour_instance = new EnjoyHint({
         onStart: function () {
@@ -795,24 +795,23 @@ function ShowHelpTour() {
         }
     });
 
-    //simple config. 
-    //Only one step - highlighting(with description) "New" button 
+    //simple config.
+    //Only one step - highlighting(with description) "New" button
     //hide EnjoyHint after a click on the button.
     var enjoyhint_script_steps = [
         {
             selector: '.product-list .product-card:first-child',
-            description: "Each Bag has images and tags mentioning its properties.",
-            showNext: true, 
+            description: "Each bag has images as well as tags for each of its attributes.",
+            showNext: true,
             showSkip: true,
             margin: 0,
             skipButton: { text: "Skip Tour" },
         },
         {
             event: 'click',
-            selector: '.product-list .product-card:first-child',
-            //selector: '.product-list div:first-child .product-details',
+            selector: '.product-list .product-card:first-child',            //selector: '.product-list div:first-child .product-details',
             event_selector: '.product-list div:first-child .product-details .tags-container .tag',
-            description: "When you like something in a bag,<br/> e.g.: <span class='label label-helptour label-primary'>#Style: handbag</span> , click on it's tag and<br/> we will show all the Handbags",
+            description: "When you like something in a bag,<br/> e.g.: <span class='label label-helptour label-primary'>#style: handbag</span>, click on it's tag and<br/> we will only show you bags with that attribute.",
             showSkip: false,
             showNext: true,
             top: 250,
@@ -821,7 +820,7 @@ function ShowHelpTour() {
         {
             timeout: 400,
             selector: '.select2-selection',
-            description: 'Else here you can describe the Bag you would like to buy.<br/> e.g.: <span class="label-tour-eg">"Small crossbody handbags"</span>',
+            description: 'Alternatively, you can describe your dream bag here.<br/> e.g.: <span class="label-tour-eg">"small blue crossbody handbag"</span>',
             showSkip: false,
             showNext: true,
             margin: 10,
@@ -830,7 +829,7 @@ function ShowHelpTour() {
             event:'click',
             selector: '.select2-selection .select2-selection__choice__remove:first-child',
             event_selector: '.select2-selection .select2-selection__choice__remove:first-child',
-            description: 'We filter bags simply by property tags. <br/>You can remove a filter tag any time.<br/><span class="label-tour-eg">Happy Shopping</span>',
+            description: 'We filter bags displayed by their tags. <br/>You can remove a filter tag any time.<br/><span class="label-tour-eg">Happy Shopping!</span>',
             shape: 'circle',
             radius: 15,
             showSkip: true,
@@ -1020,7 +1019,7 @@ function ExecuteSmartSearch(txtbox) {
         else {
             $("#pnl_confirm_tags").empty().hide();
         }
-       
+
         g_load_bags = true;
         g_manual_tag_change = true;
         $(txtbox).val("");
