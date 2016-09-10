@@ -5,6 +5,7 @@ RUN npm install -g handlebars
 COPY server /app
 WORKDIR /app
 RUN dotnet restore
+RUN dotnet build
 
 COPY css /app/client/css
 COPY fonts /app/client/fonts
