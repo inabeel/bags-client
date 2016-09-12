@@ -490,7 +490,7 @@
  * Page Loader
  */
 
-html:not(.ismobile) .page-loader {
+.page-loader {
   background: #fff;
   position: fixed;
   width: 100%;
@@ -500,7 +500,7 @@ html:not(.ismobile) .page-loader {
   z-index: 1000;
 }
 
-html:not(.ismobile) .page-loader .preloader {
+.page-loader .preloader {
   width: 50px;
   position: absolute;
   left: 50%;
@@ -515,7 +515,7 @@ html:not(.ismobile) .page-loader .preloader {
   animation-fill-mode: both;
 }
 
-html:not(.ismobile) .page-loader .preloader p {
+.page-loader .preloader p {
   white-space: nowrap;
   position: relative;
   left: -9px;
@@ -523,7 +523,7 @@ html:not(.ismobile) .page-loader .preloader p {
   color: #CCC;
 }
 
-html.ismobile .page-loader {
+.page-loader {
   display: none;
 }
 
