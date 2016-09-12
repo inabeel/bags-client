@@ -769,7 +769,7 @@ body.showing-product{
 }
 .help-slider-clone{
     position: fixed;
-    bottom: 50px;
+    bottom: 55px;
     right: 0px;
     z-index: 1000;
     height: 45px;
