@@ -26,6 +26,10 @@
     .product-list .product-card .card-header{
         padding:23px 25px 0px 25px;
     }
+    .product-popup-buttons{
+        bottom:0px;
+        width:100%;
+    }
 }
 .product-list .product-card .card-header:hover{
     cursor:pointer;
@@ -481,7 +485,11 @@ content: '\f1c3' ;
     font-weight:700;
     margin-bottom:10px;
 }
-.product-popup .carousel-inner > .item > img:hover{
+.product-popup .price{
+    margin-top:20px;
+    font-size:30px;
+    font-weight:700;
+    color:black;
 }
 .product-popup .product-tags .tag{
    margin-top: 8px;
@@ -567,7 +575,7 @@ content: '\f1c3' ;
 }
 @media (max-width: 767px){
     .product-popup{
-        padding:20px 20px !important;
+        padding:20px 20px 60px 20px !important;
     }
     .top-menu .dropdown-menu-lg {
         position:fixed;
@@ -691,10 +699,10 @@ content: '\f1c3' ;
     background:#2196f3 !important;
 }
 
-html:not(.ismobile) .page-loader{
+.page-loader{
     background:none !important;
 }
-html:not(.ismobile) .page-loader .preloader{
+.page-loader .preloader{
     width:45px;
     background-color:rgb(9,85,147);
     border-radius:5px;
@@ -791,6 +799,8 @@ body.showing-product{
     color: white;
     background-color:#FFC107;
     cursor:pointer;
+    border-top-left-radius:2px !important;
+    border-bottom-left-radius:2px !important;
 }
 .help-slider .btn-hidden {
     height: 45px;
@@ -837,11 +847,7 @@ body.showing-product{
 .social-dropdown a{
     font-weight:500 !important;
 }
-.product-popup-buttons{
-    position:absolute;
-    bottom:0px;
-    width:100%;
-}
+
 .popup-social-share{
     text-align:right;
 }
@@ -996,4 +1002,10 @@ body.showing-product{
 .popover-content{
     padding:10px !important;
     line-height:22px;
+}
+.popup-btn-close{
+    position:absolute;
+    bottom:0px;
+    margin-left:-20px;
+    width:100%;
 }

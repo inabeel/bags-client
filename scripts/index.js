@@ -29,7 +29,8 @@ helptour_instance, //Help tour instance
 search_matching_tags = [], //Holds the matching tags for smart search
 full_keyword_str = "", //This holds the original search text when user hit "Enter" key in search box
 duplicate_conflicts = [],
-partial_conflicts = [];
+partial_conflicts = [],
+top_menu_hidden = false;
 
 $(document).ready(function () {
     page_loaded = true;
@@ -49,23 +50,45 @@ $(document).ready(function () {
     });
 })
 
+$(window).resize(function () {
+    if (g_popupOpened == true) {
+        if ($("#product-popup-right-column").height() < $("#product-gallery").height()) {
+            $("#product-popup-right-column").css('min-height', $("#product-gallery").css("height"));
+            $("#product-popup-right-column .product-popup-buttons").css("position", "absolute");
+        }
+        else {
+            $("#product-popup-right-column").css('min-height', "initial");
+            $("#product-popup-right-column .product-popup-buttons").css("position", "initial");
+        }
+    }
+})
+
 $(document).scroll(function () {
     $("#main-search").select2("close");
+    if ($('html').hasClass('ismobile')) {
+        //if mobile then remove focus from search box
+        $('.select2-search__field').blur();
+    }
     if (page_loaded == true) {
         if ($(document).scrollTop() <= 10) {
             if (menuHiding == false && g_popupOpened == false && helptour_running == false) {
                 menuHiding = true;
                 $(".top-menu-small").slideDown("fast", function () {
                     menuHiding = false;
+                    top_menu_hidden = false;
                 });
             }
         }
         if ($(document).scrollTop() > 10) {
-            if (menuHiding == false) {
-                menuHiding = true;
-                $(".top-menu-small").slideUp("fast", function () {
-                    menuHiding = false;
-                });
+            if (!top_menu_hidden) {
+                if (menuHiding == false) {
+                    menuHiding = true;
+                    console.log("sliding up");
+                    $(".top-menu-small").slideUp("fast", function () {
+                        menuHiding = false;
+                        top_menu_hidden = true;
+                    });
+                }
             }
         }
     }
@@ -700,7 +723,11 @@ function ShowProductPopup(productid) {
 
                         if (!$('html').hasClass('ismobile')) {
                             $('#product-popup [data-imagezoom]').imageZoom();
-                            $("#product-popup-right-column").css('min-height', $("#product-gallery").css("height"));
+                           
+                            if ($("#product-popup-right-column").height() < $("#product-gallery").height()) {
+                                $("#product-popup-right-column").css('min-height', $("#product-gallery").css("height"));
+                                $("#product-popup-right-column .product-popup-buttons").css("position", "absolute");
+                            }
                         }
                         //Enabling swiping
                         $("#product-popup .carousel").swiperight(function () {
@@ -871,11 +898,7 @@ function ShowMobileHelpTour() {
     // Instance the tour
     var tour = new Tour({
         storage: false,
-        template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div>" +
-        "<div class='popover-navigation'>" +
-            "<button class='btn btn-default btn-primary' data-role='next'>Next »</button>" +
-            "<button class='btn btn-default' data-role='end'>End tour</button></div>" +
-        "</div>",
+        autoscroll: false,
         onStart: function (tour) {
             //below flag with prevent some animation and scroll to happen till the helptour is running
             helptour_running = true;
@@ -887,6 +910,7 @@ function ShowMobileHelpTour() {
             $(".help-btn-mobile").css("visibility","hidden");
             $("#crowd-shortcut").css("visibility", "hidden");
             $("#btn_share_floating").css("visibility", "hidden");
+            $('body').scrollTop(250 - ($(window).height() - $(".product-list .product-card:first-child").height()));
         },
         onEnd: function (tour) {
             //below flags with prevent some animation and scroll to happen till the helptour is running
@@ -895,10 +919,8 @@ function ShowMobileHelpTour() {
             //Set the helptour as seen in local storage
             localStorage.setItem("helptour-seen", "true");
 
-            //Clearing search box
-            $("#main-search").val("");
-            $("#main-search").select2("val", "");
-            $("#main-search").trigger("change");
+            //Get the screen back to top
+            $('body').scrollTop(25);
 
             //revoking fix for header z-index issue with backdrop
             $("#header").css('z-index', '1051');
@@ -908,8 +930,13 @@ function ShowMobileHelpTour() {
             $("#crowd-shortcut").css("visibility", "visible");
             $("#btn_share_floating").css("visibility", "visible");
 
-            //Get the screen back to top
-            $('body').scrollTop(25);
+            //Remove if any tour popover failed to go off
+            $(".popover.tour").remove();
+
+            //Clearing search box
+            $("#main-search").val("");
+            $("#main-search").select2("val", "");
+            $("#main-search").trigger("change");
         },
         steps: [
             {
@@ -923,7 +950,12 @@ function ShowMobileHelpTour() {
                 element: "#bootstraptour-step1",
                 title: "",
                 placement: 'bottom',
-                content: "Each bag has images as well as tags for each of its attributes."
+                content: "Each bag has images as well as tags for each of its attributes.",
+                template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div>" +
+                   "<div class='popover-navigation'>" +
+                       "<button class='btn btn-default btn-primary' data-role='next'>Next »</button>" +
+                       "<button class='btn btn-default' data-role='end'>End tour</button></div>" +
+                   "</div>",
             },
             {
                 onShow: function () {
@@ -942,7 +974,12 @@ function ShowMobileHelpTour() {
                 element: "#bootstraptour-step2",
                 title: null,
                 placement: 'top',
-                content: "When you like something in a bag, e.g.: <span class='label fs12 bgm-lightgreen fw400'>#style: handbag</span>, click on it's tag and we will only show you bags with that attribute."
+                content: "When you like something in a bag, e.g.: <span class='label fs12 bgm-lightgreen fw400'>#style: handbag</span>, click on it's tag and we will only show you bags with that attribute.",
+                template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div>" +
+                  "<div class='popover-navigation'>" +
+                      "<button class='btn btn-default btn-primary' data-role='next'>Next »</button>" +
+                      "<button class='btn btn-default' data-role='end'>End tour</button></div>" +
+                  "</div>",
             },
             {
                 backdrop: true,
@@ -953,7 +990,12 @@ function ShowMobileHelpTour() {
                 onShow: function (tour) {
                     //fix for header z-index issue with backdrop
                     $("#header").css('z-index', '1101');
-                }
+                },
+                template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div>" +
+                  "<div class='popover-navigation'>" +
+                      "<button class='btn btn-default btn-primary' data-role='next'>Next »</button>" +
+                      "<button class='btn btn-default' data-role='end'>End tour</button></div>" +
+                  "</div>",
             },
             {
                 backdrop: true,
@@ -974,10 +1016,14 @@ function ShowMobileHelpTour() {
                         $("#main-search").trigger("change");
                     }
                 },
-                element: '.select2-selection .select2-selection__choice__remove:first-child',
+                element: '.select2-selection .select2-selection__choice:first .select2-selection__choice__remove:first',
                 title: null,
                 placement: 'bottom',
-                content: 'We filter bags displayed by their tags. You can remove a filter tag any time. <b>Happy Shopping!</b>'
+                content: 'We filter bags displayed by their tags. You can remove a filter tag any time. <b>Happy Shopping!</b>',
+                template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div>" +
+                  "<div class='popover-navigation'>" +
+                      "<button class='btn btn-primary' data-role='end'>End tour</button></div>" +
+                  "</div>",
             },
         ]
     });
