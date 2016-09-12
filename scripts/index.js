@@ -25,7 +25,6 @@ trigger_tags_change = true,
 g_popup_just_closed = false,
 g_tag_changed_when_popup_open = false,
 helptour_running = false, //Turns to true during the Help tour running
-helptour_running_allow_product_click = false, //It decides whether to allow product click when Help tour is running
 helptour_instance, //Help tour instance
 search_matching_tags = [], //Holds the matching tags for smart search
 full_keyword_str = "", //This holds the original search text when user hit "Enter" key in search box
@@ -589,10 +588,17 @@ function GetProducts() {
             $(".help-slider").css("visibility", "visible");
             if (localStorage.getItem("helptour-seen") != "true") {
                 if (!helptour_running) {
-                    if (!$(".help-slider-clone").find('div.popover:visible').length) {
-                        //notification is not yet visible
+                    if ($(".help-slider-clone").css('display') != "none") {
+                        if (!$(".help-slider-clone").find('div.popover:visible').length) {
+                            //notification is not yet visible
+                            setTimeout(function () {
+                                $(".help-slider-clone").popover("show");
+                            }, 2000);
+                        }
+                    }
+                    else {
                         setTimeout(function () {
-                            $(".help-slider-clone").popover("show");
+                            $(".help-btn-mobile").popover("show");
                         }, 2000);
                     }
                 }
@@ -631,7 +637,7 @@ function BuildUrlHash() {
 }
 
 function TriggerProductPopup(productid) {
-    if (!helptour_running || (helptour_running && helptour_running_allow_product_click)) {
+    if (!helptour_running) {
         g_open_productid = productid;
         g_load_bags = false;
         BuildUrlHash();
@@ -771,7 +777,6 @@ function ShowHelpTour() {
         },
         onSkip: function () {
             helptour_running = false;
-            helptour_running_allow_product_click = false;
             $.magnificPopup.close();
             localStorage.setItem("helptour-seen", "true");
             $("#main-search").val("");
@@ -783,7 +788,6 @@ function ShowHelpTour() {
         },
         onStop: function () {
             helptour_running = false;
-            helptour_running_allow_product_click = false;
             $.magnificPopup.close();
             localStorage.setItem("helptour-seen", "true");
             $("#main-search").val("");
@@ -801,17 +805,17 @@ function ShowHelpTour() {
     var enjoyhint_script_steps = [
         {
             selector: '.product-list .product-card:first-child',
-            description: "Each bag has images as well as tags for each of its attributes.",
+            description: "Each bag has images as well as<br/> tags for each of its attributes.",
             showNext: true,
-            showSkip: true,
+            showSkip: false,
             margin: 0,
             skipButton: { text: "Skip Tour" },
         },
         {
             event: 'click',
-            selector: '.product-list .product-card:first-child',            //selector: '.product-list div:first-child .product-details',
+            selector: '.product-list .product-card:first-child',
             event_selector: '.product-list div:first-child .product-details .tags-container .tag',
-            description: "When you like something in a bag,<br/> e.g.: <span class='label label-helptour label-primary'>#style: handbag</span>, click on it's tag and<br/> we will only show you bags with that attribute.",
+            description: "When you like something in a bag,<br/> e.g.: <span class='label label-helptour bgm-lightgreen'>#style: handbag</span>, click on it's tag and<br/> we will only show you bags with that attribute.",
             showSkip: false,
             showNext: true,
             top: 250,
@@ -847,7 +851,6 @@ function ShowHelpTour() {
                     $("#main-search").trigger("change");
                 }
                 helptour_running = false;
-                helptour_running_allow_product_click = false;
             }
         },
     ];
@@ -857,6 +860,133 @@ function ShowHelpTour() {
 
     //run Enjoyhint script
     helptour_instance.run();
+}
+
+function ShowMobileHelpTour() {
+
+    //adding ids to elements as bootstraptour cant find element with given selector
+    $(".product-list .product-card:first-child").attr("id", "bootstraptour-step1"); 
+    $(".product-list .product-card:first-child .tags-container").attr("id", "bootstraptour-step2")
+
+    // Instance the tour
+    var tour = new Tour({
+        storage: false,
+        template: "<div class='popover tour'><div class='arrow'></div><div class='popover-content'></div>" +
+        "<div class='popover-navigation'>" +
+            "<button class='btn btn-default btn-primary' data-role='next'>Next »</button>" +
+            "<button class='btn btn-default' data-role='end'>End tour</button></div>" +
+        "</div>",
+        onStart: function (tour) {
+            //below flag with prevent some animation and scroll to happen till the helptour is running
+            helptour_running = true;
+
+            //hide help notification popover
+            $(".help-btn-mobile").popover("destroy");
+
+            //hidding floating buttons
+            $(".help-btn-mobile").css("visibility","hidden");
+            $("#crowd-shortcut").css("visibility", "hidden");
+            $("#btn_share_floating").css("visibility", "hidden");
+        },
+        onEnd: function (tour) {
+            //below flags with prevent some animation and scroll to happen till the helptour is running
+            helptour_running = false;
+
+            //Set the helptour as seen in local storage
+            localStorage.setItem("helptour-seen", "true");
+
+            //Clearing search box
+            $("#main-search").val("");
+            $("#main-search").select2("val", "");
+            $("#main-search").trigger("change");
+
+            //revoking fix for header z-index issue with backdrop
+            $("#header").css('z-index', '1051');
+
+            //showing floating buttons back again
+            $(".help-btn-mobile").css("visibility", "visible");
+            $("#crowd-shortcut").css("visibility", "visible");
+            $("#btn_share_floating").css("visibility", "visible");
+
+            //Get the screen back to top
+            $('body').scrollTop(25);
+        },
+        steps: [
+            {
+                onShow: function () {
+                    $(".product-list .product-card:first-child").attr("id", "bootstraptour-step1");
+
+                    //revoking fix for header z-index issue with backdrop
+                    $("#header").css('z-index', '1051');
+                },
+                backdrop: true,
+                element: "#bootstraptour-step1",
+                title: "",
+                placement: 'bottom',
+                content: "Each bag has images as well as tags for each of its attributes."
+            },
+            {
+                onShow: function () {
+                    $(".product-list .product-card:first-child .tags-container").attr("id", "bootstraptour-step2");
+
+                    //revoking fix for header z-index issue with backdrop
+                    $("#header").css('z-index', '1051');
+                },
+                backdrop: true,
+                backdropPadding: {
+                    top: 0,
+                    left: 10,
+                    right: 10,
+                    bottom:10
+                },
+                element: "#bootstraptour-step2",
+                title: null,
+                placement: 'top',
+                content: "When you like something in a bag, e.g.: <span class='label fs12 bgm-lightgreen fw400'>#style: handbag</span>, click on it's tag and we will only show you bags with that attribute."
+            },
+            {
+                backdrop: true,
+                element: "#top-search-wrap",
+                title: null,
+                placement: 'bottom',
+                content: 'Alternatively, you can describe your dream bag here. e.g.:<br/> <b>"small blue crossbody handbag"</b>',
+                onShow: function (tour) {
+                    //fix for header z-index issue with backdrop
+                    $("#header").css('z-index', '1101');
+                }
+            },
+            {
+                backdrop: true,
+                backdropPadding: {
+                    top: 0,
+                    left: 5,
+                    right: 0,
+                    bottom: 5
+                },
+                onShow: function (tour) {
+                    //fix for header z-index issue with backdrop
+                    $("#header").css('z-index', '1101');
+
+                    //For the step adding a temp tag in the search bar
+                    if (g_tags == null || g_tags.length == 0) {
+                        $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").attr('selected', true);
+                        $("#main-search option[value=" + $("#main-search option:first-child").val() + "]").prop('selected', true);
+                        $("#main-search").trigger("change");
+                    }
+                },
+                element: '.select2-selection .select2-selection__choice__remove:first-child',
+                title: null,
+                placement: 'bottom',
+                content: 'We filter bags displayed by their tags. You can remove a filter tag any time. <b>Happy Shopping!</b>'
+            },
+        ]
+    });
+
+    // Initialize the tour
+    tour.init();
+
+    // Start the tour
+    tour.start();
 }
 
 function createXHR() {

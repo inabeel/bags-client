@@ -44,6 +44,7 @@
 	<link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
 	<link href="vendors/bower_components/nouislider/distribute/jquery.nouislider.min.css" rel="stylesheet">
 	<link href="vendors/bower_components/nouislider/distribute/nouislider.tooltips.css" rel="stylesheet" />
+	<link href="vendors/bootstraptour/bootstrap-tour.min.css" rel="stylesheet" />
 	<link href="vendors/enjoyhint/enjoyhint.css" rel="stylesheet" />
 
 	<!-- CSS -->
@@ -241,12 +242,16 @@
 		</ul>
 	</div>
 
-	<div class="help-slider-clone  hidden-xs"  data-viewport="body" data-container=".help-slider-clone" data-toggle="popover" data-placement="top" data-trigger="manual"
-			  data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your perfect bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!"></div>
+	<div class="help-slider-clone hidden-xs custom-help-popover"  data-viewport="body" data-container=".help-slider-clone" data-toggle="popover" data-placement="top" data-trigger="manual"
+			  data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!"></div>
 
+	<div class="help-btn-mobile visible-xs custom-help-popover"  data-viewport="body" data-container=".help-btn-mobile" data-toggle="popover" data-placement="top" data-trigger="manual"
+			  data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowMobileHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!">
+		<button type="button" class="btn btn-link btn-mobile-help" onclick="ShowMobileHelpTour()"><i class="fa fa-question"></i></button>
+	</div>
 	<div class="help-slider hidden-xs">
 		<div id="helper" class="btn-visible">
-			<div  class="btn-help" onclick="ShowHelpTour();">
+			<div  class="btn-help waves-effect" onclick="ShowHelpTour();">
 				<i class="fa fa-question"></i>
 			</div>
 		</div>
@@ -262,6 +267,7 @@
 	<script src="vendors/linqjs/linq.min.js"></script>
 	<script src="vendors/bower_components/flot/jquery.flot.js"></script>
 	<script src="vendors/bower_components/flot/jquery.flot.resize.js"></script>
+	<script src="vendors/bootstraptour/bootstrap-tour.min.js"></script>
 	<script src="vendors/enjoyhint/enjoyhint.min.js"></script>
 	<script src="vendors/magnific-popup/jquery.magnific-popup.min.js"></script>
 	<script src="vendors/jquery-touch/jquery.mobile.custom.min.js"></script>

@@ -20,7 +20,7 @@
 							<!-- Wrapper for slides -->
 							<div class="carousel-inner" role="listbox">
 								{{#each images}}
-									<a href="#product_id={{../id}}" target="_blank" onclick="TriggerProductPopup('{{../id}}');return false;" class="item {{#ifCond @index '==' 0}}active{{/ifCond}}">
+									<a href="#product_id={{../id}}" target="_blank" onclick="console.dir(event);if(event.which != 2){TriggerProductPopup('{{../id}}');return false;}" class="item {{#ifCond @index '==' 0}}active{{/ifCond}}">
 										<img src="{{medium}}" alt="">
 									</a>
 								{{/each}}
