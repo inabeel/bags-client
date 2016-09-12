@@ -735,6 +735,27 @@ body.showing-product{
    font-size: 25px;
    color:white;
    cursor:pointer;
+   border-top-left-radius:2px !important;
+    border-bottom-left-radius:2px !important;
+}
+.help-btn-mobile{
+    position:fixed;
+    bottom:100px;
+    z-index:2000;
+    height: 45px;
+    width: 45px;
+    right:0px;
+}
+.help-btn-mobile .btn-mobile-help{
+    height:45px;
+    width:45px;
+    border-radius:0px !important;
+    border:none;
+    color:white;
+    font-size:25px;
+    background-color:#FFC107;
+    border-top-left-radius:2px !important;
+    border-bottom-left-radius:2px !important;
 }
 .help-slider {
     visibility:hidden;
@@ -748,7 +769,7 @@ body.showing-product{
 }
 .help-slider-clone{
     position: fixed;
-    bottom: 50px;
+    bottom: 55px;
     right: 0px;
     z-index: 1000;
     height: 45px;
@@ -757,7 +778,7 @@ body.showing-product{
 }
 .help-slider .btn-visible {
     text-align: center;
-    display: table-cell;
+    float:left;
     vertical-align: top;
     width: 45px;
     position:relative;
@@ -772,7 +793,6 @@ body.showing-product{
     cursor:pointer;
 }
 .help-slider .btn-hidden {
-    display: table-cell;
     height: 45px;
     overflow: hidden;
     position: relative;
@@ -858,7 +878,7 @@ body.showing-product{
     font-size:14px;
     line-height:16px;
 }
-.help-slider-clone .popover {
+.custom-help-popover .popover {
     background-color:#673AB7;
     border:1px solid #673AB7;
     -webkit-box-shadow:none !important;
@@ -866,25 +886,25 @@ body.showing-product{
     color:#e5e5e5;
 }
 
-.help-slider-clone .popover .skip-button{
+.custom-help-popover .popover .skip-button{
     color:#ddd !important;
 }
-.help-slider-clone .popover .skip-button:hover{
+.custom-help-popover .popover .skip-button:hover{
     color:#fff !important;
 }
-.help-slider-clone .popover.top .arrow{
+.custom-help-popover .popover.top .arrow{
     border-top-color:#673AB7;
 }
-.help-slider-clone .popover.top .arrow:after{
+.custom-help-popover .popover.top .arrow:after{
         border-top-color: #673AB7;
 }
-.help-slider-clone .popover.left .arrow{
+.custom-help-popover .popover.left .arrow{
     border-left-color:#673AB7;
 }
-.help-slider-clone .popover.left .arrow:after{
+.custom-help-popover .popover.left .arrow:after{
         border-left-color: #673AB7;
 }
-.help-slider-clone .popover .popover-title{
+.custom-help-popover .popover .popover-title{
     background-color:#673AB7;
     text-transform:none;
     color:white;
@@ -972,4 +992,8 @@ body.showing-product{
 }
 .label-tour-eg{
     color:white !important;
+}
+.popover-content{
+    padding:10px !important;
+    line-height:22px;
 }
