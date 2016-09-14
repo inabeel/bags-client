@@ -1088,16 +1088,16 @@ function SkipHelpTourNotification() {
 }
 
 function ExecuteSmartSearch(txtbox) {
-    var keyword_str = $(txtbox).val().trim();
+    var keyword_str = RemoveRepeatingWords($(txtbox).val().trim());
+
     var keyword_arr = keyword_str.split(" ");
     var matched_tags = [];
     if (keyword_str.length > 0) {
 
         search_matching_tags = [];
-        var search_tags_without_duplicate = [];
+        var search_tags_without_duplicate = [], unmatched_keywords = [];
         duplicate_conflicts = [];
         partial_conflicts = [];
-        var unmatched_keywords = [];
         full_keyword_str = keyword_str;
 
         SplitBackwardAndMatch(keyword_str);
@@ -1108,7 +1108,8 @@ function ExecuteSmartSearch(txtbox) {
                 if (search_matching_tags[i].id != search_matching_tags[j].id) {
                     if (search_matching_tags[i].name != search_matching_tags[j].name) {
                         if (search_matching_tags[j].name.indexOf(search_matching_tags[i].name) >= 0) {
-                            tag_exclude = true;
+                            if (keyword_str.indexOf(search_matching_tags[j].name) > 0)
+                                tag_exclude = true;
                         }
                     }
                     else {
@@ -1201,6 +1202,16 @@ function ExecuteSmartSearch(txtbox) {
         $(txtbox).val("");
         BuildUrlHash();
     }
+}
+
+function RemoveRepeatingWords(string) {
+    var arr = string.split(" ");
+    var unique = [];
+    $.each(arr, function (index, word) {
+        if ($.inArray(word, unique) === -1)
+            unique.push(word);
+    });
+    return unique.join(" ");
 }
 
 function SplitBackwardAndMatch(keyword_str) {
