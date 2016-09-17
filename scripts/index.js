@@ -33,6 +33,7 @@ partial_conflicts = [],
 top_menu_hidden = false;
 
 $(document).ready(function () {
+   
     page_loaded = true;
 
     //Help button sliding
@@ -48,22 +49,7 @@ $(document).ready(function () {
             $(".help-slider .btn-help").css({ "backgroundColor": "#FFC107" });
         }
     });
-})
-
-$(window).resize(function () {
-    if (g_popupOpened == true) {
-        if ($("#product-popup-right-column").height() < $("#product-gallery").height()) {
-            $("#product-popup-right-column").css('min-height', $("#product-gallery").css("height"));
-            $("#product-popup-right-column .product-popup-buttons").css("position", "absolute");
-        }
-        else {
-            $("#product-popup-right-column").css('min-height', "initial");
-            $("#product-popup-right-column .product-popup-buttons").css("position", "initial");
-        }
-    }
-})
-
-$(document).scroll(function () {
+}).scroll(function () {
     $("#main-search").select2("close");
     if ($('html').hasClass('ismobile')) {
         //if mobile then remove focus from search box
@@ -93,6 +79,21 @@ $(document).scroll(function () {
         }
     }
 });
+
+$(window).resize(function () {
+    if (g_popupOpened == true) {
+        if ($("#product-popup-right-column").height() <= 370) {
+            if (!$('html').hasClass('ismobile')) {
+                $("#product-popup-right-column").css('min-height',370);
+                $("#product-popup-right-column .product-popup-buttons").css("position", "absolute");
+            }
+        }
+        else {
+            $("#product-popup-right-column").css('min-height', "initial");
+            $("#product-popup-right-column .product-popup-buttons").css("position", "initial");
+        }
+    }
+})
 
 Handlebars.registerHelper("colorTag", function (categoryid) {
     return fnColorTag(categoryid);
@@ -126,6 +127,8 @@ var category_colors = ["bgm-red", "bgm-blue", "bgm-green", "bgm-lightgreen", "bg
 var categories = [];
 
 $(function () {
+    ShowPageLoader();
+
     var xhr_tag_cat = createXHR();
     xhr_tag_cat.open("GET", g_api + '/api/tag_categories', true);
     xhr_tag_cat.onreadystatechange = function () {
@@ -361,6 +364,11 @@ function getTags() {
                         BuildUrlHash();
                     }
                 }
+
+                //Add more top padding to bags list so it doesn't go behind expanded header
+                setTimeout(function () {
+                    $("#main").css("padding-top", $("#top-search-wrap").height() + 16 + "px");
+                },50);
             });
 
             $("#main-search").on("select2:unselect", function (e) {
@@ -722,12 +730,13 @@ function ShowProductPopup(productid) {
                         }).addClass("event-binded");
 
                         if (!$('html').hasClass('ismobile')) {
-                            $('#product-popup [data-imagezoom]').imageZoom();
-                           
-                            if ($("#product-popup-right-column").height() < $("#product-gallery").height()) {
-                                $("#product-popup-right-column").css('min-height', $("#product-gallery").css("height"));
+                            if ($("#product-popup-right-column").height() < 370) {
+                                $("#product-popup-right-column").css('min-height', 370);
                                 $("#product-popup-right-column .product-popup-buttons").css("position", "absolute");
                             }
+                            setTimeout(function () {
+                                $('#product-popup [data-imagezoom]').imageZoom();
+                            },1000);
                         }
                         //Enabling swiping
                         $("#product-popup .carousel").swiperight(function () {
@@ -1221,8 +1230,13 @@ function SplitBackwardAndMatch(keyword_str) {
     result1 = [],
     result2 = [];
 
+
+
     if (last_word.length > 0) {
-        result1 = $.grep(g_tagsData, function (e) { return e.name.indexOf(last_word) == 0; });
+        result1 = $.grep(g_tagsData, function (e) { return e.name == last_word; });
+
+        if(result1.length == 0)
+            result1 = $.grep(g_tagsData, function (e) { return e.name.indexOf(last_word) == 0; });
 
         if (result1.length > 0) {
             for (var i = 0; i < result1.length; i++) {
@@ -1243,7 +1257,11 @@ function SplitBackwardAndMatch(keyword_str) {
         }
     }
     if (rest_str.length > 0) {
-        result2 = $.grep(g_tagsData, function (e) { return e.name.indexOf(rest_str) == 0; });
+
+        result2 = $.grep(g_tagsData, function (e) { return e.name == rest_str; });
+
+        if (result2.length == 0)
+            result2 = $.grep(g_tagsData, function (e) { return e.name.indexOf(rest_str) == 0; });
 
         if (result2.length > 0) {
             for (var i = 0; i < result2.length; i++) {
