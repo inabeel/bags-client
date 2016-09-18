@@ -886,7 +886,6 @@ function ShowHelpTour() {
                     });
                     $("#main-search").trigger("change");
                 }
-                helptour_running = false;
             }
         },
     ];
