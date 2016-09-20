@@ -1,11 +1,11 @@
 <div class="tags alert alert-dismissible">
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
 	{{#isLengthOf duplicate_conflicts ">" 0}}
-		<div class="mt15"><i class="fa fa-search"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
+		<div class="mt15"><i class="fa fa-exclamation-circle text-danger"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
 	{{/isLengthOf}}
 	{{#isLengthOf duplicate_conflicts "==" 0}}
 		{{#isLengthOf partial_conflicts ">" 0}}
-			<div class="mt15"><i class="fa fa-search"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
+			<div class="mt15"><i class="fa fa-exclamation-circle text-danger"></i> We couldn't find an exact match for some of your terms. Please choose from below</div>
 		{{/isLengthOf}}
 	{{/isLengthOf}}
 	<table id="list-confirm-tags" class="mt10">

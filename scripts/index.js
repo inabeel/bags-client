@@ -50,11 +50,6 @@ $(document).ready(function () {
         }
     });
 }).scroll(function () {
-    $("#main-search").select2("close");
-    if ($('html').hasClass('ismobile')) {
-        //if mobile then remove focus from search box
-        $('.select2-search__field').blur();
-    }
     if (page_loaded == true) {
         if ($(document).scrollTop() <= 10) {
             if (menuHiding == false && g_popupOpened == false && helptour_running == false) {
@@ -69,7 +64,6 @@ $(document).ready(function () {
             if (!top_menu_hidden) {
                 if (menuHiding == false) {
                     menuHiding = true;
-                    console.log("sliding up");
                     $(".top-menu-small").slideUp("fast", function () {
                         menuHiding = false;
                         top_menu_hidden = true;
@@ -156,8 +150,8 @@ function ProcessUrlParams() {
     g_price_min = 0;
     g_price_max = 10000;
 
-    $(".about-section").hide()
-    $(".product-list").show();
+    $(".about-section").hide();
+    $(".bags-section").show();
 
     var closePopup = false;
     for (var i = 0; i < params.length; i++) {
@@ -180,7 +174,7 @@ function ProcessUrlParams() {
             var value1 = temp[1];
             switch (key) {
                 case "aboutus":
-                    $(".product-list").fadeOut("fast", function () {
+                    $(".bags-section").fadeOut("fast", function () {
                         $(".about-section").fadeIn("fast");
                     });
                     break;
@@ -398,12 +392,13 @@ function loadTags() {
             a.addClass(fnColorTag(data.category_id));
             return data.text;
         },
+        dropdownParent: $(".search-container"),
         matcher: function (term, option) {
             if (typeof term.term != 'undefined') { //has terms
                 if (/\S/.test(term.term)) { //if empty or spaces
                     if (option.name.toUpperCase().indexOf(term.term.toUpperCase()) >= 0
-                        || option.category.name.toUpperCase().indexOf(term.term.toUpperCase()) >= 0
-                        || option.text.toUpperCase().indexOf(term.term.toUpperCase()) >= 0) {
+                        || option.category.name.toUpperCase().indexOf(term.term.toUpperCase().replace(/#/g,"")) >= 0
+                        || option.text.toUpperCase().indexOf(term.term.toUpperCase().replace(/#/g,"")) >= 0) {
                         return option;
                     } else {
                         return null;
@@ -1097,7 +1092,8 @@ function SkipHelpTourNotification() {
 
 function ExecuteSmartSearch(txtbox) {
     var keyword_str = RemoveRepeatingWords($(txtbox).val().trim());
-
+    //remove # from the keywords
+    keyword_str = keyword_str.replace(/#/g, "");
     var keyword_arr = keyword_str.split(" ");
     var matched_tags = [];
     if (keyword_str.length > 0) {

@@ -42,8 +42,7 @@
 	<link href="vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
 	<link href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
 	<link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
-	<link href="vendors/bower_components/nouislider/distribute/jquery.nouislider.min.css" rel="stylesheet">
-	<link href="vendors/bower_components/nouislider/distribute/nouislider.tooltips.css" rel="stylesheet" />
+	<link href="vendors/nouislider/jquery.nouislider.min.css" rel="stylesheet">
 	<link href="vendors/bootstraptour/bootstrap-tour.min.css" rel="stylesheet" />
 	<link href="vendors/enjoyhint/enjoyhint.css" rel="stylesheet" />
 
@@ -66,9 +65,6 @@
 			<div class="top-menu-small">
 				<div class="container">
 					<ul class="top-menu-small">
-						<li>
-							<a href="javascript:void(0)" onclick="ShowBagsView()">BAGS</a>
-						</li>
 						<li>
 							<a href="https://blog.bagcupid.com/" target="_blank"><span>BLOG <i class="fa fa-external-link"></i></span></a>
 						</li>
@@ -107,12 +103,19 @@
 								<div class="price-menu dropdown-menu dropdown-menu-lg pull-right">
 									<div class="listview">
 										<div class="lv-body p10">
+											<div class="row mt10">
+												<div class="col-xs-6">
+													<div class="fs12 text-primary pl10">MIN</div>
+												</div>
+												<div class="col-xs-6">
+													<div class="fs12 text-primary pr10  text-right">MAX</div>
+												</div>
+											</div>
 											<div class="ml30 mr30">
-												<div id="price-slider" class="input-slider-range mt50 mb50"></div>
+												<div id="price-slider" class="input-slider-range mt20 mb50"></div>
 											</div>
 											<div class="row">
 												<div class="col-xs-6">
-													<div class="fs12 text-primary pl10">MIN</div>
 													<a class="lv-item" href="javascript:void(0)" onclick="ChangeHashForPrice('min', 0)">
 														$0
 													</a>
@@ -133,29 +136,37 @@
 													</a>
 												</div>
 												<div class="col-xs-6">
-													<div class="fs12 text-primary pr10  text-right">MAX</div>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 100)">
+													<a class="lv-item text-right text-primary" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 100)">
 														$100
 													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 200)">
+													<a class="lv-item text-right text-primary" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 200)">
 														$200
 													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 400)">
+													<a class="lv-item text-right text-primary" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 400)">
 														$400
 													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 800)">
+													<a class="lv-item text-right text-primary" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 800)">
 														$800
 													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 1000)">
+													<a class="lv-item text-right text-primary" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 1000)">
 														$1000
 													</a>
-													<a class="lv-item text-right" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 10000)">
+													<a class="lv-item text-right text-primary" href="javascript:void(0)" onclick="ChangeHashForPrice('max', 10000)">
 														Any
 													</a>
 												</div>
 											</div>
 										</div>
-										<a class="lv-footer" href="javascript:void(0)"  onclick="ResetPriceFilter()"><i class="fa fa-undo"></i> Reset</a>
+										<div class="lv-footer pn">
+											<div class="row">
+												<div class="col-xs-6">
+													<a  href="javascript:void(0)"  onclick="ResetPriceFilter()" class="p12 full-width display-block"><i class="fa fa-undo"></i> Reset</a>
+												</div>
+												<div class="col-xs-6">
+													<a  href="javascript:void(0)"  onclick="$('.price-display').click()" class="p12 full-width display-block"><i class="fa fa-close"></i> Close</a>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</li>
@@ -190,24 +201,60 @@
 	<section id="main" data-layout="layout-1">
 		<section id="content">
 			<div class="container">
-				<div id="pnl_confirm_tags">
+				<div class="bags-section">
+					<div id="pnl_confirm_tags">
 
-				</div>
-				<div class="product-list">
+					</div>
+					<div class="product-list row">
 
-				</div>
-				<div class="about-section" style="display:none">
-					<div class="card">
-					<div class="card-body card-padding">
-						<p class="lead">The easiest way to find your perfect bag!</p>
-						<p>Here at Zoltu our aim is to help bag shoppers find the perfect bag. There is a sea of handbags and purses out there and though there are many websites offering these items for sale there is none like us. There are websites that allow you to filter but none offer the precision of Zoltu bags. It doesn’t matter if this is your first handbag or your 150th – we understand how hard it is to shop for handbags online sometimes and we want to make this task easier for you. We designed our website so that it is super easy and quick for you to apply the filters that will help you find the best bag. Simply start typing into the search box and you will see options populated right away. Click on the different tags to narrow down the perfect bag for your needs. You can narrow down your choice by brand, color, style, material, size, handles, straps and type.</p>
-						<p>Notice the simple design of our website? There are no flashing banners and no annoying advertisements and pop-up screens. We are not into distractions – we are into the business of helping you find the right bag. We want you to leave our website with a conviction that you have chosen the right bag and not with frustration after going through handbag listings one after the other only to be more confused than you were in the first place. So we kept our design, simple and straight to the point. It is all about the handbags here.</p>
-						<p>Not only does our website offer user friendly filtering but we also have a blog that is packed with informative content. The content on our blog can be helpful with choosing the right bag for an event, setting or based on what you intend to have it carry. Our blog also includes written pieces on various designers and the audience they cater to as well as the kind of line that they carry. Our blog is informative and is updated often with the latest and best information on handbags, their design and manufacture along with trends. No fluff is what we guarantee just clean cut informative pieces.</p>
-						<p>We have it all. We educate you on handbags and provide the shopping marketplace where you can find the ideal handbag for your needs.</p>
-						<p>Zoltu Bags is the brainchild of Connie Zoltu; a self-professed handbag fanatic. She is a lover of handbag variety and as such knows the struggles of handbag shopping. She knows just how much specifics matter. In her very own words, she describes Zoltu Bags:</p>
-						<p><i><center>“It's like a dating website but rather than finding a soulmate, you find your dream bag.”</center></i></p>
 					</div>
 				</div>
+				<div class="about-section" style="display:none">
+					<div class="col-xs-12 mb15">
+						<button type="button" onclick="ShowBagsView()" class="btn btn-about-back btn-link btn-default btn-lg"><i class="fa fa-angle-left mr10"></i> <i class="fa fa-shopping-bag"></i> Back to Bags</button>
+					</div>
+					<div>
+						<div class="col-xs-12 col-sm-9">
+							<div class="card">
+								<div class="card-header">
+									<h2>The easiest way to find your perfect bag!</h2>
+								</div>
+								<div class="card-body card-padding">
+									<p>Here at Zoltu our aim is to help bag shoppers find the perfect bag. There is a sea of handbags and purses out there and though there are many websites offering these items for sale there is none like us. There are websites that allow you to filter but none offer the precision of Zoltu bags. It doesn’t matter if this is your first handbag or your 150th – we understand how hard it is to shop for handbags online sometimes and we want to make this task easier for you. We designed our website so that it is super easy and quick for you to apply the filters that will help you find the best bag. Simply start typing into the search box and you will see options populated right away. Click on the different tags to narrow down the perfect bag for your needs. You can narrow down your choice by brand, color, style, material, size, handles, straps and type.</p>
+									<p>Notice the simple design of our website? There are no flashing banners and no annoying advertisements and pop-up screens. We are not into distractions – we are into the business of helping you find the right bag. We want you to leave our website with a conviction that you have chosen the right bag and not with frustration after going through handbag listings one after the other only to be more confused than you were in the first place. So we kept our design, simple and straight to the point. It is all about the handbags here.</p>
+									<p>Not only does our website offer user friendly filtering but we also have a blog that is packed with informative content. The content on our blog can be helpful with choosing the right bag for an event, setting or based on what you intend to have it carry. Our blog also includes written pieces on various designers and the audience they cater to as well as the kind of line that they carry. Our blog is informative and is updated often with the latest and best information on handbags, their design and manufacture along with trends. No fluff is what we guarantee just clean cut informative pieces.</p>
+									<p>We have it all. We educate you on handbags and provide the shopping marketplace where you can find the ideal handbag for your needs.</p>
+									<p>Zoltu Bags is the brainchild of Connie Zoltu; a self-professed handbag fanatic. She is a lover of handbag variety and as such knows the struggles of handbag shopping. She knows just how much specifics matter. In her very own words, she describes Zoltu Bags:</p>
+									
+									<blockquote class="m-b-25">
+										<p><i><center><h4>“It's like a dating website but rather than finding a soulmate, you find your dream bag.”</h4></center></i></p>
+									</blockquote>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-3">
+							
+							<div class="card go-social">
+								<div class="card-header">
+									<h2>Social with us</h2>
+								</div>
+                            
+								<div class="card-body clearfix">
+									<a class="col-xs-4" href="https://www.facebook.com/bagcupid" target="_blank">
+										<img src="img/social/facebook-128.png" class="img-responsive" alt="">
+									</a>
+                                
+									<a class="col-xs-4" href="https://twitter.com/bagcupid" target="_blank">
+										<img src="img/social/twitter-128.png" class="img-responsive" alt="">
+									</a>
+
+									<a class="col-xs-4" href="https://blog.bagcupid.com/" target="_blank">
+										<img src="img/social/blogger-128.png" class="img-responsive" alt="">
+									</a>
+								</div>
+                        </div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -216,7 +263,6 @@
 	<footer id="footer">
 		COPYRIGHT &copy; 2016 ZOLTU
 		<ul class="f-menu">
-			<li><a  href="javascript:void(0)" onclick="ShowBagsView()">BAGS</a></li>
 			<li><a href="https://blog.bagcupid.com/" target="_blank">BLOG <i class="fa fa-external-link"></i></a></li>
 			<li><a href="javascript:void(0)" onclick="ShowAboutUsView()">ABOUT US</a></li>
 		</ul>
@@ -275,7 +321,7 @@
 	<script src="vendors/bower_components/Waves/dist/waves.min.js"></script>
 	<script src="vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
 	<script src="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="vendors/bower_components/nouislider/distribute/jquery.nouislider.all.min.js"></script>
+	<script src="vendors/nouislider/jquery.nouislider.all.min.js"></script>
 	<script src="vendors/handlebars/handlebars.runtime-v4.0.5.js"></script>
 	<script src="scripts/templates/templates.min.js"></script>
 
