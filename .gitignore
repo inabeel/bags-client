@@ -1,2 +1,4 @@
 /node_modules/
 /scripts/templates/lc_template-min.js
+/server/bin/
+/server/obj/
