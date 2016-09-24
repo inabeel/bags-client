@@ -361,7 +361,7 @@ function getTags() {
 
                 //Add more top padding to bags list so it doesn't go behind expanded header
                 setTimeout(function () {
-                    $("#main").css("padding-top", $("#top-search-wrap").height() + 16 + "px");
+                    $("#main").css("padding-top", $("#top-search-wrap > .container").height() + 40 + "px");
                 },50);
             });
 
@@ -537,7 +537,7 @@ function GetProducts() {
             }
 
             //Initialize product template
-            var template = Handlebars.templates['product'];
+            var template = Handlebars.templates['product-owl'];
 
             //Remove Show More button if already exists
             if ($("#show-more-panel"))
@@ -575,34 +575,52 @@ function GetProducts() {
                 BuildUrlHash();
             }).addClass("event-binded");
 
-            //Initialize sliding images for each product
-            $(".carousel").on("mouseover", function (obj) {
-                if (sliderRunning == false && overSlider == false) {
-                    sliderRunning = true;
-                    sliderInterval = setInterval(function () {
-                        $(obj.currentTarget).children(".carousel-control.right").click();
-                    }, 1500);
-                }
-            }).on("mouseleave", function () {
-                sliderRunning = false;
-                clearInterval(sliderInterval);
-            });
-            $(".carousel-control").on("mouseenter", function () {
-                overSlider = true;
-                clearInterval(sliderInterval);
-                sliderRunning = false;
-            });
-            $(".carousel-control").on("mouseleave", function () {
-                overSlider = false;
-            });
+            //initialize owl-carousel
+            $(".product-list .product-card .card-header .owl-carousel:not('.event-binded')").owlCarousel({
+                items: 1,
+                responsive: false,
+                slideSpeed: 500,
+                lazyLoad: true,
+                navigation: true,
+                navigationText: [
+                  "<i class='fa fa-chevron-left'></i>",
+                  "<i class='fa fa-chevron-right'></i>"
+                ],
+            }).addClass("event-binded");
 
-            //Enabling swiping
-            $(".carousel").swiperight(function () {
-                $(this).carousel('prev');
-            });
-            $(".carousel").swipeleft(function () {
-                $(this).carousel('next');
-            });
+            //Initialize sliding images for each product
+
+            if (!$('html').hasClass('ismobile')) {
+                $(".owl-carousel").on("mouseover", function (obj) {
+                    if (sliderRunning == false && overSlider == false) {
+                        sliderRunning = true;
+                        sliderInterval = setInterval(function () {
+                            debugger;
+                            $(obj.currentTarget).data('owlCarousel').next();
+                        }, 1500);
+                    }
+                }).on("mouseleave", function () {
+                    sliderRunning = false;
+                    clearInterval(sliderInterval);
+                });
+                $(".owl-buttons > div").on("mouseenter", function () {
+                    overSlider = true;
+                    clearInterval(sliderInterval);
+                    sliderRunning = false;
+                });
+                $(".owl-buttons > div").on("mouseleave", function () {
+                    overSlider = false;
+                });
+
+                $(".product-list .product-card .owl-wrapper > .owl-item > a > img").on("mousedown", function () {
+                    overSlider = true;
+                    clearInterval(sliderInterval);
+                    sliderRunning = false;
+                });
+                $(".product-list .product-card .owl-wrapper > .owl-item > a > img").on("mouseup", function () {
+                    overSlider = false;
+                });
+            }
 
             //Hide Page Loader
             HidePageLoader();
@@ -733,13 +751,7 @@ function ShowProductPopup(productid) {
                                 $('#product-popup [data-imagezoom]').imageZoom();
                             },1000);
                         }
-                        //Enabling swiping
-                        $("#product-popup .carousel").swiperight(function () {
-                            $(this).carousel('prev');
-                        });
-                        $("#product-popup .carousel").swipeleft(function () {
-                            $(this).carousel('next');
-                        });
+                      
                         $(".mfp-wrap").removeAttr("tabindex");
                         g_load_bags = true;
                         PrepareWaves();

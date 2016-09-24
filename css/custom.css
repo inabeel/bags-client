@@ -4,7 +4,7 @@
 .product-list{line-height:0;margin-left:0px !important; margin-right:0px !important}
 .product-list > .col-xs-6,.product-list > .col-sm-4,.product-list > .col-md-3{padding-left:5px!important;padding-right:5px!important}
 .product-list .product-card{margin-bottom:10px}
-.product-list .product-card .card-header{padding:18px 18px 0;height:243px}
+.product-list .product-card .card-header{padding:18px 18px 0;height:230px}
 @media screen and (min-width: 768px) {
 .product-list .product-card .card-header{padding:23px 25px 0}
 .product-popup-buttons{bottom:0;width:100%}
@@ -47,8 +47,9 @@ body > .tag{position:relative;margin-right:3px;padding:2px 5px;font-size:12px;bo
 .product-list .product-card .carousel .carousel-indicators{padding:0;bottom:0!important;background:none!important}
 .product-list .product-card .carousel .carousel-indicators li{background:#ddd;border-radius:50%;height:5px;width:5px}
 .product-list .product-card .carousel .carousel-indicators li.active{width:5px!important;background:#2196f3!important}
-.product-list .product-card .carousel-inner > .item{height:220px;line-height:220px;text-align:center}
-.product-list .product-card .carousel-inner > .item > img{max-height:100%;margin:auto;vertical-align:middle;display:inline-block}
+.product-list .product-card .owl-wrapper > .owl-item{height:190px;line-height:190px;text-align:center}
+.product-list .product-card .owl-wrapper > .owl-item > a > img{max-height:100%;margin:auto;vertical-align:middle;display:inline-block}
+.product-list .product-card .owl-wrapper > .owl-item > a {display:block;}
 .bgm-deeporange.active{background-color:#ec3c00}
 .btn-xs .flaticon::before,.btn-group-xs > .btn .flaticon::before{font-size:10px;margin-left:0}
 .btn-sm .flaticon::before,.btn-group-sm > .btn .flaticon::before{font-size:11px;margin-left:0}
