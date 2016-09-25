@@ -16,7 +16,7 @@ namespace Zoltu.Bags.Client
 			new WebHostBuilder()
 				.UseKestrel()
 				.UseContentRoot(Directory.GetCurrentDirectory())
-				.UseWebRoot("")
+				.UseWebRoot("client")
 				.UseStartup<Startup>()
 				.UseUrls("http://*:80")
 				.Build()
