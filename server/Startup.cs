@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,9 +28,7 @@ namespace Zoltu.Bags.Client
 		public Startup(IHostingEnvironment hostingEnvironment)
 		{
 			_configuration = new ConfigurationBuilder()
-				.SetBasePath(hostingEnvironment.ContentRootPath)
 				.AddApplicationInsightsSettings(developerMode: hostingEnvironment.IsDevelopment())
-				.AddUserSecrets(hostingEnvironment)
 				.AddEnvironmentVariables()
 				.Build();
 		}
@@ -37,23 +36,24 @@ namespace Zoltu.Bags.Client
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddApplicationInsightsTelemetry(_configuration);
+			services.AddMvcCore();
 		}
 
 		public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment hostingEnvironment, ILoggerFactory loggerFactory)
 		{
 			loggerFactory.AddConsole(minLevel: LogLevel.Warning);
 
+			// custom middleware to re-route all paths starting with `/app` to `/index.html`
+			applicationBuilder.Use(async (context, next) =>
+			{
+				if (context.Request.Path.StartsWithSegments(new PathString("/app")))
+					context.Request.Path = new PathString("/index.html");
+				await next();
+			});
 			applicationBuilder.UseApplicationInsightsRequestTelemetry();
 			applicationBuilder.UseApplicationInsightsExceptionTelemetry();
 			applicationBuilder.UseDefaultFiles();
 			applicationBuilder.UseStaticFiles();
 		}
-	}
-
-	public static class IConfigurationBuilderExtensions
-	{
-		public static IConfigurationBuilder AddUserSecrets(this IConfigurationBuilder it, IHostingEnvironment hostingEnvironment) => hostingEnvironment.IsDevelopment()
-			? it.AddUserSecrets()
-			: it;
 	}
 }

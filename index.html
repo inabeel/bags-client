@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+	<!-- Azure Application Insights -->
 	<script type="text/javascript">
 		var appInsights=window.appInsights||function(config){    function r(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s=u.createElement(o),i,f;for(s.src=config.url||"//az416426.vo.msecnd.net/scripts/a/ai.0.js",u.getElementsByTagName(o)[0].parentNode.appendChild(s),t.cookie=u.cookie,t.queue=[],i=["Event","Exception","Metric","PageView","Trace"];i.length;)r("track"+i.pop());return r("setAuthenticatedUserContext"),r("clearAuthenticatedUserContext"),config.disableExceptionTracking||(i="onerror",r("_"+i),f=e[i],e[i]=function(config,r,u,e,o){var s=f&&f(config,r,u,e,o);return s!==!0&&t["_"+i](config,r,u,e,o),s}),t
 		}({
@@ -9,24 +10,26 @@
 		window.appInsights=appInsights;
 		appInsights.trackPageView();
 	</script>
+	<!-- End Azure Application Insights -->
+	<!-- Google Analytics -->
 	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
+		window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 		ga('create', 'UA-66024947-3', 'auto');
+		ga('require', 'urlChangeTracker');
+		ga('require', 'outboundLinkTracker', {});
+		ga('require', 'pageVisibilityTracker', {});
 		ga('send', 'pageview');
 	</script>
-	<script>
-		// Function that tracks a click on an outbound link in Analytics.  This function takes a valid URL string as an argument, and uses that URL string as the event label. Setting the transport method to 'beacon' lets the hit be sent using 'navigator.sendBeacon' in browser that support it.
-		var trackOutboundLink = function(url) {
-			ga('send', 'event', 'outbound', 'click', url, {
-				'transport': 'beacon',
-				'hitCallback': function(){document.location = href;}
-			});
-		}
+	<script async src='https://www.google-analytics.com/analytics.js'></script>
+	<script async src='/vendors/google-analytics/autotrack.js'></script>
+	<!-- End Google Analytics -->
+	<!-- Bing Ads -->
+	<script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"5438211"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");
 	</script>
+	<noscript>
+		<img src="//bat.bing.com/action/0?ti=5438211&Ver=2" height="0" width="0" style="display:none; visibility: hidden;" />
+	</noscript>
+	<!-- End Bing Ads -->
 	<meta property="og:url" content="https://bagcupid.com/">
 	<meta property="og:type" content="website">
 	<meta property="og:title" content="Bag Cupid">
@@ -39,12 +42,12 @@
 	<title>Bag Cupid</title>
 
 	<!-- Vendor CSS -->
-	<link href="vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
-	<link href="vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
-	<link href="vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
-	<link href="vendors/nouislider/jquery.nouislider.min.css" rel="stylesheet">
-	<link href="vendors/bootstraptour/bootstrap-tour.min.css" rel="stylesheet" />
-	<link href="vendors/enjoyhint/enjoyhint.css" rel="stylesheet" />
+	<link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+	<link href="/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+	<link href="/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+	<link href="/vendors/nouislider/jquery.nouislider.min.css" rel="stylesheet">
+	<link href="/vendors/bootstraptour/bootstrap-tour.min.css" rel="stylesheet" />
+	<link href="/vendors/enjoyhint/enjoyhint.css" rel="stylesheet" />
 
 	<!-- CSS -->
 	<link href="css/unused.css" rel="stylesheet">
@@ -58,8 +61,8 @@
 	<link href="fonts/gotham.css" rel="stylesheet" />
 	<link href="vendors/magnific-popup/magnific-popup.css" rel="stylesheet" />
 
-	<link href="vendors/owl-carousel/owl.carousel.css" rel="stylesheet" />
-	<link href="vendors/owl-carousel/owl.theme.css" rel="stylesheet" />
+	<link href="/vendors/owl-carousel/owl.carousel.css" rel="stylesheet" />
+	<link href="/vendors/owl-carousel/owl.theme.css" rel="stylesheet" />
 </head>
 <body>
 	<header id="header" class="clearfix search-toggled" data-current-skin="blue">
@@ -228,7 +231,7 @@
 									<p>Not only does our website offer user friendly filtering but we also have a blog that is packed with informative content. The content on our blog can be helpful with choosing the right bag for an event, setting or based on what you intend to have it carry. Our blog also includes written pieces on various designers and the audience they cater to as well as the kind of line that they carry. Our blog is informative and is updated often with the latest and best information on handbags, their design and manufacture along with trends. No fluff is what we guarantee just clean cut informative pieces.</p>
 									<p>We have it all. We educate you on handbags and provide the shopping marketplace where you can find the ideal handbag for your needs.</p>
 									<p>Zoltu Bags is the brainchild of Connie Zoltu; a self-professed handbag fanatic. She is a lover of handbag variety and as such knows the struggles of handbag shopping. She knows just how much specifics matter. In her very own words, she describes Zoltu Bags:</p>
-									
+
 									<blockquote class="mb25">
 										<p><i><center><h4>“It's like a dating website but rather than finding a soulmate, you find your dream bag.”</h4></center></i></p>
 									</blockquote>
@@ -236,23 +239,23 @@
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-3">
-							
+
 							<div class="card go-social">
 								<div class="card-header">
 									<h2>Social with us</h2>
 								</div>
-                            
+
 								<div class="card-body clearfix">
 									<a class="col-xs-4" href="https://www.facebook.com/bagcupid" target="_blank">
-										<img src="img/social/facebook-128.png" class="img-responsive" alt="">
+										<img src="/img/social/facebook-128.png" class="img-responsive" alt="">
 									</a>
-                                
+
 									<a class="col-xs-4" href="https://twitter.com/bagcupid" target="_blank">
-										<img src="img/social/twitter-128.png" class="img-responsive" alt="">
+										<img src="/img/social/twitter-128.png" class="img-responsive" alt="">
 									</a>
 
 									<a class="col-xs-4" href="https://blog.bagcupid.com/" target="_blank">
-										<img src="img/social/blogger-128.png" class="img-responsive" alt="">
+										<img src="/img/social/blogger-128.png" class="img-responsive" alt="">
 									</a>
 								</div>
                         </div>
@@ -323,13 +326,13 @@
 	<script src="vendors/handlebars/handlebars.runtime-v4.0.5.js"></script>
 	<script src="scripts/templates/templates.min.js"></script>
 
-	<script src="js/functions.js"></script>
-	<script src="js/demo.js"></script>
-	<script src="vendors/select2/select2.min.js"></script>
-	<script src="vendors/zoom-demo/imagezoom.js"></script>
-	<script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+	<script src="/js/functions.js"></script>
+	<script src="/js/demo.js"></script>
+	<script src="/vendors/select2/select2.min.js"></script>
+	<script src="/vendors/zoom-demo/imagezoom.js"></script>
+	<script src="/vendors/owl-carousel/owl.carousel.min.js"></script>
 
-	<script src="scripts/index.js"></script>
+	<script src="/scripts/index.js"></script>
 	<script type="text/javascript">
 		window._urq = window._urq || [];
 		_urq.push(['setGACode', 'UA-66024947-3']);
