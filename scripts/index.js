@@ -143,7 +143,7 @@ $(function () {
     xhr_tag_cat.send();
 });
 
-function ProcessUrlParams() {
+function ProcessUrlParamsOld() {
     var hash = window.location.hash.substr(1);
     var params = hash.split('&');
     var urlTags = "";
@@ -227,6 +227,73 @@ function ProcessUrlParams() {
     else {
             if (g_load_bags)
                 GetProducts();
+    }
+}
+
+function ProcessUrlParams() {
+    var path = window.location.pathname;
+    var productId = (path.match(/product\/(\d+)/i) || [])[1];
+    var aboutUs = (path.match(/aboutus/i) || [])[0];
+    var tags = (path.match(/tags\/(.*?)\/*?$/i) || [])[1];
+    var minPrice = (path.match(/minprice\/(\d+)/i) || [])[1];
+    var maxPrice = (path.match(/maxprice\/(\d+)/i) || [])[1];
+    console.log("path: " + path);
+    console.log("productId: " + productId);
+    console.log("aboutUs: " + aboutUs);
+    console.log("tags: " + tags);
+    console.log("minPrice: " + minPrice);
+    console.log("maxPrice: " + maxPrice);
+
+    // price
+    g_price_min = minPrice || 0;
+    g_price_max = maxPrice || g_price_max_limit;
+    if (g_price_min == 0 && g_price_max == g_price_max_limit) {
+        $("#min_max_selected").hide();
+        $("#lbl_price_filter").show();
+    }
+    else {
+        $("#min_max_selected").show();
+        $("#lbl_price_filter").hide();
+    }
+    stepSlider.noUiSlider.set([g_price_min, g_price_max]);
+    $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
+    $("#lbl_max_price").html(g_price_max == g_price_max_limit ? 'any' : '<i class="zmdi zmdi-money"></i>' + g_price_max);
+
+    if (!productId)
+        $.magnificPopup.close();
+
+    // open product
+    g_open_productid = productId
+    if (g_popupOpened == false && g_load_popup && productId > 0)
+        ShowProductPopup(g_open_productid);
+
+    // about us
+    $(".about-section").hide();
+    $(".bags-section").show();
+
+    if (aboutUs) {
+        $(".bags-section").fadeOut("fast", function () {
+            $(".about-section").fadeIn("fast");
+        });
+    }
+    
+    // tags
+    g_tags = (tags || "").split("_");
+    if (g_tags.length == 1 && g_tags[0] == "")
+        g_tags = [];
+    trigger_tags_change = false;
+    $("#main-search").select2("val", "");
+    trigger_tags_change = true;
+    if (g_manual_tag_change == true) {
+        for (var i = 0; i < g_tags.length; i++) {
+            $("#main-search option[value=" + g_tags[i] + "]").attr('selected', true);
+            $("#main-search option[value=" + g_tags[i] + "]").prop('selected', true);
+        }
+        $("#main-search").trigger("change");
+    }
+    else {
+        if (g_load_bags)
+            GetProducts();
     }
 }
 
@@ -660,7 +727,7 @@ function HidePageLoader() {
     $('.page-loader').hide();
 }
 
-function BuildUrlHash() {
+function BuildUrlHashOld() {
 
     var hash = "";
     if (g_aboutus_open == true)
@@ -679,6 +746,48 @@ function BuildUrlHash() {
     else
         window.location.hash = "_";
 }
+
+
+
+function BuildUrlHash() {
+    
+    var path = "/app";
+    if (g_aboutus_open == true)
+        path += "/aboutus";
+    if (g_open_productid > 0)
+        path += "/product/" + g_open_productid;
+    if (g_price_min != 0)
+        path += "/minprice/" + g_price_min;
+    if (g_price_max != g_price_max_limit)
+        path += "/maxprice/" + g_price_max;
+    if (g_tags != null && g_tags.length > 0)
+        path += "/tags/" + g_tags.join("_");
+    window.history.pushState({ url: path }, "", path);
+}
+
+(function (history) {
+    var pushState = history.pushState;
+    history.pushState = function (state) {
+        pushState.apply(history, arguments);
+
+        if (typeof history.onpushstate == "function") {
+            history.onpushstate({ state: state });
+        }
+        g_load_popup = true;
+        if (!(g_popup_just_closed == true && g_tag_changed_when_popup_open == false)) {
+            ShowPageLoader();
+            newFilterApplied = true;
+            g_manual_tag_change = true;
+            if (g_load_bags)
+                g_result_from_product_id = 1;
+            ProcessUrlParams();
+        }
+        else {
+            g_manual_tag_change = false;
+        }
+        g_popup_just_closed = false;
+    }
+})(window.history);
 
 function TriggerProductPopup(productid) {
     if (!helptour_running) {
@@ -717,9 +826,10 @@ function ShowProductPopup(productid) {
                         g_popupOpened = false;
                         g_popup_just_closed = true;
                         g_manual_tag_change = true;
-                        BuildUrlHash();
+                        
                     },
                     close: function () {
+                        BuildUrlHash();
                         document.title = "Zoltu Bags";
                         HidePageLoader();
                         $("body").removeClass("showing-product");
