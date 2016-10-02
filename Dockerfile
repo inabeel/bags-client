@@ -16,7 +16,7 @@ COPY scripts /app/client/scripts
 COPY vendors /app/client/vendors
 COPY index.html /app/client/index.html
 
-RUN handlebars /app/client/scripts/templates/ --output /app/client/scripts/templates/lc_template-min.js --map
+RUN handlebars /app/client/scripts/templates/ --output /app/client/scripts/templates/template.min.js --map
 
 EXPOSE 80
 

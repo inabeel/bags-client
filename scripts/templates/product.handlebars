@@ -9,32 +9,22 @@
 			<div class="card product-card">
 				<div class="card-header">
 					<div class="card-body">
-						<div id="product-{{id}}" class="carousel slide" data-ride="carousel" data-interval="false">
-							<!-- Indicators -->
-							<ol class="carousel-indicators">
-								{{#each images}}
-									<li data-target="#product-{{id}}" data-slide-to="{{@index}}" class="{{#ifCond @index '==' 0}}active{{/ifCond}}"></li>
-								{{/each}}
-							</ol>
-
-							<!-- Wrapper for slides -->
-							<div class="carousel-inner" role="listbox">
-								{{#each images}}
-									<a href="#product_id={{../id}}" target="_blank" onclick="console.dir(event);if(event.which != 2){TriggerProductPopup('{{../id}}');return false;}" class="item {{#ifCond @index '==' 0}}active{{/ifCond}}">
-										<img src="{{medium}}" alt="">
-									</a>
-								{{/each}}
-							</div>
+						<div id="product-{{id}}" class="owl-carousel slide">
+							{{#each images}}
+								<a href="/app/product/{{../id}}" target="_blank" onclick="if(event.which != 2){TriggerProductPopup('{{../id}}');return false;}">
+									<img class="lazyOwl" data-src="{{medium}}" alt="">
+								</a>
+							{{/each}}
 
 							<!-- Controls -->
-							<a class="left carousel-control" href="#product-{{id}}" role="button" data-slide="prev">
+							<!--<a class="left carousel-control" href="#product-{{id}}" role="button" data-slide="prev">
 								<span class="zmdi zmdi-chevron-left" aria-hidden="true"></span>
 								<span class="sr-only">Previous</span>
 							</a>
 							<a class="right carousel-control" href="#product-{{id}}" role="button" data-slide="next">
 								<span class="zmdi zmdi-chevron-right" aria-hidden="true"></span>
 								<span class="sr-only">Next</span>
-							</a>
+							</a>-->
 						</div>
 					</div>
 				</div>
