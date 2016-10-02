@@ -9,7 +9,6 @@ RUN dotnet build
 
 COPY css /app/client/css
 COPY fonts /app/client/fonts
-COPY images /app/client/images
 COPY img /app/client/img
 COPY js /app/client/js
 COPY scripts /app/client/scripts
