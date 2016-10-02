@@ -143,93 +143,6 @@ $(function () {
     xhr_tag_cat.send();
 });
 
-function ProcessUrlParamsOld() {
-    var hash = window.location.hash.substr(1);
-    var params = hash.split('&');
-    var urlTags = "";
-    g_price_min = 0;
-    g_price_max = 10000;
-
-    $(".about-section").hide();
-    $(".bags-section").show();
-
-    var closePopup = false;
-    for (var i = 0; i < params.length; i++) {
-        if (params[i].length > 0) {
-            var temp = params[i].split('=');
-            var key = temp[0];
-            if (key == "product_id") {
-                closePopup = true;
-            }
-        }
-    }
-    if (closePopup == false)
-        $.magnificPopup.close();
-
-    g_tags = [];
-    for (var i = 0; i < params.length; i++) {
-        if (params[i].length > 0) {
-            var temp = params[i].split('=');
-            var key = temp[0];
-            var value1 = temp[1];
-            switch (key) {
-                case "aboutus":
-                    $(".bags-section").fadeOut("fast", function () {
-                        $(".about-section").fadeIn("fast");
-                    });
-                    break;
-                case "min_price":
-                    g_price_min = value1;
-                    break;
-                case "max_price":
-                    g_price_max = value1;
-                    break;
-                case "product_id":
-                    g_open_productid = value1;
-                    if (g_popupOpened == false && g_load_popup && value1 > 0)
-                        ShowProductPopup(value1);
-                    break;
-                case "tags":
-                    if (value1 != null && value1.length > 0) {
-                        urlTags = value1;
-                    }
-                    break;
-            }
-        }
-    }
-
-    if (g_price_min == 0 && g_price_max == 10000) {
-        $("#min_max_selected").hide();
-        $("#lbl_price_filter").show();
-    }
-    else {
-        $("#min_max_selected").show();
-        $("#lbl_price_filter").hide();
-    }
-    stepSlider.noUiSlider.set([g_price_min, g_price_max]);
-
-    $("#lbl_min_price").html('<i class="zmdi zmdi-money"></i>' + g_price_min);
-    $("#lbl_max_price").html(g_price_max == 10000 ? 'any' : '<i class="zmdi zmdi-money"></i>' + g_price_max);
-
-    trigger_tags_change = false;
-    $("#main-search").select2("val", "");
-    trigger_tags_change = true;
-
-    if (g_manual_tag_change == true && urlTags != "") {
-        g_tags = urlTags.split(',');
-
-        for (var i = 0; i < g_tags.length; i++) {
-            $("#main-search option[value=" + g_tags[i] + "]").attr('selected', true);
-            $("#main-search option[value=" + g_tags[i] + "]").prop('selected', true);
-        }
-        $("#main-search").trigger("change");
-    }
-    else {
-            if (g_load_bags)
-                GetProducts();
-    }
-}
-
 function ProcessUrlParams() {
     var path = window.location.pathname;
     var productId = (path.match(/product\/(\d+)/i) || [])[1];
@@ -237,12 +150,6 @@ function ProcessUrlParams() {
     var tags = (path.match(/tags\/(.*?)\/*?$/i) || [])[1];
     var minPrice = (path.match(/minprice\/(\d+)/i) || [])[1];
     var maxPrice = (path.match(/maxprice\/(\d+)/i) || [])[1];
-    console.log("path: " + path);
-    console.log("productId: " + productId);
-    console.log("aboutUs: " + aboutUs);
-    console.log("tags: " + tags);
-    console.log("minPrice: " + minPrice);
-    console.log("maxPrice: " + maxPrice);
 
     // price
     g_price_min = minPrice || 0;
@@ -489,10 +396,7 @@ function loadTags() {
         }
     });
 
-    if (window.location.hash.length > 0)
-        ProcessUrlParams();
-    else
-        GetProducts();
+    ProcessUrlParams();
 }
 
 Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
@@ -604,7 +508,7 @@ function GetProducts() {
             }
 
             //Initialize product template
-            var template = Handlebars.templates['product-owl'];
+            var template = Handlebars.templates['product'];
 
             //Remove Show More button if already exists
             if ($("#show-more-panel"))
