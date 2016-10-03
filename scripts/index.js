@@ -708,7 +708,7 @@ function ShowProductPopup(productid) {
         if (xhr_product.readyState == 4 && xhr_product.status == 200) {
             var product = JSON.parse(xhr_product.responseText);
             var template = Handlebars.templates['product-details'];
-            document.title = "Zoltu Bag: " + product.name.substr(0, 1).toUpperCase() + product.name.substr(1) + " : $" + product.price;
+            document.title = "Bag Cupid: " + product.name.substr(0, 1).toUpperCase() + product.name.substr(1) + " : $" + product.price;
             $.magnificPopup.open({
                 closeBtnInside: true,
                 removalDelay: 500,
