@@ -2,3 +2,8 @@
 /scripts/templates/template.min.js
 /server/bin/
 /server/obj/
+/.vs/
+/bin/
+/obj/
+
+/*.xproj.user
