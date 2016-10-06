@@ -106,7 +106,7 @@ Handlebars.registerHelper("isSelected", function (categoryid) {
 
 function fnColorTag(categoryid) {
     var color = '';
-    $.each(categories, function (index, category) {
+    $.each(g_categories, function (index, category) {
         if (category.id == categoryid) {
             color = category.color;
             return;
@@ -118,7 +118,7 @@ function fnColorTag(categoryid) {
 var category_colors = ["bgm-red", "bgm-blue", "bgm-green", "bgm-lightgreen", "bgm-cyan", "bgm-pink", "bgm-lightblue",
     "bgm-orange", "bgm-purple", "bgm-deeporange", "bgm-teal", "bgm-amber", "bgm-gray", "bgm-indigo", "bgm-lime", "bgm-bluegray", "bgm-deeppurple"];
 
-var categories = [];
+var g_categories = [];
 
 $(function () {
     ShowPageLoader();
@@ -133,11 +133,26 @@ $(function () {
             $.each(cats, function (index, cat) {
                 var category = cat;
                 category.color = category_colors[index];
-                categories.push(category);
+                g_categories.push(category);
             });
 
             getTags();
 
+            //bind categories in side filter
+            var template = Handlebars.templates['filter-category'];
+            $(".side-categories").append(template({ categories: Enumerable.From(cats).OrderBy("$.name").ToArray() }));
+            if (!$('html').hasClass('ismobile')) {
+                $('.side-categories').mCustomScrollbar({
+                    theme: 'minimal-dark',
+                    scrollInertia: 100,
+                    axis: 'yx',
+                    mouseWheel: {
+                        enable: true,
+                        axis: 'y',
+                        preventDefault: true
+                    }
+                });
+            }
         }
     }
     xhr_tag_cat.send();
@@ -452,6 +467,35 @@ Handlebars.registerHelper('titleCase', function (name) {
     return name.substr(0, 1).toUpperCase() + name.substr(1);
 });
 
+Handlebars.registerHelper('categoryIcon', function (name) {
+    var cssClass = "";
+    console.log(name);
+    switch (name) {
+        case 'accents':
+           return cssClass = "fa-star"
+        case 'brand':
+            return cssClass = "fa-tag"
+        case 'closure':
+            return cssClass = "fa-chain"
+        case 'color':
+            return cssClass = "fa-adjust"
+        case 'handle':
+            return cssClass = "fa-hand-grab-o"
+        case 'material':
+            return cssClass = "fa-cog"
+        case 'misc':
+            return cssClass = "fa-sliders"
+        case 'pattern':
+            return cssClass = "fa-diamond"
+        case 'size':
+            return cssClass = "fa-object-ungroup"
+        case 'strap':
+            return cssClass = "fa-circle-o-notch fa-rotate-180 mln15"
+        case 'style':
+            return cssClass = "fa-shopping-bag"
+    }
+});
+
 function ShowMore() {
     ShowPageLoader();
 
@@ -708,7 +752,7 @@ function ShowProductPopup(productid) {
         if (xhr_product.readyState == 4 && xhr_product.status == 200) {
             var product = JSON.parse(xhr_product.responseText);
             var template = Handlebars.templates['product-details'];
-            document.title = "Zoltu Bag: " + product.name.substr(0, 1).toUpperCase() + product.name.substr(1) + " : $" + product.price;
+            document.title = "Bag Cupid: " + product.name.substr(0, 1).toUpperCase() + product.name.substr(1) + " : $" + product.price;
             $.magnificPopup.open({
                 closeBtnInside: true,
                 removalDelay: 500,
@@ -1311,4 +1355,65 @@ function RemoveConflictRow(btn) {
     $(btn).parent().parent().remove();
     if ($("#pnl_confirm_tags").find("#list-confirm-tags tr").length == 0)
         $("#pnl_confirm_tags").empty().hide();
+}
+
+function ShowFilterCategory() {
+    $(".side-categories").removeClass("slideOutLeft").addClass("animated animated-short slideInLeft");
+    $(".side-tags").removeClass("slideInRight").addClass("animated animated-short slideOutRight");
+    $(".side-categories-container .header .btn-back-to-category").hide();
+    $("#side-filter-title").text("BAG PROPERTIES");
+
+    if (!$('html').hasClass('ismobile')) {
+        $('.side-tags').mCustomScrollbar({
+            theme: 'minimal-dark',
+            scrollInertia: 100,
+            axis: 'yx',
+            mouseWheel: {
+                enable: true,
+                axis: 'y',
+                preventDefault: true
+            }
+        });
+    }
+}
+
+function SelectFilterCategory(category_name, category_id) {
+    var tags = Enumerable.From(g_tagsData).Where(w=>w.category.id == category_id).ToArray();
+    $(".side-categories").removeClass("slideInLeft").addClass("animated animated-short slideOutLeft");
+    $(".side-tags").removeClass("slideOutRight").addClass("animated animated-short slideInRight").show();
+    $(".side-categories-container .header .btn-back-to-category").show();
+
+    if (!$('html').hasClass('ismobile')) {
+        $('.side-tags').mCustomScrollbar("destroy");
+    }
+
+    //bind tags in side filter
+    var template = Handlebars.templates['filter-tag'];
+
+    $(".side-tags").html(template({ tags: Enumerable.From(tags).OrderBy("$.name").ToArray() }));
+
+    $("#side-filter-title").text(category_name.toUpperCase());
+
+    if (!$('html').hasClass('ismobile')) {
+        $('.side-tags').mCustomScrollbar("destroy");
+        $('.side-tags').mCustomScrollbar({
+            theme: 'minimal-dark',
+            scrollInertia: 100,
+            axis: 'yx',
+            mouseWheel: {
+                enable: true,
+                axis: 'y',
+                preventDefault: true
+            }
+        });
+    }
+}
+
+function SelectFilterTag(tag_id) {
+    if ($.inArray(tag_id, g_tags) < 0) {
+        if (g_tags == null) g_tags = [];
+        g_tags.push(tag_id);
+    }
+    BuildUrlHash();
+     
 }

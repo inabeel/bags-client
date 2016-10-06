@@ -205,11 +205,31 @@
 	</header>
 
 	<section id="main" data-layout="layout-1">
+		<aside id="side-filter" class="sidebar">
+            <div class="listview side-categories-container">
+				<div class="header">
+					<button class="btn btn-link btn-back-to-category" onclick="ShowFilterCategory();"><i class="fa fa-arrow-left"></i></button> <span id="side-filter-title">BAG PROPERTIES</span>
+				</div>
+				<div class="side-categories">
+
+				</div>
+				<div class="side-tags">
+					
+				</div>
+            </div>
+        </aside>
+
 		<section id="content">
 			<div class="container">
 				<div class="bags-section">
 					<div id="pnl_confirm_tags">
 
+					</div>
+					<div class="category-filter-container">
+						<button class="btn btn-default category"><i class="fa fa-filter"></i> Style</button>
+						<button class="btn btn-default category"><i class="fa fa-filter"></i> Brand</button>
+						<button class="btn btn-default category"><i class="fa fa-filter"></i> Size</button>
+						<button class="btn btn-default category" id="side-filter-trigger" data-trigger="#side-filter">more..</button>
 					</div>
 					<div class="product-list row">
 

@@ -1,0 +1,9 @@
+{{#each tags}}
+	<a class="lv-item" id="{{id}}" href="javascript:void(0)" onclick="SelectFilterTag('{{id}}')">
+		<div class="media">
+			<div class="media-body">
+				<div class="lv-title">{{titleCase name}}</div>
+			</div>
+		</div>
+	</a>
+{{/each}}
