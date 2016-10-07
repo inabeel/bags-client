@@ -469,7 +469,6 @@ Handlebars.registerHelper('titleCase', function (name) {
 
 Handlebars.registerHelper('categoryIcon', function (name) {
     var cssClass = "";
-    console.log(name);
     switch (name) {
         case 'accents':
            return cssClass = "fa-star"
@@ -490,7 +489,7 @@ Handlebars.registerHelper('categoryIcon', function (name) {
         case 'size':
             return cssClass = "fa-object-ungroup"
         case 'strap':
-            return cssClass = "fa-circle-o-notch fa-rotate-180 mln15"
+            return cssClass = "fa-circle-o-notch fa-rotate-180 mln15 mr15"
         case 'style':
             return cssClass = "fa-shopping-bag"
     }
