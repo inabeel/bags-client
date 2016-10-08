@@ -30,6 +30,34 @@
 		<img src="//bat.bing.com/action/0?ti=5438211&Ver=2" height="0" width="0" style="display:none; visibility: hidden;" />
 	</noscript>
 	<!-- End Bing Ads -->
+	<!-- Google Ads Conversion Tracking -->
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		goog_snippet_vars = function() {
+			var w = window;
+			w.google_conversion_id = 872335982;
+			w.google_conversion_label = "JHZDCNqt5moQ7pT7nwM";
+			w.google_remarketing_only = false;
+		}
+		// DO NOT CHANGE THE CODE BELOW.
+		goog_report_conversion = function(url) {
+			goog_snippet_vars();
+			window.google_conversion_format = "3";
+			var opt = new Object();
+			opt.onload_callback = function() {
+				if (typeof(url) != 'undefined') {
+					window.location = url;
+				}
+			}
+			var conv_handler = window['google_trackConversion'];
+			if (typeof(conv_handler) == 'function') {
+				conv_handler(opt);
+			}
+		}
+		/* ]]> */
+	</script>
+	<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion_async.js"></script>
+	<!-- End Google Ads Conversion Tracking -->
 	<meta property="og:url" content="https://bagcupid.com/">
 	<meta property="og:type" content="website">
 	<meta property="og:title" content="Bag Cupid">
@@ -214,7 +242,7 @@
 
 				</div>
 				<div class="side-tags">
-					
+
 				</div>
             </div>
         </aside>
