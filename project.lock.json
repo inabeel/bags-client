@@ -1,4 +1,5 @@
 {
+  "locked": false,
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
@@ -3984,15 +3985,15 @@
       ]
     },
     "Microsoft.NETCore.App/1.0.1": {
-      "sha512": "PrxNtnINTkF5NFzG818lMUT/1hrzCYUhxlAQSNSkkFu/NJchEhz4SiVys9Z/h7iRU0hXCwdOVwRH3JHKZsGYAw==",
+      "sha512": "M3iH7u95LntTkJtI/DqN/96MRlb8Wa0SjnXldxHA4FjlvEqghOhwK087bDZAZaTN9C4YHckvaYH3ka9eYWZZZw==",
       "type": "package",
-      "path": "microsoft.netcore.app/1.0.1",
+      "path": "Microsoft.NETCore.App/1.0.1",
       "files": [
+        "Microsoft.NETCore.App.1.0.1.nupkg.sha512",
+        "Microsoft.NETCore.App.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
-        "lib/netcoreapp1.0/_._",
-        "microsoft.netcore.app.1.0.1.nupkg.sha512",
-        "microsoft.netcore.app.nuspec"
+        "lib/netcoreapp1.0/_._"
       ]
     },
     "Microsoft.NETCore.DotNetHost/1.0.1": {
@@ -4032,14 +4033,14 @@
       ]
     },
     "Microsoft.NETCore.Jit/1.0.4": {
-      "sha512": "4o+YAhrTDPj88m+jhHS0bY2GfZyFKr7X3daHrFuYtppZsCVr0YC2JDJz3waGnKCcIARGZRpU7MZwpwQXsgxT/g==",
+      "sha512": "IcHTGj+vTFcOu7/flwNg+CWIfTsxqHWgj08MKOtYwS5k0EuLvx6PrYsn7vHCV0SUTk1zbQ1l0EJj1UdxTMyx4w==",
       "type": "package",
-      "path": "microsoft.netcore.jit/1.0.4",
+      "path": "Microsoft.NETCore.Jit/1.0.4",
       "files": [
+        "Microsoft.NETCore.Jit.1.0.4.nupkg.sha512",
+        "Microsoft.NETCore.Jit.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
-        "microsoft.netcore.jit.1.0.4.nupkg.sha512",
-        "microsoft.netcore.jit.nuspec",
         "runtime.json"
       ]
     },
@@ -4057,14 +4058,14 @@
       ]
     },
     "Microsoft.NETCore.Runtime.CoreCLR/1.0.4": {
-      "sha512": "PNulAC9owcPF4HkGmpgfF6Mt8ofD23rwMCYqC6vUP+5CQCN1uD2S3GIaW5yoyAT5ZAocVdb0MwL1eWFLRPZ8IQ==",
+      "sha512": "r4/aP7VYcJ+W/rJVFU+jAdjF4KrsHRDYQJ+p8weUP5n65yLzWXlQTVY6OsR560aV5EF7jc65dqsNXIryUCrEkQ==",
       "type": "package",
-      "path": "microsoft.netcore.runtime.coreclr/1.0.4",
+      "path": "Microsoft.NETCore.Runtime.CoreCLR/1.0.4",
       "files": [
+        "Microsoft.NETCore.Runtime.CoreCLR.1.0.4.nupkg.sha512",
+        "Microsoft.NETCore.Runtime.CoreCLR.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
-        "microsoft.netcore.runtime.coreclr.1.0.4.nupkg.sha512",
-        "microsoft.netcore.runtime.coreclr.nuspec",
         "runtime.json"
       ]
     },
@@ -8939,8 +8940,5 @@
     ".NETCoreApp,Version=v1.0": []
   },
   "tools": {},
-  "projectFileToolGroups": {},
-  "packageFolders": {
-    "C:\\Users\\Micah\\.nuget\\packages\\": {}
-  }
+  "projectFileToolGroups": {}
 }

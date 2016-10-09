@@ -39,14 +39,14 @@ $(document).ready(function () {
     //Help button sliding
     $(".help-slider .btn-help").on('mouseenter', function () {
         if (localStorage.getItem("helptour-seen") == "true") {
-            $(".help-slider").stop().animate({ "right": "0px" }, { duration: 300, queue: false });
-            $(".help-slider .btn-help").css({ "backgroundColor": "#FF9800" });
+            $(".help-slider").stop().animate({ "left": "0px" }, { duration: 300, queue: false });
+            $(".help-slider .btn-help").css({ "backgroundColor": "#f5f5f5" });
         }
     });
     $(".help-slider").on('mouseleave', function () {
         if (localStorage.getItem("helptour-seen") == "true") {
-            $(".help-slider").stop().animate({ "right": "-100px" });
-            $(".help-slider .btn-help").css({ "backgroundColor": "#FFC107" });
+            $(".help-slider").stop().animate({ "left": "-100px" });
+            $(".help-slider .btn-help").css({ "backgroundColor": "#fff" });
         }
     });
 }).scroll(function () {
@@ -364,6 +364,19 @@ function getTags() {
 
             //Load all tags in the search
             loadTags();
+
+            //Populate brands filter
+            var brands = Enumerable.From(g_tagsData).Where(w=>w.category.name == "brand").ToArray();
+            var template = Handlebars.templates['filter-brands'];
+            $(".brands-list").html(template({ brands: brands }));
+            $(".brands-list > .listview > .lv-body > a").on("keyup", function (event) {
+                if (event.key == "ArrowDown") {
+                    $(this).next("a").focus();
+                }
+                if (event.key == "ArrowUp") {
+                    $(this).prev("a").focus();
+                }
+            });
         }
     }
     xhr_tags.send();
@@ -693,8 +706,6 @@ function BuildUrlHashOld() {
     else
         window.location.hash = "_";
 }
-
-
 
 function BuildUrlHash() {
     
@@ -1415,4 +1426,28 @@ function SelectFilterTag(tag_id) {
     }
     BuildUrlHash();
      
+}
+
+function SearchFilterBrand(event, input) {
+    if (event.key == "ArrowDown") {
+        $(".brands-list > .listview > .lv-body > a:visible:first").focus();
+    }
+    $(".brands-list .lv-body > a").css('display','block').filter(function(){
+        return $(this).text().toLowerCase().indexOf($(input).val().toLowerCase().trim()) < 0;
+    }).css('display','none');
+}
+
+function SelectBrandFilter(brandid) {
+    g_load_bags = true;
+
+    if ($.inArray(brandid, g_tags) < 0) {
+        if (g_tags == null) g_tags = [];
+        g_tags.push(brandid);
+    }
+    BuildUrlHash();
+
+    $('.btn-brand-filter').click();
+
+    $("#txt-brand-search").val('');
+    $(".brands-list .lv-body > a").css('display', 'block');
 }

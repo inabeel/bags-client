@@ -1,0 +1,17 @@
+<div class="listview">
+	<div class="lv-header">
+		<div class="form-group mbn">
+            <div class="fg-line">
+                <input id="txt-brand-search" class="form-control" placeholder="Search.." onkeyup="SearchFilterBrand(event,this)">
+            </div>
+        </div>
+	</div>
+	<div class="lv-body">
+		{{#each brands}}
+			<a class="lv-item" href="javascript:void(0);" onclick="SelectBrandFilter('{{id}}')">{{titleCase name}}</a>
+		{{/each}}
+	</div>
+	<div class="lv-footer pn mtn">
+		<a href="javascript:void(0);" class="p12 full-width display-block" onclick="$('.btn-brand-filter').click();"><i class="fa fa-close"></i> Close</a>
+	</div>
+</div>
