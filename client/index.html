@@ -177,7 +177,7 @@
 								</div>
 							</li>
 							<li  class="dropdown hidden-xs">
-								<a data-toggle="dropdown" href="javascript:void(0);">
+								<a data-toggle="dropdown" href="javascript:void(0);" onclick="ShowingBrandFilter()">
 									<span class="btn-brand-filter tm-icon">
 										<i class="fa fa-tag"></i> <span class="hidden-xs hidden-sm">Brand</span>
 									</span>
@@ -291,16 +291,28 @@
 			</svg>
 		</div>
 	</div>
-	<div id="btn_share_floating" class="dropup dropdown">
-		<a class="dropdown-toggle" id="social-share-dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			<i class="fa fa-share-alt"></i>
+	<div class="btn-floating share dropup dropdown">
+		<a id="social-dropdown-opener" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text">
+			Share
 		</a>
-		<ul class="dropdown-menu social-dropdown" aria-labelledby="social-share-dropdown2">
+		<div class="icon">
+			<i class="fa fa-share-alt"></i>
+		</div>
+		<ul class="dropdown-menu social-dropdown" aria-labelledby="social-dropdown-opener">
 			<li class="share-title mb5"> Share this search</li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-primary"></i>&nbsp;&nbsp;Facebook</a></li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('twitter','search');"><i class="fa fa-twitter-square text-info"></i>&nbsp;&nbsp;Twitter</a></li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus','search');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
 		</ul>
+	</div>
+
+	<div class="btn-floating feedback">
+		<a href="#" class="text" onclick="_urq.push(['Feedback_Open'])">
+			Feedback
+		</a>
+		<div class="icon">
+			<i class="fa fa-comments"></i>
+		</div>
 	</div>
 
 	<div class="help-slider-clone hidden-xs custom-help-popover"  data-viewport="body" data-container=".help-slider-clone" data-toggle="popover" data-placement="top" data-trigger="manual"
@@ -310,16 +322,15 @@
 			  data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowMobileHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!">
 		<button type="button" class="btn btn-link btn-mobile-help" onclick="ShowMobileHelpTour()"><i class="fa fa-question"></i></button>
 	</div>
-	<div class="help-slider hidden-xs hidden-sm">
-		<div class="btn-hidden" onclick="ShowHelpTour();">
+	<div class="btn-floating help hidden-xs hidden-sm">
+		<a class="text" onclick="ShowHelpTour();">
 			Help Tour
-		</div>
-		<div id="helper" class="btn-visible">
-			<div  class="btn-help waves-effect" onclick="ShowHelpTour();">
-				<i class="fa fa-question"></i>
-			</div>
+		</a>
+		<div  class="icon" onclick="ShowHelpTour();">
+			<i class="fa fa-question"></i>
 		</div>
 	</div>
+	
 
 	<!-- Javascript Libraries -->
 	<script src="/vendors/codex-fly/codex-fly.js" type="text/javascript"></script>
