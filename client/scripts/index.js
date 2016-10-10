@@ -62,7 +62,7 @@ $(document).ready(function () {
         $(".btn-floating.feedback").stop().animate({ "left": "0px" }, { duration: 300, queue: false });
     });
     $(".btn-floating.feedback").on('mouseleave', function () {
-        $(".btn-floating.feedback").stop().animate({ "left": "-100px" });
+        $(".btn-floating.feedback").stop().animate({ "left": "-90px" });
     });
 }).scroll(function () {
     if (page_loaded == true) {
@@ -1439,7 +1439,7 @@ function SelectBrandFilter(brandid) {
     $('.btn-brand-filter').click();
 
     $("#txt-brand-search").val('');
-    $(".brands-list .lv-body > a").css('display', 'block');
+    $(".brands-list > .listview > .lv-body a").css('display', 'block');
 }
 
 function ShowingBrandFilter() {
