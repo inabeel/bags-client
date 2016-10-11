@@ -75,11 +75,12 @@ $(document).ready(function(){
 
                 if (!$('#sidebar').hasClass('toggled')) {
                     $('#header').toggleClass('sidebar-toggled');
+                    $("#side-filter-trigger").parent('li').toggleClass("open");
                 }
                 else {
                     $('#sidebar').removeClass('toggled');
+                    $("#side-filter-trigger").parent('li').removeClass("open");
                 }
-                $("#side-filter-trigger").parent('li').addClass("open");
             }
 
             //When clicking outside
