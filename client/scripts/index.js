@@ -1437,9 +1437,6 @@ function SelectBrandFilter(brandid) {
     BuildUrlHash();
 
     $('.btn-brand-filter').click();
-
-    $("#txt-brand-search").val('');
-    $(".brands-list > .listview > .lv-body a").css('display', 'block');
 }
 
 function ShowingBrandFilter() {
@@ -1456,4 +1453,8 @@ function ShowingBrandFilter() {
             preventDefault: true
         }
     });
+    $("#txt-brand-search").val('');
+    $(".brands-list > .listview > .lv-body a").css('display', 'block');
+    
 }
+
