@@ -79,6 +79,7 @@ $(document).ready(function(){
                 else {
                     $('#sidebar').removeClass('toggled');
                 }
+                $("#side-filter-trigger").parent('li').addClass("open");
             }
 
             //When clicking outside
@@ -89,6 +90,7 @@ $(document).ready(function(){
                             $($elem).removeClass('toggled');
                             $('#header').removeClass('sidebar-toggled');
                             $($elem2).removeClass('open');
+                            $("#side-filter-trigger").parent('li').removeClass("open");
 
                             setTimeout(function () {
                                 $(".side-categories").removeClass("animated animated-short slideInLeft slideOutLeft");
@@ -108,6 +110,15 @@ $(document).ready(function(){
             $(this).next().slideToggle(200);
             $(this).parent().toggleClass('toggled');
         });
+
+        document.onkeydown = function (evt) {
+            evt = evt || window.event;
+            if (evt.keyCode == 27) {
+                $("#side-filter").removeClass('toggled');
+                $('#header').removeClass('sidebar-toggled');
+                $("#side-filter-trigger").parent('li').removeClass("open");
+            }
+        };
     })();
 
 

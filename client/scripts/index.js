@@ -37,17 +37,32 @@ $(document).ready(function () {
     page_loaded = true;
 
     //Help button sliding
-    $(".help-slider .btn-help").on('mouseenter', function () {
+    $(".btn-floating.help .icon").on('mouseenter', function () {
         if (localStorage.getItem("helptour-seen") == "true") {
-            $(".help-slider").stop().animate({ "right": "0px" }, { duration: 300, queue: false });
-            $(".help-slider .btn-help").css({ "backgroundColor": "#FF9800" });
+            $(".btn-floating.help").stop().animate({ "left": "0px" }, { duration: 300, queue: false });
         }
     });
-    $(".help-slider").on('mouseleave', function () {
+    $(".btn-floating.help").on('mouseleave', function () {
         if (localStorage.getItem("helptour-seen") == "true") {
-            $(".help-slider").stop().animate({ "right": "-100px" });
-            $(".help-slider .btn-help").css({ "backgroundColor": "#FFC107" });
+            $(".btn-floating.help").stop().animate({ "left": "-90px" });
         }
+    });
+
+    $(".btn-floating.share").on('mouseenter', function () {
+        if (!$('html').hasClass('ismobile')) {
+            $(".btn-floating.share").stop().animate({ "left": "0px" }, { duration: 300, queue: false });
+        }
+    });
+    $(".btn-floating.share").on('mouseleave', function () {
+        $(".btn-floating.share").removeClass('open');
+        $(".btn-floating.share").stop().animate({ "left": "-90px" });
+    });
+
+    $(".btn-floating.feedback").on('mouseenter', function () {
+        $(".btn-floating.feedback").stop().animate({ "left": "0px" }, { duration: 300, queue: false });
+    });
+    $(".btn-floating.feedback").on('mouseleave', function () {
+        $(".btn-floating.feedback").stop().animate({ "left": "-90px" });
     });
 }).scroll(function () {
     if (page_loaded == true) {
@@ -104,6 +119,87 @@ Handlebars.registerHelper("isSelected", function (categoryid) {
     }
 });
 
+Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+    switch (operator) {
+        case '==':
+            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        case '===':
+            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '<':
+            return (v1 < v2) ? options.fn(this) : options.inverse(this);
+        case '<=':
+            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+        case '>':
+            return (v1 > v2) ? options.fn(this) : options.inverse(this);
+        case '>=':
+            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+        case '&&':
+            return (v1 && v2) ? options.fn(this) : options.inverse(this);
+        case '||':
+            return (v1 || v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
+    }
+});
+
+Handlebars.registerHelper('isLengthOf', function (array, operator, length, options) {
+    if (array != null) {
+        switch (operator) {
+            case '==':
+                return (array.length == length) ? options.fn(this) : options.inverse(this);
+            case '<':
+                return (array.length < length) ? options.fn(this) : options.inverse(this);
+            case '<=':
+                return (array.length <= length) ? options.fn(this) : options.inverse(this);
+            case '>':
+                return (array.length > length) ? options.fn(this) : options.inverse(this);
+            case '>=':
+                return (array.length >= length) ? options.fn(this) : options.inverse(this);
+            default:
+                return options.inverse(this);
+        }
+    }
+    else {
+        return options.inverse(this);
+    }
+});
+
+Handlebars.registerHelper('countMoreLength', function (array) {
+    return array.length - visibleTagCnt;
+});
+
+Handlebars.registerHelper('titleCase', function (name) {
+    return name.substr(0, 1).toUpperCase() + name.substr(1);
+});
+
+Handlebars.registerHelper('categoryIcon', function (name) {
+    var cssClass = "";
+    switch (name) {
+        case 'accents':
+            return cssClass = "fa-star"
+        case 'brand':
+            return cssClass = "fa-tag"
+        case 'closure':
+            return cssClass = "fa-chain"
+        case 'color':
+            return cssClass = "fa-adjust"
+        case 'handle':
+            return cssClass = "fa-hand-grab-o"
+        case 'material':
+            return cssClass = "fa-cog"
+        case 'misc':
+            return cssClass = "fa-sliders"
+        case 'pattern':
+            return cssClass = "fa-diamond"
+        case 'size':
+            return cssClass = "fa-object-ungroup"
+        case 'strap':
+            return cssClass = "fa-circle-o-notch fa-rotate-180 mln15 mr15"
+        case 'style':
+            return cssClass = "fa-shopping-bag"
+    }
+});
+
 function fnColorTag(categoryid) {
     var color = '';
     $.each(g_categories, function (index, category) {
@@ -141,18 +237,17 @@ $(function () {
             //bind categories in side filter
             var template = Handlebars.templates['filter-category'];
             $(".side-categories").append(template({ categories: Enumerable.From(cats).OrderBy("$.name").ToArray() }));
-            if (!$('html').hasClass('ismobile')) {
-                $('.side-categories').mCustomScrollbar({
-                    theme: 'minimal-dark',
-                    scrollInertia: 100,
-                    axis: 'yx',
-                    mouseWheel: {
-                        enable: true,
-                        axis: 'y',
-                        preventDefault: true
-                    }
-                });
-            }
+           
+            $('.side-categories').mCustomScrollbar({
+                theme: 'minimal-dark',
+                scrollInertia: 100,
+                axis: 'yx',
+                mouseWheel: {
+                    enable: true,
+                    axis: 'y',
+                    preventDefault: true
+                }
+            });
         }
     }
     xhr_tag_cat.send();
@@ -300,7 +395,6 @@ handleLower.addEventListener('keydown', function (e) {
             break;
     }
 });
-
 handleUpper.addEventListener('keydown', function (e) {
     switch (e.which) {
         case 37:
@@ -364,6 +458,19 @@ function getTags() {
 
             //Load all tags in the search
             loadTags();
+
+            //Populate brands filter
+            var brands = Enumerable.From(g_tagsData).Where(w=>w.category.name == "brand").OrderBy(o=>o.name).ToArray();
+            var template = Handlebars.templates['filter-brands'];
+            $(".brands-list").html(template({ brands: brands }));
+            $(".brands-list > .listview > .lv-body > a").on("keyup", function (event) {
+                if (event.key == "ArrowDown") {
+                    $(this).next("a").focus();
+                }
+                if (event.key == "ArrowUp") {
+                    $(this).prev("a").focus();
+                }
+            });
         }
     }
     xhr_tags.send();
@@ -413,88 +520,6 @@ function loadTags() {
 
     ProcessUrlParams();
 }
-
-Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
-    switch (operator) {
-        case '==':
-            return (v1 == v2) ? options.fn(this) : options.inverse(this);
-        case '===':
-            return (v1 === v2) ? options.fn(this) : options.inverse(this);
-        case '<':
-            return (v1 < v2) ? options.fn(this) : options.inverse(this);
-        case '<=':
-            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-        case '>':
-            return (v1 > v2) ? options.fn(this) : options.inverse(this);
-        case '>=':
-            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-        case '&&':
-            return (v1 && v2) ? options.fn(this) : options.inverse(this);
-        case '||':
-            return (v1 || v2) ? options.fn(this) : options.inverse(this);
-        default:
-            return options.inverse(this);
-    }
-});
-
-Handlebars.registerHelper('isLengthOf', function (array, operator, length, options) {
-    if (array != null) {
-        switch (operator) {
-            case '==':
-                return (array.length == length) ? options.fn(this) : options.inverse(this);
-            case '<':
-                return (array.length < length) ? options.fn(this) : options.inverse(this);
-            case '<=':
-                return (array.length <= length) ? options.fn(this) : options.inverse(this);
-            case '>':
-                return (array.length > length) ? options.fn(this) : options.inverse(this);
-            case '>=':
-                return (array.length >= length) ? options.fn(this) : options.inverse(this);
-            default:
-                return options.inverse(this);
-        }
-    }
-    else {
-        return options.inverse(this);
-    }
-});
-
-Handlebars.registerHelper('countMoreLength', function (array) {
-    return array.length - visibleTagCnt;
-});
-
-Handlebars.registerHelper('titleCase', function (name) {
-    return name.substr(0, 1).toUpperCase() + name.substr(1);
-});
-
-Handlebars.registerHelper('categoryIcon', function (name) {
-    var cssClass = "";
-    console.log(name);
-    switch (name) {
-        case 'accents':
-           return cssClass = "fa-star"
-        case 'brand':
-            return cssClass = "fa-tag"
-        case 'closure':
-            return cssClass = "fa-chain"
-        case 'color':
-            return cssClass = "fa-adjust"
-        case 'handle':
-            return cssClass = "fa-hand-grab-o"
-        case 'material':
-            return cssClass = "fa-cog"
-        case 'misc':
-            return cssClass = "fa-sliders"
-        case 'pattern':
-            return cssClass = "fa-diamond"
-        case 'size':
-            return cssClass = "fa-object-ungroup"
-        case 'strap':
-            return cssClass = "fa-circle-o-notch fa-rotate-180 mln15"
-        case 'style':
-            return cssClass = "fa-shopping-bag"
-    }
-});
 
 function ShowMore() {
     ShowPageLoader();
@@ -675,28 +700,6 @@ function HidePageLoader() {
     $('.page-loader').hide();
 }
 
-function BuildUrlHashOld() {
-
-    var hash = "";
-    if (g_aboutus_open == true)
-        hash += "aboutus=" + g_aboutus_open;
-    if(g_price_min != 0)
-        hash += (hash == "" ? "" : "&") + "min_price=" + g_price_min;
-    if( g_price_max != g_price_max_limit)
-        hash += (hash == "" ? "" : "&") + "max_price=" + g_price_max;
-    if (g_open_productid > 0)
-        hash += (hash == "" ? "" : "&") + "product_id=" + g_open_productid;
-    if (g_tags != null && g_tags.length > 0) {
-        hash += (hash == "" ? "" : "&") + "tags=" + g_tags.join(",");
-    }
-    if (hash != "")
-        window.location.hash = hash;
-    else
-        window.location.hash = "_";
-}
-
-
-
 function BuildUrlHash() {
     
     var path = "/app";
@@ -823,10 +826,10 @@ function ShowProductPopup(productid) {
 
 function ThumbnailScroll(direction) {
     if (direction == "left") {
-        $(".product-popup .carousel .thumbnail-scroll").stop().animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, { duration: 300, queue: false });
+        $(".product-popup .carousel .thumbnail-scroll").stop().animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() - 70 }, { duration: 200, queue: false });
     }
     if (direction == "right") {
-        $(".product-popup .carousel .thumbnail-scroll").stop().animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, { duration: 300, queue: false });
+        $(".product-popup .carousel .thumbnail-scroll").stop().animate({ 'scrollLeft': $(".product-popup .carousel .thumbnail-scroll").scrollLeft() + 70 }, { duration: 200, queue: false });
     }
 }
 
@@ -874,6 +877,8 @@ function ShowHelpTour() {
             setTimeout(function () {
                 $(".help-slider-clone").popover("destroy");
                 $(".help-slider").removeClass("animated animated-short slideInRight").addClass("animated animated-short slideOutRight");
+                $("#crowd-shortcut").css("visibility", "hidden");
+                $(".btn-floating").css("visibility", "hidden");
             }, 1000);
         },
         onSkip: function () {
@@ -885,6 +890,7 @@ function ShowHelpTour() {
             $("#main-search").trigger("change");
             setTimeout(function () {
                 $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
+
             }, 1000);
         },
         onStop: function () {
@@ -982,7 +988,7 @@ function ShowMobileHelpTour() {
             //hidding floating buttons
             $(".help-btn-mobile").css("visibility","hidden");
             $("#crowd-shortcut").css("visibility", "hidden");
-            $("#btn_share_floating").css("visibility", "hidden");
+            $(".btn-floating").css("visibility", "hidden");
             $('body').scrollTop(250 - ($(window).height() - $(".product-list .product-card:first-child").height()));
         },
         onEnd: function (tour) {
@@ -1001,7 +1007,7 @@ function ShowMobileHelpTour() {
             //showing floating buttons back again
             $(".help-btn-mobile").css("visibility", "visible");
             $("#crowd-shortcut").css("visibility", "visible");
-            $("#btn_share_floating").css("visibility", "visible");
+            $(".btn-floating").css("visibility", "visible");
 
             //Remove if any tour popover failed to go off
             $(".popover.tour").remove();
@@ -1120,10 +1126,10 @@ function createXHR() {
 function ShareLink(channel, entity) {
     var url = "", tag_names = "";
 
-    if(entity == "product")
-        url = escape(window.location.href.replace(window.location.hash, "") + "#product_id=" + g_open_productid);
-    else if(entity == "search")
-        url = escape(window.location.href);
+    if (entity == "product") 
+        url = escape(window.location.href.replace(window.location.pathname, "") + "/app/product/" + g_open_productid);
+    else if (entity == "search")
+        url = escape(window.location.href.replace("#", ""));
 
     switch (channel) {
         case 'facebook':
@@ -1363,18 +1369,16 @@ function ShowFilterCategory() {
     $(".side-categories-container .header .btn-back-to-category").hide();
     $("#side-filter-title").text("BAG PROPERTIES");
 
-    if (!$('html').hasClass('ismobile')) {
-        $('.side-tags').mCustomScrollbar({
-            theme: 'minimal-dark',
-            scrollInertia: 100,
-            axis: 'yx',
-            mouseWheel: {
-                enable: true,
-                axis: 'y',
-                preventDefault: true
-            }
-        });
-    }
+    $('.side-tags').mCustomScrollbar({
+        theme: 'minimal-dark',
+        scrollInertia: 100,
+        axis: 'yx',
+        mouseWheel: {
+            enable: true,
+            axis: 'y',
+            preventDefault: true
+        }
+    });
 }
 
 function SelectFilterCategory(category_name, category_id) {
@@ -1383,9 +1387,7 @@ function SelectFilterCategory(category_name, category_id) {
     $(".side-tags").removeClass("slideOutRight").addClass("animated animated-short slideInRight").show();
     $(".side-categories-container .header .btn-back-to-category").show();
 
-    if (!$('html').hasClass('ismobile')) {
-        $('.side-tags').mCustomScrollbar("destroy");
-    }
+    $('.side-tags').mCustomScrollbar("destroy");
 
     //bind tags in side filter
     var template = Handlebars.templates['filter-tag'];
@@ -1394,9 +1396,8 @@ function SelectFilterCategory(category_name, category_id) {
 
     $("#side-filter-title").text(category_name.toUpperCase());
 
-    if (!$('html').hasClass('ismobile')) {
-        $('.side-tags').mCustomScrollbar("destroy");
-        $('.side-tags').mCustomScrollbar({
+    $('.side-tags').mCustomScrollbar("destroy");
+    $('.side-tags').mCustomScrollbar({
             theme: 'minimal-dark',
             scrollInertia: 100,
             axis: 'yx',
@@ -1406,7 +1407,6 @@ function SelectFilterCategory(category_name, category_id) {
                 preventDefault: true
             }
         });
-    }
 }
 
 function SelectFilterTag(tag_id) {
@@ -1417,3 +1417,44 @@ function SelectFilterTag(tag_id) {
     BuildUrlHash();
      
 }
+
+function SearchFilterBrand(event, input) {
+    if (event.key == "ArrowDown") {
+        $(".brands-list > .listview > .lv-body a:visible:first").focus();
+    }
+    $(".brands-list .lv-body a").css('display','block').filter(function(){
+        return $(this).text().toLowerCase().indexOf($(input).val().toLowerCase().trim()) < 0;
+    }).css('display','none');
+}
+
+function SelectBrandFilter(brandid) {
+    g_load_bags = true;
+
+    if ($.inArray(brandid, g_tags) < 0) {
+        if (g_tags == null) g_tags = [];
+        g_tags.push(brandid);
+    }
+    BuildUrlHash();
+
+    $('.btn-brand-filter').click();
+}
+
+function ShowingBrandFilter() {
+    $(".brands-list .listview .lv-body").mCustomScrollbar({
+        theme: 'minimal-dark',
+        scrollInertia: 100,
+        axis: 'yx',
+        keyboard: {
+            enable: false
+        },
+        mouseWheel: {
+            enable: true,
+            axis: 'y',
+            preventDefault: true
+        }
+    });
+    $("#txt-brand-search").val('');
+    $(".brands-list > .listview > .lv-body a").css('display', 'block');
+    
+}
+
