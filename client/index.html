@@ -12,6 +12,7 @@
 	</script>
 	<!-- End Azure Application Insights -->
 	<!-- Google Analytics -->
+	<script  src="//www.google-analytics.com/cx/api.js?experiment=Fv7ulgfuTgeCanwo1ereFQ"></script>
 	<script>
 		window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 		ga('create', 'UA-66024947-3', 'auto');
@@ -19,8 +20,28 @@
 		ga('require', 'outboundLinkTracker', {});
 		ga('require', 'pageVisibilityTracker', {});
 		ga('send', 'pageview');
+
+		// Ask Google Analytics which variation to show the user.
+		var chosenVariation = cxApi.chooseVariation();
 	</script>
+	<script>
+		// Wait for the DOM to load, then execute the view for the chosen variation.
+		window.onload = function() {
+			// Define JavaScript for each page variation of this experiment.
+			switch (chosenVariation) {
+				case 0:
+					//Original: Do nothing. This will render the logo with yellow icon.
+					break;
+				case 1:
+					//This will render the logo with white icon
+					document.getElementsByClassName('header-logo')[0].src = '/img/logo/bagcupid_whitebg.png';
+					break;
+			}
+		};
+	</script>
+	
 	<script async src='https://www.google-analytics.com/analytics.js'></script>
+	
 	<script async src='/vendors/google-analytics/autotrack.js'></script>
 	<!-- End Google Analytics -->
 	<!-- Bing Ads -->
