@@ -18,8 +18,19 @@ namespace Zoltu.Bags.Client.Controllers
             return View();
         }
 
-        [Route("app/product/{productId}", Name = "app", Order = 0)]
-        public IActionResult address(int productId)
+        [Route("app", Name = "app", Order = 0)]
+        public IActionResult app()
+        {
+            ViewData["url"] = "https://bagcupid.com/";
+            ViewData["type"] = "website";
+            ViewData["title"] = "Bag Cupid";
+            ViewData["description"] = "What is your dream bag? Are you having trouble finding it? Let us help you!";
+
+            return View("Index");
+        }
+
+        [Route("app/product/{productId}", Name = "product", Order = 0)]
+        public IActionResult product(int productId)
         {
             ViewData["url"] = "Muhammad Nabeel";
             ViewData["type"] = "Managing Director";
