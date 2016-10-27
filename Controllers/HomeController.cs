@@ -19,7 +19,7 @@ namespace Zoltu.Bags.Client.Controllers
         }
 
         [Route("app", Name = "app", Order = 0)]
-        public IActionResult app()
+        public IActionResult App()
         {
             ViewData["url"] = "https://bagcupid.com/";
             ViewData["type"] = "website";
@@ -30,7 +30,7 @@ namespace Zoltu.Bags.Client.Controllers
         }
 
         [Route("app/product/{productId}", Name = "product", Order = 0)]
-        public IActionResult product(int productId)
+        public IActionResult Product(int productId)
         {
             ViewData["url"] = "Muhammad Nabeel";
             ViewData["type"] = "Managing Director";
