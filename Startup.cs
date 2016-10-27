@@ -31,61 +31,31 @@ namespace Zoltu.Bags.Client
 		{
 			_configuration = new ConfigurationBuilder()
 				.AddApplicationInsightsSettings(developerMode: hostingEnvironment.IsDevelopment())
-                       .SetBasePath(hostingEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables()
+				.AddEnvironmentVariables()
 				.Build();
 		}
 
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddApplicationInsightsTelemetry(_configuration);
-            services.AddMvc();
-
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                var previous = options.CompilationCallback;
-                options.CompilationCallback = (context) =>
-                {
-                    previous?.Invoke(context);
-                };
-            });
-        }
+			services.AddMvc();
+		}
 
 		public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment hostingEnvironment, ILoggerFactory loggerFactory)
 		{
 			loggerFactory.AddConsole(minLevel: LogLevel.Warning);
 
-            // custom middleware to re-route all paths starting with `/app` to `/index.html`
-            //applicationBuilder.Use(async (context, next) =>
-            //{
-            //	if (context.Request.Path.StartsWithSegments(new PathString("/app")))
-            //		context.Request.Path = new PathString("/index.html");
-            //	await next();
-            //});
-
-            if (hostingEnvironment.IsDevelopment())
-            {
-                applicationBuilder.UseDeveloperExceptionPage();
-                applicationBuilder.UseBrowserLink();
-            }
-            else
-            {
-                applicationBuilder.UseExceptionHandler("/Home/Error");
-            }
-
-            applicationBuilder.UseApplicationInsightsRequestTelemetry();
+			applicationBuilder.UseApplicationInsightsRequestTelemetry();
 			applicationBuilder.UseApplicationInsightsExceptionTelemetry();
 			applicationBuilder.UseDefaultFiles();
 			applicationBuilder.UseStaticFiles();
 
-            applicationBuilder.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
-        }
+			applicationBuilder.UseMvc(routes =>
+			{
+				routes.MapRoute(
+					name: "default",
+					template: "{controller=Home}/{action=Index}/{id?}");
+			});
+		}
 	}
 }
