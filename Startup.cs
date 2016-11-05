@@ -40,10 +40,7 @@ namespace Zoltu.Bags.Client
 			services.AddApplicationInsightsTelemetry(_configuration);
 			services.AddMvc();
 
-			services.Configure<RazorViewEngineOptions>(options =>
-			{
-				options.ViewLocationExpanders.Add(new HTMLLocationRemapper());
-			});
+			services.Configure<RazorViewEngineOptions>(options => options.ViewLocationExpanders.Add(new HTMLLocationRemapper()));
 		}
 
 		public void Configure(IApplicationBuilder applicationBuilder, IHostingEnvironment hostingEnvironment, ILoggerFactory loggerFactory)

@@ -8,27 +8,18 @@ namespace Zoltu.Bags.Client.Controllers
 {
 	public class HomeController : Controller
 	{
-		[Route("", Name ="Home", Order = 0)]
-		[Route("app", Name = "app", Order = 0)]
-		public IActionResult App()
+		[Route("")]
+		[Route("app")]
+		[Route("app/{path}")]
+		[Route("app/product/{productId}")]
+		public IActionResult App(int productId = 0, string path = null)
 		{
 			ViewData["url"] = "https://bagcupid.com/";
 			ViewData["type"] = "website";
 			ViewData["title"] = "Bag Cupid";
 			ViewData["description"] = "What is your dream bag? Are you having trouble finding it? Let us help you!";
 
-			return View("Index");
-		}
-
-		[Route("app/product/{productId}", Name = "product", Order = 0)]
-		public IActionResult Product(int productId)
-		{
-			ViewData["url"] = "Muhammad Nabeel";
-			ViewData["type"] = "Managing Director";
-			ViewData["title"] = "Principal Software Engineer / Technical Lead";
-			ViewData["description"] = "Relliks Systems";
-
-			return View("Index");
+			return View("index");
 		}
 	}
 }
