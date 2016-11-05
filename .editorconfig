@@ -10,3 +10,6 @@ trim_trailing_whitespace = true
 [project.lock.json]
 indent_style = space
 indent_size = 2
+
+[*.sln]
+end_of_line = crlf
