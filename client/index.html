@@ -12,7 +12,7 @@
 	</script>
 	<!-- End Azure Application Insights -->
 	<!-- Google Analytics -->
-	<script  src="//www.google-analytics.com/cx/api.js?experiment=Fv7ulgfuTgeCanwo1ereFQ"></script>
+	<script  src="//www.google-analytics.com/cx/api.js"></script>
 	<script>
 		window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 		ga('create', 'UA-66024947-3', 'auto');
@@ -107,19 +107,28 @@
 	<link href="/fonts/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet"  type="text/css"/>
 	<link href="/fonts/flaticons/flaticon.css" rel="stylesheet" type="text/css" />
 	<link href="/vendors/select2/select2.min.css" rel="stylesheet"  type="text/css"/>
-	<link href="/fonts/gotham.css" rel="stylesheet" type="text/css" />
 	<link href="/vendors/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
 
 	<link href="/vendors/owl-carousel/owl.carousel.css" rel="stylesheet"  type="text/css"/>
 	<link href="/vendors/owl-carousel/owl.theme.css" rel="stylesheet"  type="text/css"/>
 </head>
-<body>
+<body class="design-v2 banner-visible">
+	<div class="banner">
+		<img src="/img/banner/womanbag.jpg" />
+		<div class="caption-text animated">
+			<h1>Lorem ipsum <br/>dolor sit amet</h1>
+		</div>
+		<button class="btn waves-effect waves-circle down-arrow" type="button" onclick="HideBanner()">
+			<i class="fa fa-shopping-bag bag"></i>
+			<i class="fa fa-angle-down arrow"></i>
+		</button>
+	</div>
 	<header id="header" class="clearfix search-toggled" data-current-skin="blue">
 		<!-- Top Search Content -->
 		<div id="top-search-wrap">
 			<div class="top-menu-small">
 				<div class="container">
-					<ul class="top-menu-small">
+					<ul>
 						<li>
 							<a href="https://blog.bagcupid.com/" target="_blank"><span>Blog <i class="fa fa-external-link"></i></span></a>
 						</li>
