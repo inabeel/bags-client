@@ -9,10 +9,8 @@ namespace Zoltu.Bags.Client.Controllers
 	public class HomeController : Controller
 	{
 		[Route("")]
-		[Route("app")]
-		[Route("app/{path}")]
-		[Route("app/product/{productId}")]
-		public IActionResult App(int productId = 0, string path = null)
+		[Route("app/{*path}")]
+		public IActionResult App(string path = null)
 		{
 			ViewData["url"] = "https://bagcupid.com/";
 			ViewData["type"] = "website";
