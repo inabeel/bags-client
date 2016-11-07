@@ -113,15 +113,15 @@
 	<link href="/vendors/owl-carousel/owl.theme.css" rel="stylesheet"  type="text/css"/>
 </head>
 <body class="design-v2 banner-visible">
-	<div class="banner">
-		<img src="/img/banner/womanbag.jpg" />
+	<div class="banner" style="background-image: url(/img/banner/bag2.jpg)">
 		<div class="caption-text animated">
-			<h1>Lorem ipsum <br/>dolor sit amet</h1>
+			<h1>Find the Bag <br/>you'll ever need</h1>
 		</div>
-		<button class="btn waves-effect waves-circle down-arrow" type="button" onclick="HideBanner()">
-			<i class="fa fa-shopping-bag bag"></i>
-			<i class="fa fa-angle-down arrow"></i>
-		</button>
+		<div class="down-arrow-container">
+			<button class="btn waves-effect down-arrow" type="button" onclick="HideBanner()">
+				Begin search
+			</button>
+		</div>
 	</div>
 	<header id="header" class="clearfix search-toggled" data-current-skin="blue">
 		<!-- Top Search Content -->
@@ -150,7 +150,7 @@
 						<div class="tsw-inner main-search">
 							<span id="centerpoint_search" style="position:absolute;left:45%;top:30px;"></span>
 							<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
-							<button id="btn-search" type="button" onclick="ExecuteSmartSearch($('.select2-search__field'))" class="btn bgm-amber btn-sm btn-link"><i class="fa fa-search"></i></button>
+							<button id="btn-search" type="button" onclick="ExecuteSmartSearch($('.select2-search__field'))" class="btn bgm-yellow btn-sm btn-link"><i class="fa fa-search"></i></button>
 						</div>
 					</div>
 					<div class="col-xs-2 col-sm-3 col-md-4 col-lg-3 filter-container">

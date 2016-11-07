@@ -66,8 +66,7 @@ $(document).ready(function () {
     });
 
     setTimeout(function () {
-        $(".banner .caption-text").addClass("animated fadeInUp").show();
-        $(".banner .down-arrow").addClass("animated animated-short zoomIn").show();
+        $(".banner .caption-text").addClass("animated animated-short zoomIn").show();
     },1000);
 }).scroll(function () {
     if (page_loaded == true) {
@@ -110,7 +109,10 @@ $(window).resize(function () {
 })
 
 Handlebars.registerHelper("colorTag", function (categoryid) {
-    return "white" //fnColorTag(categoryid);
+    if ($('body').hasClass('design-v2'))
+        return "white"
+    else
+       return fnColorTag(categoryid);
 });
 
 Handlebars.registerHelper("isSelected", function (categoryid) {
@@ -223,7 +225,7 @@ var g_categories = [];
 
 $(function () {
     ShowPageLoader();
-
+    
     var xhr_tag_cat = createXHR();
     xhr_tag_cat.open("GET", g_api + '/api/tag_categories', true);
     xhr_tag_cat.onreadystatechange = function () {
@@ -448,10 +450,7 @@ function getTags() {
                     }
                 }
 
-                //Add more top padding to bags list so it doesn't go behind expanded header
-                setTimeout(function () {
-                    $("#main").css("padding-top", $("#top-search-wrap > .container").height() + 40 + "px");
-                },50);
+               
             });
 
             $("#main-search").on("select2:unselect", function (e) {
@@ -490,8 +489,10 @@ function loadTags() {
         closeOnSelect: true,
         minimumInputLength: 0,
         allowClear: true,
-        templateSelection: function (data,a) {
-            //a.addClass(fnColorTag(data.category_id));
+        templateSelection: function (data, a) {
+            if ($('body').hasClass('design-v2')) { } else {
+                a.addClass(fnColorTag(data.category_id));
+            }
             return data.text;
         },
         dropdownParent: $(".search-container"),
@@ -594,25 +595,31 @@ function GetProducts() {
             if (newFilterApplied) {
                 $(".product-list").html(template({ products: data }));
                 if (helptour_running == false) {
-
                     if ($('body').hasClass('design-v2')) {
-                        if (window.location.pathname != "/" && window.location.pathname != "/app") {
-                            if ($("body").scrollTop() < $(".banner").height())
-                                $(".banner").slideUp();
-                            else
-                            {
-                                $(".banner").hide();
-                                if ($('body').scrollTop() > 25)
-                                    $('body').scrollTop(25);
-                            }
-
+                        if (window.location.pathname != "/" && window.location.pathname != "/#" && window.location.pathname != "/app") {
+                            $(".banner").hide();
                         }
                         else {
-                            $(".banner").slideDown();
+                            $(".banner").show();
                         }
                     }
+                    //Add more top padding to bags list so it doesn't go behind expanded header
 
-                    
+                    if ($('body').hasClass('design-v2')) {
+                        if (window.location.pathname != "/" && window.location.pathname != "/#" && window.location.pathname != "/app") {
+                            $("#main").css("padding-top", $("#top-search-wrap > .container").height() + 40 + "px");
+                            if ($('body').scrollTop() > 25)
+                                $('body').scrollTop(25);
+                        }
+                        else {
+                            $("#main").css("padding-top", "50px");
+                            $('body').scrollTop(0);
+                        }
+                    }
+                    else
+                        $("#main").css("padding-top", $("#top-search-wrap > .container").height() + 40 + "px");
+                    if ($('body').scrollTop() > 25)
+                        $('body').scrollTop(25);
                 }
             }
             else
@@ -688,6 +695,11 @@ function GetProducts() {
             //Hide Page Loader
             HidePageLoader();
 
+            //Show Banner Button
+            setTimeout(function () {
+                $(".banner .down-arrow").addClass("animated fadeInDown").show();
+            });
+            
             //Reset
             g_hashchanged = false;
 
@@ -1499,5 +1511,5 @@ function ShowingBrandFilter() {
 }
 
 function HideBanner() {
-    $("html, body").stop().animate({ scrollTop: $(".banner").height() + 106 }, '500');    
+    $("html, body").stop().animate({ scrollTop: $(".banner").height() - 25}, '500');    
 }
