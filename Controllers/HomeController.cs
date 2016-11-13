@@ -12,37 +12,58 @@ namespace Zoltu.Bags.Client.Controllers
 {
 	public class HomeController : Controller
 	{
-		// Best practices
-		// https://www.asp.net/web-api/overview/advanced/calling-a-web-api-from-a-net-client
-		static HttpClient client = new HttpClient();
+		private static Regex productRegx = new Regex(@"product\/(\d+)", RegexOptions.IgnoreCase);
+		private static Regex tagRegx = new Regex(@"tags\/(.*?)\/*?$", RegexOptions.IgnoreCase);
+		private static Regex minPriceRegx = new Regex(@"minprice\/(\d+)", RegexOptions.IgnoreCase);
+		private static Regex maxPriceRegx = new Regex(@"maxprice\/(\d+)", RegexOptions.IgnoreCase);
+		private static Regex aboutRegx = new Regex(@"aboutus", RegexOptions.IgnoreCase);
+		private static HttpClient client = null;
+
+		public HomeController()
+		{
+			// Best practices: https://www.asp.net/web-api/overview/advanced/calling-a-web-api-from-a-net-client
+			client = new HttpClient();
+			client.BaseAddress = new Uri("https://bags-api.zoltu.com/api/");
+			client.DefaultRequestHeaders.Accept.Clear();
+			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+		}
 
 		[Route("")]
 		[Route("app/{*path}")]
-		public IActionResult App(String path = null)
+		public async Task<IActionResult> App(String path = null)
 		{
-			String url = "https://bagcupid.com/";
-			String type = "website";
-			String title = "Bag Cupid";
-			String description = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-			String image = "https://bagcupid.com/img/logo/bagcupid.png";
+			var url = "https://bagcupid.com/";
+			var type = "website";
+			var title = "Bag Cupid";
+			var description = "What is your dream bag? Are you having trouble finding it? Let us help you!";
+			var image = "https://bagcupid.com/img/logo/bagcupid.png";
 
 			if (!String.IsNullOrEmpty(path))
 			{
-				String ProductId = MatchRegexAndReturnValue(path, @"product\/(\d+)");
-				String TagId = MatchRegexAndReturnValue(path, @"tags\/(.*?)\/*?$");
-				String MinPrice = MatchRegexAndReturnValue(path, @"minprice\/(\d+)");
-				String MaxPrice = MatchRegexAndReturnValue(path, @"maxprice\/(\d+)");
-				String aboutUs = MatchRegexAndReturnValue(path, @"aboutus");
+				var productMatch = productRegx.Match(path);
+				var productId = productMatch.Success ? productMatch.Groups.Count == 1 ? productMatch.Value : productMatch.Groups[1].Value : String.Empty;
 
-				if (string.IsNullOrEmpty(ProductId))
+				var tagMatch = tagRegx.Match(path);
+				var tagId = tagMatch.Success ? tagMatch.Groups.Count == 1 ? tagMatch.Value : tagMatch.Groups[1].Value : String.Empty;
+
+				var minPriceMatch = minPriceRegx.Match(path);
+				var minPrice = minPriceMatch.Success ? minPriceMatch.Groups.Count == 1 ? minPriceMatch.Value : minPriceMatch.Groups[1].Value : String.Empty;
+
+				var maxPriceMatch = maxPriceRegx.Match(path);
+				var maxPrice = maxPriceMatch.Success ? maxPriceMatch.Groups.Count == 1 ? maxPriceMatch.Value : maxPriceMatch.Groups[1].Value : String.Empty;
+
+				var aboutUsMatch = aboutRegx.Match(path);
+				var aboutUs = aboutUsMatch.Success ? aboutUsMatch.Groups.Count == 1 ? aboutUsMatch.Value : aboutUsMatch.Groups[1].Value : String.Empty;
+
+				if (!String.IsNullOrEmpty(productId))
 				{
-					dynamic product = CallAPI("products/" + ProductId);
+					var product = await CallApi("products/" + productId);
 
 					url = "https://bagcupid.com/" + path;
 					type = "website";
 					title = "Bag Cupid";
 					description = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-					image = product.images[0].small;
+					image = (product != null && product.images.Count > 0 && product.images[0].large != null) ? product.images[0].large : "";
 				}
 			}
 
@@ -55,38 +76,15 @@ namespace Zoltu.Bags.Client.Controllers
 			return View("index");
 		}
 
-		public String MatchRegexAndReturnValue(String input, String pattern)
+		static async Task<dynamic> CallApi(String path)
 		{
-			var match = Regex.Match(input, pattern);
+			var response = await client.GetAsync(path);
 
-			if (match.Success)
-			{
-				return match.Groups.Count == 1 ? match.Value : match.Groups[1].Value;
-			}
+			if (!response.IsSuccessStatusCode)
+				return null;
 
-			return String.Empty;
-		}
-
-		static dynamic CallAPI(String path)
-		{
-			client.BaseAddress = new Uri("https://bags-api.zoltu.com/api/");
-			client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-			var task = client.GetAsync(path);
-			task.Wait();
-
-			HttpResponseMessage response = task.Result;
-			dynamic obj = null;
-			if (response.IsSuccessStatusCode)
-			{
-				var contentTask = response.Content.ReadAsStringAsync();
-				contentTask.Wait();
-
-				obj = JsonConvert.DeserializeObject(contentTask.Result);
-			}
-
-			return obj;
+			var contentTask = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject(contentTask);
 		}
 	}
 }
