@@ -7,22 +7,24 @@ using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Dynamic;
+using Newtonsoft.Json.Linq;
 
 namespace Zoltu.Bags.Client.Controllers
 {
 	public class HomeController : Controller
 	{
-		private static Regex productRegx = new Regex(@"product\/(\d+)", RegexOptions.IgnoreCase);
-		private static Regex tagRegx = new Regex(@"tags\/(.*?)\/*?$", RegexOptions.IgnoreCase);
-		private static Regex minPriceRegx = new Regex(@"minprice\/(\d+)", RegexOptions.IgnoreCase);
-		private static Regex maxPriceRegx = new Regex(@"maxprice\/(\d+)", RegexOptions.IgnoreCase);
-		private static Regex aboutRegx = new Regex(@"aboutus", RegexOptions.IgnoreCase);
-		private static HttpClient client = null;
+		private static readonly Regex productRegex = new Regex(@"product\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex tagRegex = new Regex(@"tags\/(.*?)\/*?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex minPriceRegex = new Regex(@"minprice\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex maxPriceRegex = new Regex(@"maxprice\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex aboutRegex = new Regex(@"aboutus", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-		public HomeController()
+		// Best practices: https://www.asp.net/web-api/overview/advanced/calling-a-web-api-from-a-net-client
+		private static readonly HttpClient client = new HttpClient();
+
+		static HomeController()
 		{
-			// Best practices: https://www.asp.net/web-api/overview/advanced/calling-a-web-api-from-a-net-client
-			client = new HttpClient();
 			client.BaseAddress = new Uri("https://bags-api.zoltu.com/api/");
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -40,30 +42,20 @@ namespace Zoltu.Bags.Client.Controllers
 
 			if (!String.IsNullOrEmpty(path))
 			{
-				var productMatch = productRegx.Match(path);
-				var productId = productMatch.Success ? productMatch.Groups.Count == 1 ? productMatch.Value : productMatch.Groups[1].Value : String.Empty;
+				var productId = productRegex.Match(path).Groups[1].Value?.TryParseUInt64();
+				var tagId = tagRegex.Match(path).Groups[1].Value;
+				var minPrice = minPriceRegex.Match(path).Groups[1].Value.TryParseUInt64();
+				var maxPrice = maxPriceRegex.Match(path).Groups[1].Value.TryParseUInt64();
+				var aboutUs = aboutRegex.Match(path).Success;
 
-				var tagMatch = tagRegx.Match(path);
-				var tagId = tagMatch.Success ? tagMatch.Groups.Count == 1 ? tagMatch.Value : tagMatch.Groups[1].Value : String.Empty;
-
-				var minPriceMatch = minPriceRegx.Match(path);
-				var minPrice = minPriceMatch.Success ? minPriceMatch.Groups.Count == 1 ? minPriceMatch.Value : minPriceMatch.Groups[1].Value : String.Empty;
-
-				var maxPriceMatch = maxPriceRegx.Match(path);
-				var maxPrice = maxPriceMatch.Success ? maxPriceMatch.Groups.Count == 1 ? maxPriceMatch.Value : maxPriceMatch.Groups[1].Value : String.Empty;
-
-				var aboutUsMatch = aboutRegx.Match(path);
-				var aboutUs = aboutUsMatch.Success ? aboutUsMatch.Groups.Count == 1 ? aboutUsMatch.Value : aboutUsMatch.Groups[1].Value : String.Empty;
-
-				if (!String.IsNullOrEmpty(productId))
+				if (productId.HasValue)
 				{
-					var product = await CallApi("products/" + productId);
+					var product = await CallApi($"products/{productId}");
 
-					url = "https://bagcupid.com/" + path;
-					type = "website";
-					title = "Bag Cupid";
-					description = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-					image = (product != null && product.images.Count > 0 && product.images[0].large != null) ? product.images[0].large : "";
+					url = $"https://bagcupid.com/{path}";
+
+					if (product?.images != null && product.images.Count > 0)
+						image = (string)(((JObject)product)["images"].Aggregate((minItem, nextItem) => (int)minItem["priority"] < (int)nextItem["priority"] ? minItem : nextItem))["large"];
 				}
 			}
 
@@ -83,8 +75,17 @@ namespace Zoltu.Bags.Client.Controllers
 			if (!response.IsSuccessStatusCode)
 				return null;
 
-			var contentTask = await response.Content.ReadAsStringAsync();
-			return JsonConvert.DeserializeObject(contentTask);
+			var content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject(content);
+		}
+	}
+
+	public static class Extensions
+	{
+		public static UInt64? TryParseUInt64(this String value)
+		{
+			UInt64 id = 0;
+			return UInt64.TryParse(value, out id) ? id : (UInt64?)null;
 		}
 	}
 }
