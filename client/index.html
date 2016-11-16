@@ -29,11 +29,11 @@
 			// Define JavaScript for each page variation of this experiment.
 			switch (chosenVariation) {
 				case 0:
-					//Original: Do nothing. This will render the logo with yellow icon.
+					//Original: Do nothing. This will render the old design and colors
 					break;
 				case 1:
-					//This will render the logo with white icon
-					document.getElementsByClassName('header-logo')[0].src = '/img/logo/bagcupid_whitebg.png';
+					//This will render the new design
+					document.getElementsByTagName('body')[0].className = 'design-v2';
 					break;
 			}
 		};
@@ -112,7 +112,7 @@
 	<link href="/vendors/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css" />
 	<link href="/vendors/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="design-v2 banner-visible">
+<body class="design-v2">
 	<div class="banner" style="background-image: url(/img/banner/bag2.jpg)">
 		<div class="caption-text animated">
 			<h1>Find the Bag <br/>you'll ever need</h1>
@@ -123,7 +123,7 @@
 			</button>
 		</div>
 	</div>
-	<header id="header" class="clearfix search-toggled" data-current-skin="blue">
+	<header id="header" class="clearfix search-toggled">
 		<!-- Top Search Content -->
 		<div id="top-search-wrap">
 			<div class="top-menu-small">
@@ -172,10 +172,10 @@
 										<div class="lv-body p10">
 											<div class="row mt10">
 												<div class="col-xs-6">
-													<div class="fs12 text-primary pl10">MIN</div>
+													<div class="fs12 pl10">MIN</div>
 												</div>
 												<div class="col-xs-6">
-													<div class="fs12 text-primary pr10  text-right">MAX</div>
+													<div class="fs12 pr10  text-right">MAX</div>
 												</div>
 											</div>
 											<div class="ml30 mr30">
@@ -376,10 +376,10 @@
 	</div>
 
 	<div class="help-slider-clone hidden-xs custom-help-popover" data-viewport="body" data-container=".help-slider-clone" data-toggle="popover" data-placement="top" data-trigger="manual"
-		 data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!"></div>
+		 data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-yellow waves-effect btn-lg mr5 animated tada text-111' onclick='ShowHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!"></div>
 
 	<div class="help-btn-mobile visible-xs visible-sm custom-help-popover" data-viewport="body" data-container=".help-btn-mobile" data-toggle="popover" data-placement="top" data-trigger="manual"
-		 data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowMobileHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!">
+		 data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-yellow waves-effect btn-lg mr5 animated tada text-111' onclick='ShowMobileHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!">
 		<button type="button" class="btn btn-link btn-mobile-help" onclick="ShowMobileHelpTour()"><i class="fa fa-question"></i></button>
 	</div>
 	<div class="btn-floating help hidden-xs hidden-sm">
