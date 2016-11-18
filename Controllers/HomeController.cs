@@ -52,7 +52,7 @@ namespace Zoltu.Bags.Client.Controllers
 				{
 					var product = await CallApi($"products/{productId}");
 
-					url = $"https://bagcupid.com/{path}";
+					url = $"https://bagcupid.com/app/{path}";
 
 					if (product?.images != null && product.images.Count > 0)
 						image = (string)(((JObject)product)["images"].Aggregate((minItem, nextItem) => (int)minItem["priority"] < (int)nextItem["priority"] ? minItem : nextItem))["large"];
