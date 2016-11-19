@@ -925,7 +925,6 @@ function ShowHelpTour() {
             setTimeout(function () {
                 $(".help-slider-clone").popover("destroy");
                 $(".help-slider").removeClass("animated animated-short slideInRight").addClass("animated animated-short slideOutRight");
-                $("#crowd-shortcut").css("visibility", "hidden");
                 $(".btn-floating").css("visibility", "hidden");
             }, 1000);
         },
@@ -937,8 +936,7 @@ function ShowHelpTour() {
             $("#main-search").select2("val", "");
             $("#main-search").trigger("change");
             setTimeout(function () {
-                $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
-
+                $(".btn-floating").css("visibility", "visible");
             }, 1000);
         },
         onStop: function () {
@@ -949,7 +947,7 @@ function ShowHelpTour() {
             $("#main-search").select2("val", "");
             $("#main-search").trigger("change");
             setTimeout(function () {
-                $(".help-slider").removeClass("animated animated-short slideOutRight").addClass("animated animated-short slideInRight");
+                $(".btn-floating").css("visibility", "visible");
             }, 1000);
         }
     });
@@ -1035,7 +1033,6 @@ function ShowMobileHelpTour() {
 
             //hidding floating buttons
             $(".help-btn-mobile").css("visibility","hidden");
-            $("#crowd-shortcut").css("visibility", "hidden");
             $(".btn-floating").css("visibility", "hidden");
             $('body').scrollTop(250 - ($(window).height() - $(".product-list .product-card:first-child").height()));
         },
@@ -1054,7 +1051,6 @@ function ShowMobileHelpTour() {
 
             //showing floating buttons back again
             $(".help-btn-mobile").css("visibility", "visible");
-            $("#crowd-shortcut").css("visibility", "visible");
             $(".btn-floating").css("visibility", "visible");
 
             //Remove if any tour popover failed to go off

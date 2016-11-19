@@ -186,7 +186,7 @@ body.showing-product{overflow:hidden}
 .btn-floating .text{width:90px;float:left;background-color:#fff;height:40px;line-height:40px;text-align:center;font-weight:500}
 .btn-floating .icon{height:40px;width:40px;float:right;line-height:40px;background-color:#fff;padding:0;display:block;text-align:center;font-size:16px;color:#777;border-top-right-radius:2px!important;border-bottom-right-radius:2px!important}
 .btn-floating.feedback{bottom:0}
-.btn-floating.share{bottom:53px;z-index:2001}
+.btn-floating.share{z-index:2001}
 .btn-floating.share .social-dropdown{bottom:35px}
 .btn-floating.help{bottom:105px}
 .btn-floating.help .icon{font-size:20px}
@@ -287,5 +287,16 @@ body.design-v2 .noUi-background{background:#444}
 body.design-v2 .listview .icon{color:#9c27b0}
 body.design-v2 .product-list .product-card .card-body .tag-more.btn-sm{border:1px solid #2ab27b;padding:1px 5px;color:#2ab27b}
 body.design-v2 > .tag.teal{background-color:#2ab27b;color:#fff;border-color:#2ab27b}
+body.design-v2 .label-helptour{padding:3px 10px;font-weight:400;border:2px solid #ffffff; font-family:Montserrat,Helvetica,sans-serif!important;background-color:#218D62 !important;font-size:14px;text-shadow:none}
+body.design-v2 .enjoyhint_next_btn{background-color:#ffeb3b !important;border:none !important;color: #111 !important;font-family:Montserrat,Helvetica,sans-serif!important;}
+body.design-v2 .enjoyhint_next_btn:hover{color:#000 !important}
+body.design-v2 .enjoyhint_skip_btn{background-color:#ffeb3b !important;border:none !important;color: #111 !important;font-family:Montserrat,Helvetica,sans-serif!important;width:120px !important;}
+body.design-v2 .enjoyhint_skip_btn:hover{color:#000 !important}
+body.design-v2 .enjoyhint_close_btn{border-color:#fff !important}
+body.design-v2 .enjoyhint_close_btn:hover{ background-color:transparent !important;border-color:#ffeb3b !important}
+
 .zoomContainer{z-index:9999}
 .zoomWindow{z-index:9999}
+
+.bgm-facebook{background-color:#3b5998}
+.text-facebook{color:#3b5998}
