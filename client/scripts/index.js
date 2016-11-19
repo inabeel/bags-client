@@ -773,7 +773,6 @@ function BuildUrlHash() {
 })(window.history);
 
 window.onpopstate = function (event) {
-    debugger;
     g_load_popup = true;
     if (!(g_popup_just_closed == true && g_tag_changed_when_popup_open == false)) {
         ShowPageLoader();
