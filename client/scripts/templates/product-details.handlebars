@@ -41,19 +41,19 @@
 					{{/each}}
 				</div>
 				<div class="price">
-					${{price}}
+				   <span class="currency-sign">$</span>{{price}}
 				</div>
 				<div class="product-popup-buttons">
 					<div class="row">
 						<div class="col-xs-12 col-sm-7 mt20">
 							<div class="popup-buy">
-								<a id="btn-buy" href="{{purchase_urls.[0]}}" target="_blank" class="btn btn-primary btn-lg" onclick="(window.uetq || []).push({ 'ec':'Amazon', 'ea':'Click', 'el':'{{purchase_urls.[0]}}' }); return true;"><i class="fa fa-shopping-cart"></i> Buy <span class="hidden-xs hidden-sm">It</span> From Amazon<span class="hidden-xs hidden-sm">.com</span></a>
+								<a id="btn-buy" href="{{purchase_urls.[0]}}" target="_blank" class="btn bgm-yellow btn-lg" onclick="(window.uetq || []).push({ 'ec':'Amazon', 'ea':'Click', 'el':'{{purchase_urls.[0]}}' }); return true;"><i class="fa fa-amazon"></i> Buy <span class="hidden-xs hidden-sm">It</span> From Amazon<span class="hidden-xs hidden-sm">.com</span></a>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-5 mt20">
 							<div class="popup-social-share">
 								<div class="dropup dropdown inline-block">
-									<button class="btn bgm-indigo btn-lg dropdown-toggle social-share-button" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<button class="btn bgm-facebook btn-lg dropdown-toggle social-share-button" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<i class="fa fa-facebook"></i>
 									</button>
 									<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown1">

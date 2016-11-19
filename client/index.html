@@ -12,7 +12,7 @@
 	</script>
 	<!-- End Azure Application Insights -->
 	<!-- Google Analytics -->
-	<script src="//www.google-analytics.com/cx/api.js?experiment=Fv7ulgfuTgeCanwo1ereFQ"></script>
+	<script  src="//www.google-analytics.com/cx/api.js"></script>
 	<script>
 		window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 		ga('create', 'UA-66024947-3', 'auto');
@@ -29,11 +29,11 @@
 			// Define JavaScript for each page variation of this experiment.
 			switch (chosenVariation) {
 				case 0:
-					//Original: Do nothing. This will render the logo with yellow icon.
+					//Original: Do nothing. This will render the old design and colors
 					break;
 				case 1:
-					//This will render the logo with white icon
-					document.getElementsByClassName('header-logo')[0].src = '/img/logo/bagcupid_whitebg.png';
+					//This will render the new design
+					document.getElementsByTagName('body')[0].className = 'design-v2';
 					break;
 			}
 		};
@@ -107,24 +107,51 @@
 	<link href="/fonts/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 	<link href="/fonts/flaticons/flaticon.css" rel="stylesheet" type="text/css" />
 	<link href="/vendors/select2/select2.min.css" rel="stylesheet" type="text/css" />
-	<link href="/fonts/gotham.css" rel="stylesheet" type="text/css" />
 	<link href="/vendors/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
 
 	<link href="/vendors/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css" />
 	<link href="/vendors/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-	<header id="header" class="clearfix search-toggled" data-current-skin="blue">
+<body class="design-v2">
+	<div class="banner" style="background-image: url(/img/banner/bag5.jpg)">
+		<div class="caption-text">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+						<div class="animated">
+							<h1>Find <span class="text-yellow">Your</span><br /> Perfect Bag</h1>
+						</div>
+					</div>
+					<div class="hidden-xs hidden-sm col-md-2 col-lg-4">
+
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+						<h1>We made <br/>it <span class="text-yellow">Easy</span></h1>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="down-arrow-container">
+			<button class="btn waves-effect down-arrow" type="button" onclick="HideBanner()">
+				Begin search
+			</button>
+		</div>
+	</div>
+	<header id="header" class="clearfix search-toggled">
 		<!-- Top Search Content -->
 		<div id="top-search-wrap">
 			<div class="top-menu-small">
 				<div class="container">
-					<ul class="top-menu-small">
+					<ul>
 						<li>
-							<a href="https://blog.bagcupid.com/" target="_blank"><span>BLOG <i class="fa fa-external-link"></i></span></a>
+							<a href="https://blog.bagcupid.com/" target="_blank"><span>Blog <i class="fa fa-external-link"></i></span></a>
 						</li>
 						<li>
-							<a href="javascript:void(0)" onclick="ShowAboutUsView()">ABOUT US</a>
+							<a href="javascript:void(0)" onclick="ShowAboutUsView()">About Us</a>
+						</li>
+						<li>
+							<a href="javascript:void(0);"  onclick="_urq.push(['Feedback_Open'])">Feedback</a>
 						</li>
 					</ul>
 				</div>
@@ -138,7 +165,7 @@
 						<div class="tsw-inner main-search">
 							<span id="centerpoint_search" style="position:absolute;left:45%;top:30px;"></span>
 							<select id="main-search" class="select2 full-width" multiple="multiple" style="width: 100%"></select>
-							<button id="btn-search" type="button" onclick="ExecuteSmartSearch($('.select2-search__field'))" class="btn bgm-amber btn-sm btn-link"><i class="fa fa-search"></i></button>
+							<button id="btn-search" type="button" onclick="ExecuteSmartSearch($('.select2-search__field'))" class="btn bgm-yellow btn-sm btn-link"><i class="fa fa-search"></i></button>
 						</div>
 					</div>
 					<div class="col-xs-2 col-sm-3 col-md-4 col-lg-3 filter-container">
@@ -147,7 +174,7 @@
 								<a data-toggle="dropdown" href="javascript:void(0)" class="price-display">
 									<span class="tm-icon">
 										<span id="lbl_price_filter">
-											<i class="fa fa-dollar"></i> <span class="hidden-xs hidden-sm">Price</span>
+											<i class="fa fa-dollar"></i> <span class="hidden-xs hidden-sm">PRICE</span>
 										</span>
 										<span id="min_max_selected">
 											<span class="visible-xs"><i class="fa fa-filter"></i><i class="fa fa-circle text-warning dot-price-filtered"></i> </span>
@@ -160,10 +187,10 @@
 										<div class="lv-body p10">
 											<div class="row mt10">
 												<div class="col-xs-6">
-													<div class="fs12 text-primary pl10">MIN</div>
+													<div class="fs12 pl10">MIN</div>
 												</div>
 												<div class="col-xs-6">
-													<div class="fs12 text-primary pr10  text-right">MAX</div>
+													<div class="fs12 pr10  text-right">MAX</div>
 												</div>
 											</div>
 											<div class="ml30 mr30">
@@ -228,7 +255,7 @@
 							<li class="dropdown hidden-xs">
 								<a data-toggle="dropdown" href="javascript:void(0);" onclick="ShowingBrandFilter()">
 									<span class="btn-brand-filter tm-icon">
-										<i class="fa fa-tag"></i> <span class="hidden-xs hidden-sm">Brand</span>
+										<i class="fa fa-tag"></i> <span class="hidden-xs hidden-sm">BRAND</span>
 									</span>
 								</a>
 								<ul class="brands-list dropdown-menu dropdown-menu-lg pull-right"></ul>
@@ -348,7 +375,7 @@
 		</div>
 		<ul class="dropdown-menu social-dropdown" aria-labelledby="social-dropdown-opener">
 			<li class="share-title mb5"> Share this search</li>
-			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-primary"></i>&nbsp;&nbsp;Facebook</a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-facebook"></i>&nbsp;&nbsp;Facebook</a></li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('twitter','search');"><i class="fa fa-twitter-square text-info"></i>&nbsp;&nbsp;Twitter</a></li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus','search');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
 		</ul>
@@ -364,10 +391,10 @@
 	</div>
 
 	<div class="help-slider-clone hidden-xs custom-help-popover" data-viewport="body" data-container=".help-slider-clone" data-toggle="popover" data-placement="top" data-trigger="manual"
-		 data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!"></div>
+		 data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-yellow waves-effect btn-lg mr5 animated tada text-111' onclick='ShowHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!"></div>
 
 	<div class="help-btn-mobile visible-xs visible-sm custom-help-popover" data-viewport="body" data-container=".help-btn-mobile" data-toggle="popover" data-placement="top" data-trigger="manual"
-		 data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-amber waves-effect btn-lg mr5 animated tada text-111' onclick='ShowMobileHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!">
+		 data-html="true" data-content="<div style='min-width:250px'><span class='mtn mbn fs16'><i class='fa fa-lightbulb-o text-yellow'></i> Learn how to quickly find your dream bag.</span><div class='text-center pt20'><button class='btn bgm-yellow waves-effect btn-lg mr5 animated tada text-111' onclick='ShowMobileHelpTour()'>Start Tour</button><button class='btn btn-link text-white skip-button btn-lg ' type='button' onclick='SkipHelpTourNotification()'>Skip</button></div></div>" title="Greetings Bag Shopper!">
 		<button type="button" class="btn btn-link btn-mobile-help" onclick="ShowMobileHelpTour()"><i class="fa fa-question"></i></button>
 	</div>
 	<div class="btn-floating help hidden-xs hidden-sm">
