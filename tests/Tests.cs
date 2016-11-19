@@ -8,6 +8,12 @@ namespace Zoltu.Bags.Client.Tests
 {
 	public class ControllerTests
 	{
+		private readonly String expectedDefaultType = "website";
+		private readonly String expectedDefaultTitle = "Bag Cupid";
+		private readonly String expectedDefaultUrl = "https://bagcupid.com/";
+		private readonly String expectedDefaultImage = "https://bagcupid.com/img/logo/bagcupid.png";
+		private readonly String expectedDefaultDescription = "What is your dream bag? Are you having trouble finding it? Let us help you!";
+
 		[Fact]
 		public async void null_path()
 		{
@@ -19,11 +25,11 @@ namespace Zoltu.Bags.Client.Tests
 
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
-			Assert.Equal(expected: "https://bagcupid.com/", actual: viewResult.ViewData["url"] as String);
-			Assert.Equal(expected: "website", actual: viewResult.ViewData["type"] as String);
-			Assert.Equal(expected: "Bag Cupid", actual: viewResult.ViewData["title"] as String);
-			Assert.Equal(expected: "What is your dream bag? Are you having trouble finding it? Let us help you!", actual: viewResult.ViewData["description"] as String);
-			Assert.Equal(expected: "https://bagcupid.com/img/logo/bagcupid.png", actual: viewResult.ViewData["image"] as String);
+			Assert.Equal(expected: expectedDefaultUrl, actual: viewResult.ViewData["url"] as String);
+			Assert.Equal(expected: expectedDefaultType, actual: viewResult.ViewData["type"] as String);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewResult.ViewData["title"] as String);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewResult.ViewData["description"] as String);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewResult.ViewData["image"] as String);
 		}
 
 		[Fact]
@@ -38,10 +44,28 @@ namespace Zoltu.Bags.Client.Tests
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
 			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewResult.ViewData["url"] as String);
-			Assert.Equal(expected: "website", actual: viewResult.ViewData["type"] as String);
-			Assert.Equal(expected: "Bag Cupid", actual: viewResult.ViewData["title"] as String);
-			Assert.Equal(expected: "What is your dream bag? Are you having trouble finding it? Let us help you!", actual: viewResult.ViewData["description"] as String);
+			Assert.Equal(expected: expectedDefaultType, actual: viewResult.ViewData["type"] as String);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewResult.ViewData["title"] as String);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewResult.ViewData["description"] as String);
 			Assert.Equal(expected: "https://images-na.ssl-images-amazon.com/images/I/51Og1-R3JLL.jpg", actual: viewResult.ViewData["image"] as String);
+		}
+
+		[Fact]
+		public async void invalid_product_from_real_api()
+		{
+			// arrange
+			var controller = new HomeController(new BagsApi());
+
+			// act
+			var result = await controller.App("product/987654321");
+
+			// assert
+			var viewResult = Assert.IsType<ViewResult>(result);
+			Assert.Equal(expected: expectedDefaultUrl, actual: viewResult.ViewData["url"] as String);
+			Assert.Equal(expected: expectedDefaultType, actual: viewResult.ViewData["type"] as String);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewResult.ViewData["title"] as String);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewResult.ViewData["description"] as String);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewResult.ViewData["image"] as String);
 		}
 
 		[Fact]
@@ -59,11 +83,11 @@ namespace Zoltu.Bags.Client.Tests
 
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
-			Assert.Equal(expected: "https://bagcupid.com/", actual: viewResult.ViewData["url"] as String);
-			Assert.Equal(expected: "website", actual: viewResult.ViewData["type"] as String);
-			Assert.Equal(expected: "Bag Cupid", actual: viewResult.ViewData["title"] as String);
-			Assert.Equal(expected: "What is your dream bag? Are you having trouble finding it? Let us help you!", actual: viewResult.ViewData["description"] as String);
-			Assert.Equal(expected: "https://bagcupid.com/img/logo/bagcupid.png", actual: viewResult.ViewData["image"] as String);
+			Assert.Equal(expected: expectedDefaultUrl, actual: viewResult.ViewData["url"] as String);
+			Assert.Equal(expected: expectedDefaultType, actual: viewResult.ViewData["type"] as String);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewResult.ViewData["title"] as String);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewResult.ViewData["description"] as String);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewResult.ViewData["image"] as String);
 		}
 
 		[Fact]
@@ -102,9 +126,9 @@ namespace Zoltu.Bags.Client.Tests
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
 			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewResult.ViewData["url"] as String);
-			Assert.Equal(expected: "website", actual: viewResult.ViewData["type"] as String);
-			Assert.Equal(expected: "Bag Cupid", actual: viewResult.ViewData["title"] as String);
-			Assert.Equal(expected: "What is your dream bag? Are you having trouble finding it? Let us help you!", actual: viewResult.ViewData["description"] as String);
+			Assert.Equal(expected: expectedDefaultType, actual: viewResult.ViewData["type"] as String);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewResult.ViewData["title"] as String);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewResult.ViewData["description"] as String);
 			Assert.Equal(expected: "second", actual: viewResult.ViewData["image"] as String);
 		}
 
@@ -124,10 +148,10 @@ namespace Zoltu.Bags.Client.Tests
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
 			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewResult.ViewData["url"] as String);
-			Assert.Equal(expected: "website", actual: viewResult.ViewData["type"] as String);
-			Assert.Equal(expected: "Bag Cupid", actual: viewResult.ViewData["title"] as String);
-			Assert.Equal(expected: "What is your dream bag? Are you having trouble finding it? Let us help you!", actual: viewResult.ViewData["description"] as String);
-			Assert.Equal(expected: "https://bagcupid.com/img/logo/bagcupid.png", actual: viewResult.ViewData["image"] as String);
+			Assert.Equal(expected: expectedDefaultType, actual: viewResult.ViewData["type"] as String);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewResult.ViewData["title"] as String);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewResult.ViewData["description"] as String);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewResult.ViewData["image"] as String);
 		}
 
 	}
