@@ -1,0 +1,31 @@
+{
+	"version": "1.0.0-*",
+	"buildOptions": {
+		"emitEntryPoint": true,
+		"debugType": "portable",
+		"preserveCompilationContext": true
+	},
+	"dependencies": {
+		"Microsoft.ApplicationInsights.AspNetCore": "1.0.2",
+		"Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
+		"Microsoft.AspNetCore.StaticFiles": "1.1.0",
+		"Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
+		"Microsoft.Extensions.Logging.Console": "1.1.0",
+		"Microsoft.AspNetCore.Mvc": "1.1.0",
+		"Microsoft.AspNetCore.Routing": "1.1.0",
+		"Microsoft.AspNetCore.Razor.Tools": "1.1.0-preview4-final"
+	},
+	"frameworks": {
+		"netcoreapp1.0": {
+			"dependencies": {
+				"Microsoft.NETCore.App": {
+					"type": "platform",
+					"version": "1.1.0"
+				}
+			},
+			"imports": [
+				"dotnet54"
+			]
+		}
+	}
+}

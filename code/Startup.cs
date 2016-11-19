@@ -37,6 +37,7 @@ namespace Zoltu.Bags.Client
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSingleton<BagsApi>();
 			services.AddApplicationInsightsTelemetry(_configuration);
 			services.AddMvc();
 

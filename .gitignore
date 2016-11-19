@@ -1,7 +1,7 @@
 /node_modules/
 /.vs/
-/bin/
-/obj/
+bin/
+obj/
 
-/*.xproj.user
-/client/scripts/templates/template.min.js
+*.xproj.user
+/code/client/scripts/templates/template.min.js
