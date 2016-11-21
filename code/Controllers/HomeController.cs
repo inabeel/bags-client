@@ -25,11 +25,12 @@ namespace Zoltu.Bags.Client.Controllers
 		[Route("app/{*path}")]
 		public async Task<IActionResult> App(String path = null)
 		{
-			ViewData["url"] = "https://bagcupid.com/";
-			ViewData["type"] = "website";
-			ViewData["title"] = "Bag Cupid";
-			ViewData["description"] = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-			ViewData["image"] = "https://bagcupid.com/img/logo/bagcupid.png";
+			MetaViewModel model = new MetaViewModel();
+			model.url = "https://bagcupid.com/";
+			model.type = "website";
+			model.title = "Bag Cupid";
+			model.description = "What is your dream bag? Are you having trouble finding it? Let us help you!";
+			model.image = "https://bagcupid.com/img/logo/bagcupid.png";
 
 			path = path ?? "";
 			var productId = productRegex.Match(path).Groups[1].Value?.TryParseUInt64();
@@ -42,16 +43,25 @@ namespace Zoltu.Bags.Client.Controllers
 			{
 				var product = await bagsApi.GetProduct(productId ?? 0);
 
-				ViewData["url"] = $"https://bagcupid.com/app/{path.TrimStart('/')}";
+				model.url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
 
-				if (product.Images != null && product.Images.Count() > 0)
-					ViewData["image"] = product.Images
+				if (product?.Images != null && product.Images.Count() > 0)
+					model.image = product.Images
 						.Aggregate((selectedImage, nextImage) => (nextImage.Priority < selectedImage.Priority) ? nextImage : selectedImage)
 						.Large;
 			}
 
-			return View("index");
+			return View("index", model);
 		}
+	}
+
+	public class MetaViewModel
+	{
+		public String url { get; set; }
+		public String type { get; set; }
+		public String title { get; set; }
+		public String description { get; set; }
+		public String image { get; set; }
 	}
 
 	public static class Extensions
