@@ -43,7 +43,7 @@ namespace Zoltu.Bags.Client.Controllers
 			{
 				var product = await bagsApi.GetProduct(productId ?? 0);
 
-				model.url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
+				model.url = $"https://bagcupid.com/app/{path.TrimLeadingSlash()}";
 
 				if (product?.Images != null && product.Images.Count() > 0)
 					model.image = product.Images
@@ -70,6 +70,14 @@ namespace Zoltu.Bags.Client.Controllers
 		{
 			UInt64 id = 0;
 			return UInt64.TryParse(value, out id) ? id : (UInt64?)null;
+		}
+
+		public static String TrimLeadingSlash(this String value)
+		{
+			if(value.StartsWith("/"))
+				value = value.TrimStart('/');
+
+			return value;
 		}
 	}
 }
