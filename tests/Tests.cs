@@ -25,13 +25,13 @@ namespace Zoltu.Bags.Client.Tests
 
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
-			var viewModel = viewResult.Model as MetaViewModel;
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
 
-			Assert.Equal(expected: expectedDefaultUrl, actual: viewModel.url as String);
-			Assert.Equal(expected: expectedDefaultType, actual: viewModel.type as String);
-			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.title as String);
-			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.description as String);
-			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.image as String);
+			Assert.Equal(expected: expectedDefaultUrl, actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Image);
 		}
 
 		[Fact]
@@ -45,13 +45,13 @@ namespace Zoltu.Bags.Client.Tests
 
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
-			var viewModel = viewResult.Model as MetaViewModel;
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
 
-			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.url);
-			Assert.Equal(expected: expectedDefaultType, actual: viewModel.type);
-			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.title);
-			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.description);
-			Assert.Equal(expected: "https://images-na.ssl-images-amazon.com/images/I/51Og1-R3JLL.jpg", actual: viewModel.image);
+			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
+			Assert.Equal(expected: "https://images-na.ssl-images-amazon.com/images/I/51Og1-R3JLL.jpg", actual: viewModel.Image);
 		}
 
 		[Fact]
@@ -65,13 +65,13 @@ namespace Zoltu.Bags.Client.Tests
 
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
-			var viewModel = viewResult.Model as MetaViewModel;
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
 
-			Assert.Equal(expected: "https://bagcupid.com/app/product/987654321", actual: viewModel.url);
-			Assert.Equal(expected: expectedDefaultType, actual: viewModel.type);
-			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.title);
-			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.description);
-			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.image);
+			Assert.Equal(expected: "https://bagcupid.com/app/product/987654321", actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Image);
 		}
 
 		[Fact]
@@ -89,13 +89,13 @@ namespace Zoltu.Bags.Client.Tests
 
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
-			var viewModel = viewResult.Model as MetaViewModel;
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
 
-			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.url);
-			Assert.Equal(expected: expectedDefaultType, actual: viewModel.type);
-			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.title);
-			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.description);
-			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.image);
+			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Image);
 		}
 
 		[Fact]
@@ -133,13 +133,13 @@ namespace Zoltu.Bags.Client.Tests
 
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
-			var viewModel = viewResult.Model as MetaViewModel;
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
 
-			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.url);
-			Assert.Equal(expected: expectedDefaultType, actual: viewModel.type);
-			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.title);
-			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.description);
-			Assert.Equal(expected: "second", actual: viewModel.image);
+			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
+			Assert.Equal(expected: "second", actual: viewModel.Image);
 		}
 
 		[Fact]
@@ -157,13 +157,13 @@ namespace Zoltu.Bags.Client.Tests
 
 			// assert
 			var viewResult = Assert.IsType<ViewResult>(result);
-			var viewModel = viewResult.Model as MetaViewModel;
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
 
-			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.url);
-			Assert.Equal(expected: expectedDefaultType, actual: viewModel.type);
-			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.title);
-			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.description);
-			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.image);
+			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Image);
 		}
 	}
 }

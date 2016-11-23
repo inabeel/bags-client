@@ -25,12 +25,12 @@ namespace Zoltu.Bags.Client.Controllers
 		[Route("app/{*path}")]
 		public async Task<IActionResult> App(String path = null)
 		{
-			MetaViewModel model = new MetaViewModel();
-			model.url = "https://bagcupid.com/";
-			model.type = "website";
-			model.title = "Bag Cupid";
-			model.description = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-			model.image = "https://bagcupid.com/img/logo/bagcupid.png";
+			var model = new MetaViewModel();
+			model.Url = "https://bagcupid.com/";
+			model.Type = "website";
+			model.Title = "Bag Cupid";
+			model.Description = "What is your dream bag? Are you having trouble finding it? Let us help you!";
+			model.Image = "https://bagcupid.com/img/logo/bagcupid.png";
 
 			path = path ?? "";
 			var productId = productRegex.Match(path).Groups[1].Value?.TryParseUInt64();
@@ -43,10 +43,10 @@ namespace Zoltu.Bags.Client.Controllers
 			{
 				var product = await bagsApi.GetProduct(productId ?? 0);
 
-				model.url = $"https://bagcupid.com/app/{path.TrimLeadingSlash()}";
+				model.Url = $"https://bagcupid.com/app/{path.TrimLeadingSlash()}";
 
 				if (product?.Images != null && product.Images.Count() > 0)
-					model.image = product.Images
+					model.Image = product.Images
 						.Aggregate((selectedImage, nextImage) => (nextImage.Priority < selectedImage.Priority) ? nextImage : selectedImage)
 						.Large;
 			}
@@ -57,11 +57,11 @@ namespace Zoltu.Bags.Client.Controllers
 
 	public class MetaViewModel
 	{
-		public String url { get; set; }
-		public String type { get; set; }
-		public String title { get; set; }
-		public String description { get; set; }
-		public String image { get; set; }
+		public String Url { get; set; }
+		public String Type { get; set; }
+		public String Title { get; set; }
+		public String Description { get; set; }
+		public String Image { get; set; }
 	}
 
 	public static class Extensions
@@ -74,10 +74,7 @@ namespace Zoltu.Bags.Client.Controllers
 
 		public static String TrimLeadingSlash(this String value)
 		{
-			if(value.StartsWith("/"))
-				value = value.TrimStart('/');
-
-			return value;
+			return value.TrimStart('/');
 		}
 	}
 }
