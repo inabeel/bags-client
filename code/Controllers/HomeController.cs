@@ -26,11 +26,6 @@ namespace Zoltu.Bags.Client.Controllers
 		public async Task<IActionResult> App(String path = null)
 		{
 			var model = new MetaViewModel();
-			model.Url = "https://bagcupid.com/";
-			model.Type = "website";
-			model.Title = "Bag Cupid";
-			model.Description = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-			model.Image = "https://bagcupid.com/img/logo/bagcupid.png";
 
 			path = path ?? "";
 			var productId = productRegex.Match(path).Groups[1].Value?.TryParseUInt64();
@@ -43,12 +38,20 @@ namespace Zoltu.Bags.Client.Controllers
 			{
 				var product = await bagsApi.GetProduct(productId ?? 0);
 
-				model.Url = $"https://bagcupid.com/app/{path.TrimLeadingSlash()}";
+				model.Url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
 
 				if (product?.Images != null && product.Images.Count() > 0)
 					model.Image = product.Images
 						.Aggregate((selectedImage, nextImage) => (nextImage.Priority < selectedImage.Priority) ? nextImage : selectedImage)
 						.Large;
+
+				if (product?.Tags != null && product.Tags.Count() > 0)
+				{
+					var brand = product.Tags.FirstOrDefault(x => x.IsBrand)?.TagName ?? "";
+					var styles = String.Join("/", product.Tags.Where(x => x.IsStyle).Select(x=> x.TagName).ToArray());
+
+					model.Title = $"{brand} {product.Name} - {styles}".ToUppercaseWords();
+				}
 			}
 
 			return View("index", model);
@@ -57,11 +60,11 @@ namespace Zoltu.Bags.Client.Controllers
 
 	public class MetaViewModel
 	{
-		public String Url { get; set; }
-		public String Type { get; set; }
-		public String Title { get; set; }
-		public String Description { get; set; }
-		public String Image { get; set; }
+		public String Url { get; set; } = "https://bagcupid.com/";
+		public String Type { get; set; } = "website";
+		public String Title { get; set; } = "Bag Cupid";
+		public String Description { get; set; } = "What is your dream bag? Are you having trouble finding it? Let us help you!";
+		public String Image { get; set; } = "https://bagcupid.com/img/logo/bagcupid.png";
 	}
 
 	public static class Extensions
@@ -72,9 +75,9 @@ namespace Zoltu.Bags.Client.Controllers
 			return UInt64.TryParse(value, out id) ? id : (UInt64?)null;
 		}
 
-		public static String TrimLeadingSlash(this String value)
+		public static String ToUppercaseWords(this String value)
 		{
-			return value.TrimStart('/');
+			return Regex.Replace(value, @"(^\w)|(\s\w)", m => m.Value.ToUpper());
 		}
 	}
 }
