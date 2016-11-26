@@ -37,7 +37,7 @@
 				</div>
 				<div class="product-tags">
 					{{#each tags}}
-					<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
+						<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
 					{{/each}}
 				</div>
 				<div class="price">
@@ -66,8 +66,8 @@
 										<i class="fa fa-twitter"></i>
 									</button>
 									<ul class="dropdown-menu pull-right social-dropdown " aria-labelledby="social-share-dropdown1">
-										<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'product');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
-										<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'search');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
+										<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'product','{{images.[0].large}}');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
+										<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'search','{{images.[0].large}}');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
 									</ul>
 								</div>
 								<div class="dropup dropdown  inline-block">
@@ -75,8 +75,17 @@
 										<i class="fa fa-google-plus"></i>
 									</button>
 									<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown1">
-										<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'product');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
-										<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'search');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
+										<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'product','{{images.[0].large}}');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
+										<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'search','{{images.[0].large}}');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
+									</ul>
+								</div>
+								<div class="dropup dropdown  inline-block">
+									<button class="btn bgm-pinterest btn-lg dropdown-toggle social-share-button pinterest" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa fa-pinterest-p"></i>
+									</button>
+									<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown1">
+										<li><a href="javascript:void(0);" onclick="ShareLink('pinterest', 'product','{{images.[0].large}}','{{titleCase name}}','{{getBrandName tags}}');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Pin this Bag</a></li>
+										<li><a href="javascript:void(0);" onclick="ShareLink('pinterest', 'search','{{images.[0].large}}','{{titleCase name}}','{{getBrandName tags}}');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Pin this search</a></li>
 									</ul>
 								</div>
 							</div>

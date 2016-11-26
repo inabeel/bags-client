@@ -131,6 +131,7 @@ body > .tag{position:relative;margin-right:3px;padding:2px 5px;font-size:12px;bo
 #product-popup-loader{top:0;left:0;width:100%;height:100%;z-index:1042;overflow:hidden;position:absolute;text-align:center;display:none}
 #product-popup-loader .icon{position:fixed;width:50px!important;height:50px;line-height:50px;top:calc(50% - 25px);left:calc(50% - 25px);color:#fff;width:100%;background-color:#fff;color:#fff;font-size:20px;border-radius:3px}
 #show-more-panel{text-align:center;margin-top:20px}
+.btn-show-more{ font-weight: 800; background-color: #ffe11b; height: 50px;text-align: center;border-radius: 25px;box-shadow: 0 1px 3px rgba(0,0,0,0.3);color: #111;cursor: pointer;padding: 0 20px;font-size: 16px;}
 .header-logo{height:32px;margin-top:15px}
 .about-logo{height:45px}
 .tsw-inner{padding:10px;margin:0!important;max-width:100%}
@@ -255,7 +256,6 @@ body.showing-product{overflow:hidden}
 .brands-list .listview .lv-body a:focus{background-color:#ECF9FF}
 .brands-list > .listview .lv-body a .media .pull-left{padding-right:10px!important}
 .banner{display:none;width:100%;height:75vh;overflow:hidden;position:relative;background-repeat:no-repeat;background-position-x:center;background-position-y:48px;background-size:100% auto;box-shadow:0 1px 1px rgba(0,0,0,0.15)}
-.banner:after{background:#000;position:absolute;width:100%;content:" ";top:0;height:100%;opacity:.1;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=13);filter:alpha(opacity=13);display:block}
 .banner img{width:100%;opacity:1}
 .banner .down-arrow-container{position:absolute;bottom:40px;text-align:center;width:100%}
 .banner .down-arrow{font-weight:800;z-index:1;background-color:#ffe11b;height:50px;text-align:center;border-radius:25px;box-shadow:0 1px 3px rgba(0,0,0,0.3);color:#111;cursor:pointer;padding:0 20px;display:none;font-size:16px}
@@ -300,3 +300,9 @@ body.design-v2 .enjoyhint_close_btn:hover{ background-color:transparent !importa
 
 .bgm-facebook{background-color:#3b5998}
 .text-facebook{color:#3b5998}
+.bgm-pinterest{background-color:#CB1F27}
+.text-pinterest{color:#CB1F27}
+ul.social-dropdown > li > a {padding:0 17px !important;}
+ul.social-dropdown > li > a > i {line-height:35px;}
+ul.social-dropdown > li > a > i.large {font-size:20px; line-height:35px;}
+ul.social-dropdown > li > a > .channel-name {line-height:34px; vertical-align:top}

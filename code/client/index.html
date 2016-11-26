@@ -112,7 +112,7 @@
 	<link href="/vendors/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css" />
 	<link href="/vendors/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css" />
 </head>
-<body onload="ApplyDesignExperiemnt();">
+<body class="design-v2" onload="ApplyDesignExperiemnt();">
 	<div class="banner" style="background-image: url(/img/banner/bag5.jpg)">
 		<div class="caption-text">
 			<div class="container">
@@ -375,9 +375,10 @@
 		</div>
 		<ul class="dropdown-menu social-dropdown" aria-labelledby="social-dropdown-opener">
 			<li class="share-title mb5"> Share this search</li>
-			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-facebook"></i>&nbsp;&nbsp;Facebook</a></li>
-			<li><a href="javascript:void(0);" onclick="ShareLink('twitter','search');"><i class="fa fa-twitter-square text-info"></i>&nbsp;&nbsp;Twitter</a></li>
-			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus','search');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search','','','');"><i class="fa fa-facebook-square text-facebook large"></i>&nbsp;&nbsp;<span class="channel-name">Facebook</span></a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'search', '', '', '');"><i class="fa fa-twitter-square text-info large"></i>&nbsp;&nbsp;<span class="channel-name">Twitter</span></a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'search', '', '', '');"><i class="fa fa-google-plus-square text-danger large"></i>&nbsp;&nbsp;<span class="channel-name">Google+</span></a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('pinterest', 'search', '', '', '');"><i class="fa fa-pinterest-square text-pinterest large"></i>&nbsp;&nbsp;<span class="channel-name">Pinterest</span></a></li>
 		</ul>
 	</div>
 
