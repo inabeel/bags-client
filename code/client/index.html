@@ -3,18 +3,19 @@
 <head>
 	<!-- Azure Application Insights -->
 	<script type="text/javascript">
-		var appInsights=window.appInsights||function(config){    function r(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s=u.createElement(o),i,f;for(s.src=config.url||"//az416426.vo.msecnd.net/scripts/a/ai.0.js",u.getElementsByTagName(o)[0].parentNode.appendChild(s),t.cookie=u.cookie,t.queue=[],i=["Event","Exception","Metric","PageView","Trace"];i.length;)r("track"+i.pop());return r("setAuthenticatedUserContext"),r("clearAuthenticatedUserContext"),config.disableExceptionTracking||(i="onerror",r("_"+i),f=e[i],e[i]=function(config,r,u,e,o){var s=f&&f(config,r,u,e,o);return s!==!0&&t["_"+i](config,r,u,e,o),s}),t
+		var appInsights = window.appInsights || function (config) {
+			function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = u.createElement(o), i, f; for (s.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace"]; i.length;) r("track" + i.pop()); return r("setAuthenticatedUserContext"), r("clearAuthenticatedUserContext"), config.disableExceptionTracking || (i = "onerror", r("_" + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t["_" + i](config, r, u, e, o), s }), t
 		}({
-			instrumentationKey:"9424da09-b5a4-44b2-b3f2-ee3c5abcde0f"
+			instrumentationKey: "9424da09-b5a4-44b2-b3f2-ee3c5abcde0f"
 		});
-		window.appInsights=appInsights;
+		window.appInsights = appInsights;
 		appInsights.trackPageView();
 	</script>
 	<!-- End Azure Application Insights -->
 	<!-- Google Analytics -->
-	<script  src="//www.google-analytics.com/cx/api.js?experiment=32VOjTOiSYyaJBJTGVIcbA"></script>
+	<script src="//www.google-analytics.com/cx/api.js?experiment=32VOjTOiSYyaJBJTGVIcbA"></script>
 	<script>
-		window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+		window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
 		ga('create', 'UA-66024947-3', 'auto');
 		ga('require', 'urlChangeTracker');
 		ga('require', 'outboundLinkTracker', {});
@@ -25,7 +26,7 @@
 	</script>
 	<script>
 		// Wait for the DOM to load, then execute the view for the chosen variation.
-		function ApplyDesignExperiemnt(){
+		function ApplyDesignExperiemnt() {
 			// Define JavaScript for each page variation of this experiment.
 			switch (chosenVariation) {
 				case 0:
@@ -45,7 +46,7 @@
 	<!-- End Google Analytics -->
 	<!-- Bing Ads -->
 	<script>
-		(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"5438211"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");
+		(function (w, d, t, r, u) { var f, n, i; w[u] = w[u] || [], f = function () { var o = { ti: "5438211" }; o.q = w[u], w[u] = new UET(o), w[u].push("pageLoad") }, n = d.createElement(t), n.src = r, n.async = 1, n.onload = n.onreadystatechange = function () { var s = this.readyState; s && s !== "loaded" && s !== "complete" || (f(), n.onload = n.onreadystatechange = null) }, i = d.getElementsByTagName(t)[0], i.parentNode.insertBefore(n, i) })(window, document, "script", "//bat.bing.com/bat.js", "uetq");
 	</script>
 	<noscript>
 		<img src="//bat.bing.com/action/0?ti=5438211&Ver=2" height="0" width="0" style="display:none; visibility: hidden;" />
@@ -54,24 +55,24 @@
 	<!-- Google Ads Conversion Tracking -->
 	<script type="text/javascript">
 		/* <![CDATA[ */
-		goog_snippet_vars = function() {
+		goog_snippet_vars = function () {
 			var w = window;
 			w.google_conversion_id = 872335982;
 			w.google_conversion_label = "JHZDCNqt5moQ7pT7nwM";
 			w.google_remarketing_only = false;
 		}
 		// DO NOT CHANGE THE CODE BELOW.
-		goog_report_conversion = function(url) {
+		goog_report_conversion = function (url) {
 			goog_snippet_vars();
 			window.google_conversion_format = "3";
 			var opt = new Object();
-			opt.onload_callback = function() {
-				if (typeof(url) != 'undefined') {
+			opt.onload_callback = function () {
+				if (typeof (url) != 'undefined') {
 					window.location = url;
 				}
 			}
 			var conv_handler = window['google_trackConversion'];
-			if (typeof(conv_handler) == 'function') {
+			if (typeof (conv_handler) == 'function') {
 				conv_handler(opt);
 			}
 		}
@@ -126,7 +127,7 @@
 
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
-						<h1>We Make <br/>It <span class="text-yellow">Easy</span></h1>
+						<h1>We Make <br />It <span class="text-yellow">Easy</span></h1>
 					</div>
 				</div>
 			</div>
@@ -151,7 +152,7 @@
 							<a href="javascript:void(0)" onclick="ShowAboutUsView()">About Us</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);"  onclick="_urq.push(['Feedback_Open'])">Feedback</a>
+							<a href="javascript:void(0);" onclick="_urq.push(['Feedback_Open'])">Feedback</a>
 						</li>
 					</ul>
 				</div>
@@ -367,14 +368,16 @@
 		</div>
 	</div>
 	<div class="btn-floating share dropup dropdown">
-		<a id="social-dropdown-opener" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text">
-			Share
+		<a id="social-dropdown-opener" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<div class="text">
+				Share
+			</div>
+			<div class="icon">
+				<i class="fa fa-share-alt"></i>
+			</div>
 		</a>
-		<div class="icon">
-			<i class="fa fa-share-alt"></i>
-		</div>
 		<ul class="dropdown-menu social-dropdown" aria-labelledby="social-dropdown-opener">
-			<li class="share-title mb5"> Share this search</li>
+			<li class="share-title mb5"><i class="fa fa-share-alt"></i> Share this Search</li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search','','','');"><i class="fa fa-facebook-square text-facebook large"></i>&nbsp;&nbsp;<span class="channel-name">Facebook</span></a></li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'search', '', '', '');"><i class="fa fa-twitter-square text-info large"></i>&nbsp;&nbsp;<span class="channel-name">Twitter</span></a></li>
 			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'search', '', '', '');"><i class="fa fa-google-plus-square text-danger large"></i>&nbsp;&nbsp;<span class="channel-name">Google+</span></a></li>
@@ -382,10 +385,11 @@
 		</ul>
 	</div>
 
-	<div class="btn-floating feedback">
-		<a href="#" class="text" onclick="_urq.push(['Feedback_Open'])">
+
+	<div class="btn-floating feedback" onclick="_urq.push(['Feedback_Open'])">
+		<div class="text">
 			Feedback
-		</a>
+		</div>
 		<div class="icon">
 			<i class="fa fa-comments"></i>
 		</div>
@@ -434,7 +438,7 @@
 		_urq.push(['setGACode', 'UA-66024947-3']);
 		_urq.push(['setPerformInitialShorctutAnimation', false]);
 		_urq.push(['initSite', '8005a4d2-5d8c-4466-95ed-0dbaf1620030']);
-		(function() {
+		(function () {
 			var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
 			ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js');
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);
