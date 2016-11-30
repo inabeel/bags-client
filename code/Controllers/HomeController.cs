@@ -25,11 +25,7 @@ namespace Zoltu.Bags.Client.Controllers
 		[Route("app/{*path}")]
 		public async Task<IActionResult> App(String path = null)
 		{
-			ViewData["url"] = "https://bagcupid.com/";
-			ViewData["type"] = "website";
-			ViewData["title"] = "Bag Cupid";
-			ViewData["description"] = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-			ViewData["image"] = "https://bagcupid.com/img/logo/bagcupid.png";
+			var model = new MetaViewModel();
 
 			path = path ?? "";
 			var productId = productRegex.Match(path).Groups[1].Value?.TryParseUInt64();
@@ -42,20 +38,39 @@ namespace Zoltu.Bags.Client.Controllers
 			{
 				var product = await bagsApi.GetProduct(productId ?? 0);
 
-				ViewData["url"] = $"https://bagcupid.com/app/{path.TrimStart('/')}";
+				model.Url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
 
-				if (product.Images != null && product.Images.Count() > 0)
-					ViewData["image"] = product.Images
+				if (product?.Images != null && product.Images.Count() > 0)
+					model.Image = product.Images
 						.Aggregate((selectedImage, nextImage) => (nextImage.Priority < selectedImage.Priority) ? nextImage : selectedImage)
 						.Large;
+
+				if (product?.Tags != null && product.Tags.Count() > 0)
+				{
+					var brand = product.Tags.FirstOrDefault(x => x.IsBrand)?.TagName ?? "";
+					var styles = String.Join("/", product.Tags.Where(x => x.IsStyle).Select(x=> x.TagName).ToArray());
+
+					model.Title = $"{brand} {product.Name} - {styles}";
+				}
 			}
 
-			return View("index");
+			return View("index", model);
 		}
+	}
+
+	public class MetaViewModel
+	{
+		public String Url { get; set; } = "https://bagcupid.com/";
+		public String Type { get; set; } = "website";
+		public String Title { get; set; } = "Bag Cupid";
+		public String Description { get; set; } = "What is your dream bag? Are you having trouble finding it? Let us help you!";
+		public String Image { get; set; } = "https://bagcupid.com/img/logo/bagcupid.png";
 	}
 
 	public static class Extensions
 	{
+		private static readonly Regex upperCaseWordsRegex = new Regex(@"(^\w)|(\s\w)", RegexOptions.Compiled);
+
 		public static UInt64? TryParseUInt64(this String value)
 		{
 			UInt64 id = 0;

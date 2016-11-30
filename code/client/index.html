@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model Zoltu.Bags.Client.Controllers.MetaViewModel
+<!DOCTYPE html>
 <html>
 <head>
 	<!-- Azure Application Insights -->
@@ -80,11 +81,11 @@
 	</script>
 	<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion_async.js"></script>
 	<!-- End Google Ads Conversion Tracking -->
-	<meta property="og:url" content="@ViewBag.url">
-	<meta property="og:type" content="@ViewBag.type">
-	<meta property="og:title" content="@ViewBag.title">
-	<meta property="og:description" content="@ViewBag.description">
-	<meta property="og:image" content="@ViewBag.image">
+	<meta property="og:url" content="@Model.Url">
+	<meta property="og:type" content="@Model.Type">
+	<meta property="og:title" content="@Model.Title">
+	<meta property="og:description" content="@Model.Description">
+	<meta property="og:image" content="@Model.Image">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
