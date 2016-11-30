@@ -41,6 +41,7 @@ namespace Zoltu.Bags.Client
 			public IEnumerable<Image> Images { get; set; }
 			[JsonProperty(PropertyName = "purchase_urls")]
 			public IEnumerable<String> PurchaseUrls { get; set; }
+			public IEnumerable<Tag> Tags { get; set; }
 
 			public class Image
 			{
@@ -52,6 +53,21 @@ namespace Zoltu.Bags.Client
 				public String Medium { get; set; }
 				[JsonProperty(PropertyName = "large")]
 				public String Large { get; set; }
+			}
+
+			public class Tag
+			{
+				[JsonProperty(PropertyName = "id")]
+				public UInt32 TagId { get; set; }
+
+				[JsonProperty(PropertyName = "name")]
+				public String TagName { get; set; }
+
+				[JsonProperty(PropertyName = "category_id")]
+				public String CategoryId { get; set; }
+
+				public bool IsBrand { get { return this.CategoryId.Equals("32aaedcd-505d-4911-66a3-08d37f9e57bd"); } }
+				public bool IsStyle { get { return this.CategoryId.Equals("106538be-3ab8-489f-669f-08d37f9e57bd"); } }
 			}
 		}
 	}
