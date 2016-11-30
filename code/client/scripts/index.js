@@ -1220,7 +1220,6 @@ function ShareLink(channel, entity, product_imgurl, product_name, product_brand)
                     pin_desc = pin_desc.trim().slice(0, -1)
                 }
             }
-            console.log('https://pinterest.com/pin/create/link/?url=' + url + '&media=' + product_imgurl + '&description=' + pin_desc);
             window.open('https://pinterest.com/pin/create/link/?url=' + encodeURIComponent(url) + '&media=' + encodeURIComponent(product_imgurl) + '&description=' + escape(pin_desc), "_blank");
             break;
     }
