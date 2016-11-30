@@ -48,9 +48,9 @@ namespace Zoltu.Bags.Client.Controllers
 				if (product?.Tags != null && product.Tags.Count() > 0)
 				{
 					var brand = product.Tags.FirstOrDefault(x => x.IsBrand)?.TagName ?? "";
-					var styles = String.Join("/", product.Tags.Where(x => x.IsStyle).Select(x=> x.TagName.ToUppercaseWords()).ToArray());
+					var styles = String.Join("/", product.Tags.Where(x => x.IsStyle).Select(x=> x.TagName).ToArray());
 
-					model.Title = $"{brand} {product.Name} - {styles}".ToUppercaseWords();
+					model.Title = $"{brand} {product.Name} - {styles}";
 				}
 			}
 
@@ -75,11 +75,6 @@ namespace Zoltu.Bags.Client.Controllers
 		{
 			UInt64 id = 0;
 			return UInt64.TryParse(value, out id) ? id : (UInt64?)null;
-		}
-
-		public static String ToUppercaseWords(this String value)
-		{
-			return upperCaseWordsRegex.Replace(value, m => m.Value.ToUpper());
 		}
 	}
 }
