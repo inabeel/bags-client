@@ -37,7 +37,7 @@
 				</div>
 				<div class="product-tags">
 					{{#each tags}}
-					<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
+						<button tag-id="{{id}}" type="button" class="btn {{colorTag category.id}} tag">#{{category.name}}: {{name}}</button>
 					{{/each}}
 				</div>
 				<div class="price">
@@ -45,39 +45,27 @@
 				</div>
 				<div class="product-popup-buttons">
 					<div class="row">
-						<div class="col-xs-12 col-sm-7 mt20">
+						<div class="col-xs-12 col-sm-7 mt47">
 							<div class="popup-buy">
 								<a id="btn-buy" href="{{purchase_urls.[0]}}" target="_blank" class="btn bgm-yellow btn-lg" onclick="(window.uetq || []).push({ 'ec':'Amazon', 'ea':'Click', 'el':'{{purchase_urls.[0]}}' }); return true;"><i class="fa fa-amazon"></i> Buy <span class="hidden-xs hidden-sm">It</span> From Amazon<span class="hidden-xs hidden-sm">.com</span></a>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-5 mt20">
 							<div class="popup-social-share">
-								<div class="dropup dropdown inline-block">
-									<button class="btn bgm-facebook btn-lg dropdown-toggle social-share-button" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<div class="mb10"><i class="fa fa-share-alt"></i> Share this Bag</div>
+								<div>
+									<button class="btn bgm-facebook btn-lg social-share-button mr1" type="button" onclick="ShareLink('facebook', 'product');">
 										<i class="fa fa-facebook"></i>
 									</button>
-									<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown1">
-										<li><a href="javascript:void(0);" onclick="ShareLink('facebook', 'product');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
-										<li><a href="javascript:void(0);" onclick="ShareLink('facebook', 'search');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
-									</ul>
-								</div>
-								<div class="dropup dropdown  inline-block">
-									<button class="btn bgm-lightblue btn-lg dropdown-toggle social-share-button twitter" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<button class="btn bgm-lightblue btn-lg social-share-button twitter mr1" type="button" onclick="ShareLink('twitter', 'product','{{images.[0].large}}');">
 										<i class="fa fa-twitter"></i>
 									</button>
-									<ul class="dropdown-menu pull-right social-dropdown " aria-labelledby="social-share-dropdown1">
-										<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'product');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
-										<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'search');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
-									</ul>
-								</div>
-								<div class="dropup dropdown  inline-block">
-									<button class="btn btn-danger btn-lg dropdown-toggle social-share-button googleplus" type="button" id="social-share-dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<button class="btn btn-danger btn-lg dropdown-toggle social-share-button googleplus" type="button" onclick="ShareLink('googleplus', 'product','{{images.[0].large}}');">
 										<i class="fa fa-google-plus"></i>
 									</button>
-									<ul class="dropdown-menu pull-right social-dropdown" aria-labelledby="social-share-dropdown1">
-										<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'product');"><i class="fa fa-shopping-bag text-primary"></i>&nbsp;&nbsp;Share this Bag</a></li>
-										<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'search');"><i class="fa fa-search text-primary"></i>&nbsp;&nbsp;Share this search</a></li>
-									</ul>
+									<button class="btn bgm-pinterest btn-lg dropdown-toggle social-share-button pinterest" type="button" onclick="ShareLink('pinterest', 'product','{{images.[0].large}}','{{titleCase name}}','{{getBrandName tags}}');">
+										<i class="fa fa-pinterest-p"></i>
+									</button>
 								</div>
 							</div>
 						</div>

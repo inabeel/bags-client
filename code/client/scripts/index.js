@@ -166,6 +166,10 @@ Handlebars.registerHelper('titleCase', function (name) {
     return name.substr(0, 1).toUpperCase() + name.substr(1);
 });
 
+Handlebars.registerHelper('getBrandName', function (tags) {
+    return Enumerable.From(tags).Where(w=>w.category.name == "brand").Select(s => s.name).Single();
+});
+
 Handlebars.registerHelper('categoryIcon', function (name) {
     var cssClass = "";
     switch (name) {
@@ -1167,7 +1171,7 @@ function createXHR() {
     return null;
 }
 
-function ShareLink(channel, entity) {
+function ShareLink(channel, entity, product_imgurl, product_name, product_brand) {
     var url = "", tag_names = "";
 
     if (entity == "product") 
@@ -1184,6 +1188,39 @@ function ShareLink(channel, entity) {
             break;
         case 'googleplus':
             window.open('https://plus.google.com/share?url=' + url, "_blank");
+            break;
+        case 'pinterest':
+            var pin_desc = "";
+            if (entity == "product")
+                pin_desc = product_brand + ": " + product_name;
+            else if (entity == "search") {
+                var path = window.location.pathname;
+
+                var productId = (path.match(/product\/(\d+)/i) || [])[1];
+                var tags = (path.match(/tags\/(.*?)\/*?$/i) || [])[1];
+                var minPrice = (path.match(/minprice\/(\d+)/i) || [])[1];
+                var maxPrice = (path.match(/maxprice\/(\d+)/i) || [])[1];
+
+                if (!(productId || tags || minPrice || maxPrice)){
+                    //Sharing base webpage
+                    product_imgurl = window.location.origin + $("img.header-logo").attr("src");
+                    pin_desc = "Find Your Perfect Bag, We Make It Easy.";
+                }
+                else {
+                    if (!productId) {
+                        product_imgurl = $(".product-list > div:first-child").find("img:first-child").attr("src");
+                    }
+                   
+                    var selected_tags = $("#main-search option:selected");
+
+                    for (var i = 0; i < selected_tags.length; i++) {
+                       
+                        pin_desc += selected_tags[i].text + ", ";
+                    }
+                    pin_desc = pin_desc.trim().slice(0, -1)
+                }
+            }
+            window.open('https://pinterest.com/pin/create/link/?url=' + encodeURIComponent(url) + '&media=' + encodeURIComponent(product_imgurl) + '&description=' + escape(pin_desc), "_blank");
             break;
     }
 }
