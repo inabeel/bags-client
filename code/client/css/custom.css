@@ -117,7 +117,7 @@ body > .tag{position:relative;margin-right:3px;padding:2px 5px;font-size:12px;bo
 .product-popup .carousel-inner > .item{height:300px;text-align:center;line-height:300px}
 .product-popup .product-name{font-size:24px;font-weight:700;margin-bottom:10px}
 .product-popup .price{margin-top:20px;font-size:30px;font-weight:700;color:#000;position:relative;padding-left:14px}
-.product-popup .price > .currency-sign{font-size:18px;position:absolute;left:0;top:4px}
+.product-popup .price > .currency-sign{font-size:18px;position:absolute;left:0;top:6px}
 .product-popup .product-tags .tag{margin-top:8px;margin-right:3px;padding:1px 5px 3px;font-size:12px;letter-spacing:.5px;box-shadow:0 2px 5px rgba(0,0,0,0.16),0 1px 2px rgba(0,0,0,0.12)!important}
 .product-popup .product-tags .tag.teal{background-color:#2ab27b;border:1px solid #2ab27b;color:#fff}
 .product-popup .product-tags .tag.teal:hover{background-color:#218D62;border:1px solid #2ab27b;color:#fff}

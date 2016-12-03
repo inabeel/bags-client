@@ -64,7 +64,7 @@ namespace Zoltu.Bags.Client.Controllers
 		public String Type { get; set; } = "website";
 		public String Title { get; set; } = "Bag Cupid";
 		public String Description { get; set; } = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-		public String Image { get; set; } = "https://bagcupid.com/img/logo/bagcupid.png";
+		public String Image { get; set; } = "https://bagcupid.com/img/logo/bagcupid_large.png";
 	}
 
 	public static class Extensions
