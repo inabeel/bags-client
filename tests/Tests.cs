@@ -11,7 +11,7 @@ namespace Zoltu.Bags.Client.Tests
 		private readonly String expectedDefaultType = "website";
 		private readonly String expectedDefaultTitle = "Bag Cupid";
 		private readonly String expectedDefaultUrl = "https://bagcupid.com/";
-		private readonly String expectedDefaultImage = "https://bagcupid.com/img/logo/bagcupid.png";
+		private readonly String expectedDefaultImage = "https://bagcupid.com/img/logo/bagcupid_large.png";
 		private readonly String expectedDefaultDescription = "What is your dream bag? Are you having trouble finding it? Let us help you!";
 
 		[Fact]
