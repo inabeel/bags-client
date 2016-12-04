@@ -1184,7 +1184,11 @@ function ShareLink(channel, entity, product_imgurl, product_name, product_brand)
             window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, "_blank");
             break;
         case 'twitter':
-            window.open('https://twitter.com/intent/tweet?url='+ url, "_blank");
+            var tweet_text = "";
+            if (entity == "product")
+                tweet_text = product_brand + ": " + product_name;
+           
+            window.open('https://twitter.com/intent/tweet?text=' + tweet_text + '&url=' + url + '&hashtags=BagCupid', "_blank");
             break;
         case 'googleplus':
             window.open('https://plus.google.com/share?url=' + url, "_blank");
