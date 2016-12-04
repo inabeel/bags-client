@@ -1187,9 +1187,7 @@ function ShareLink(channel, entity, product_imgurl, product_name, product_brand)
             var tweet_text = "";
             if (entity == "product")
                 tweet_text = product_brand + ": " + product_name;
-            else if (entity == "search") {
-
-            }
+           
             window.open('https://twitter.com/intent/tweet?text=' + tweet_text + '&url=' + url + '&hashtags=BagCupid', "_blank");
             break;
         case 'googleplus':
