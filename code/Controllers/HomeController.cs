@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using Zoltu.Bags.Client.Extensions;
 
 namespace Zoltu.Bags.Client.Controllers
 {
@@ -41,9 +43,10 @@ namespace Zoltu.Bags.Client.Controllers
 				model.Url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
 
 				if (product?.Images != null && product.Images.Count() > 0)
-					model.Image = product.Images
-						.Aggregate((selectedImage, nextImage) => (nextImage.Priority < selectedImage.Priority) ? nextImage : selectedImage)
-						.Large;
+					model.Images = product.Images
+						.OrderBy(image => image.Priority)
+						.SelectAndSwallowReferenceType(image =>new Uri(image.Large))
+						.Where(image => image != null);
 
 				if (product?.Tags != null && product.Tags.Count() > 0)
 				{
@@ -64,7 +67,7 @@ namespace Zoltu.Bags.Client.Controllers
 		public String Type { get; set; } = "website";
 		public String Title { get; set; } = "Bag Cupid";
 		public String Description { get; set; } = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-		public String Image { get; set; } = "https://bagcupid.com/img/logo/bagcupid_large.png";
+		public IEnumerable<Uri> Images { get; set; } = new[] { new Uri("https://bagcupid.com/img/logo/bagcupid_large.png") };
 	}
 
 	public static class Extensions

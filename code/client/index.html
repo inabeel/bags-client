@@ -85,7 +85,9 @@
 	<meta property="og:type" content="@Model.Type">
 	<meta property="og:title" content="@Model.Title">
 	<meta property="og:description" content="@Model.Description">
-	<meta property="og:image" content="@Model.Image">
+	@foreach(var image in Model.Images) {
+	<meta property="og:image" content="@image">
+	}
 
 	<meta name="twitter:card" content="summary" />
 	<meta name="twitter:site" content="BagCupid" />
