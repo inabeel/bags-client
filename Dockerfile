@@ -15,6 +15,7 @@ RUN dotnet restore
 # begin server layer
 COPY code/*.cs /app/code/
 COPY code/Controllers/ /app/code/Controllers/
+COPY code/Extensions/ /app/code/Extensions/
 COPY tests/ /app/tests
 WORKDIR /app
 RUN dotnet restore

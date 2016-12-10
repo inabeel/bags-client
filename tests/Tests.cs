@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -11,7 +12,7 @@ namespace Zoltu.Bags.Client.Tests
 		private readonly String expectedDefaultType = "website";
 		private readonly String expectedDefaultTitle = "Bag Cupid";
 		private readonly String expectedDefaultUrl = "https://bagcupid.com/";
-		private readonly String expectedDefaultImage = "https://bagcupid.com/img/logo/bagcupid_large.png";
+		private readonly IEnumerable<Uri> expectedDefaultImage = new[] { new Uri("https://bagcupid.com/img/logo/bagcupid_large.png") };
 		private readonly String expectedDefaultDescription = "What is your dream bag? Are you having trouble finding it? Let us help you!";
 
 		[Fact]
@@ -31,13 +32,20 @@ namespace Zoltu.Bags.Client.Tests
 			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
 			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
 			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
-			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Image);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Images);
 		}
 
 		[Fact]
 		public async void valid_product_from_real_api()
 		{
 			// arrange
+			var expectedImages = new[]
+			{
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/51Og1-R3JLL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/51s0z9IkJJL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/514B9iKdVeL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/51g91rlbzxL.jpg"),
+			};
 			var controller = new HomeController(new BagsApi());
 
 			// act
@@ -51,7 +59,7 @@ namespace Zoltu.Bags.Client.Tests
 			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
 			Assert.Equal(expected: "dkny dkny - satchel/handbag/convertible", actual: viewModel.Title);
 			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
-			Assert.Equal(expected: "https://images-na.ssl-images-amazon.com/images/I/51Og1-R3JLL.jpg", actual: viewModel.Image);
+			Assert.Equal(expected: expectedImages, actual: viewModel.Images);
 		}
 
 		[Fact]
@@ -71,7 +79,7 @@ namespace Zoltu.Bags.Client.Tests
 			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
 			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
 			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
-			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Image);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Images);
 		}
 
 		[Fact]
@@ -95,7 +103,7 @@ namespace Zoltu.Bags.Client.Tests
 			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
 			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
 			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
-			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Image);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Images);
 		}
 
 		[Fact]
@@ -112,17 +120,17 @@ namespace Zoltu.Bags.Client.Tests
 						new BagsApi.Product.Image
 						{
 							Priority = 100,
-							Large = "first"
+							Large = "http://first"
 						},
 						new BagsApi.Product.Image
 						{
 							Priority = 5,
-							Large = "second"
+							Large = "http://second"
 						},
 						new BagsApi.Product.Image
 						{
 							Priority = 50,
-							Large = "third"
+							Large = "http://third"
 						},
 					}
 				});
@@ -139,7 +147,7 @@ namespace Zoltu.Bags.Client.Tests
 			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
 			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
 			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
-			Assert.Equal(expected: "second", actual: viewModel.Image);
+			Assert.Equal(expected: new[] { new Uri("http://second"), new Uri("http://third"), new Uri("http://first") }, actual: viewModel.Images);
 		}
 
 		[Fact]
@@ -163,7 +171,51 @@ namespace Zoltu.Bags.Client.Tests
 			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
 			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
 			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
-			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Image);
+			Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Images);
+		}
+
+		[Fact]
+		public async void image_not_a_url()
+		{
+			// arrange
+			var mockBagsApi = new Mock<BagsApi>();
+			mockBagsApi
+				.Setup(x => x.GetProduct(It.IsAny<UInt64>()))
+				.ReturnsAsync(new BagsApi.Product
+				{
+					Images = new[]
+					{
+						new BagsApi.Product.Image
+						{
+							Priority = 100,
+							Large = "http://first"
+						},
+						new BagsApi.Product.Image
+						{
+							Priority = 5,
+							Large = "http://second"
+						},
+						new BagsApi.Product.Image
+						{
+							Priority = 50,
+							Large = "third"
+						},
+					}
+				});
+			var controller = new HomeController(mockBagsApi.Object);
+
+			// act
+			var result = await controller.App("product/1");
+
+			// assert
+			var viewResult = Assert.IsType<ViewResult>(result);
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
+
+			Assert.Equal(expected: "https://bagcupid.com/app/product/1", actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
+			Assert.Equal(expected: new[] { new Uri("http://second"), new Uri("http://first") }, actual: viewModel.Images);
 		}
 	}
 }
