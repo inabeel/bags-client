@@ -1175,9 +1175,9 @@ function ShareLink(channel, entity, product_imgurl, product_name, product_brand)
     var url = "", tag_names = "";
 
     if (entity == "product") 
-        url = escape(window.location.href.replace(window.location.pathname, "") + "/app/product/" + g_open_productid);
+        url = encodeURI(window.location.href.replace(window.location.pathname, "") + "/app/product/" + g_open_productid);
     else if (entity == "search")
-        url = escape(window.location.href.replace("#", ""));
+        url = encodeURI(window.location.href.replace("#", ""));
 
     switch (channel) {
         case 'facebook':
@@ -1207,24 +1207,23 @@ function ShareLink(channel, entity, product_imgurl, product_name, product_brand)
 
                 if (!(productId || tags || minPrice || maxPrice)){
                     //Sharing base webpage
-                    product_imgurl = window.location.origin + $("img.header-logo").attr("src");
-                    pin_desc = "Find Your Perfect Bag, We Make It Easy.";
+                    product_imgurl = encodeURI(window.location.origin + $("img.header-logo").attr("src"));
+                    pin_desc = escape("Find Your Perfect Bag, We Make It Easy.");
                 }
                 else {
                     if (!productId) {
-                        product_imgurl = $(".product-list > div:first-child").find("img:first-child").attr("src");
+                        product_imgurl = encodeURI($(".product-list > div:first-child").find("img:first-child").attr("src"));
                     }
-                   
+
                     var selected_tags = $("#main-search option:selected");
 
                     for (var i = 0; i < selected_tags.length; i++) {
-                       
                         pin_desc += selected_tags[i].text + ", ";
                     }
-                    pin_desc = pin_desc.trim().slice(0, -1)
+                    pin_desc = escape(pin_desc.trim().slice(0, -1));
                 }
             }
-            window.open('https://pinterest.com/pin/create/link/?url=' + encodeURIComponent(url.replace("https","http")) + '&media=' + encodeURIComponent(product_imgurl) + '&description=' + escape(pin_desc), "_blank");
+            window.open('https://pinterest.com/pin/create/link/?url=' + url + '&media=' + product_imgurl + '&description=' + pin_desc, "_blank");
             break;
     }
 }
