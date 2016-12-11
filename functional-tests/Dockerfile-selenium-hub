@@ -1,0 +1,5 @@
+FROM selenium/hub
+
+RUN sed -i 's/throwOnCapabilityNotPresent\\": true/throwOnCapabilityNotPresent\\": false/' /opt/selenium/generate_config
+
+CMD ["/opt/bin/entry_point.sh"]
