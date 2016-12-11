@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  selenium-hub:
+    # once https://github.com/SeleniumHQ/docker-selenium/pull/336 is merged this can change to image: selenium/hub
+    build:
+      context: ./functional-tests
+      dockerfile: Dockerfile-selenium-hub
+
+  selenium-firefox-node:
+    image: selenium/node-firefox
+    links:
+      - selenium-hub
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium-hub
+      - HUB_PORT_4444_TCP_PORT=4444
+
+  selenium-chrome-node:
+    image: selenium/node-chrome
+    links:
+      - selenium-hub
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium-hub
+      - HUB_PORT_4444_TCP_PORT=4444
+
+  sut:
+    build: ./functional-tests
+    links:
+      - selenium-hub
+      - bagcupid
+    environment:
+      - SELENIUM_REMOTE_HOST=selenium-hub
+      - BAG_CUPID_URL=http://bagcupid
+
+  bagcupid:
+    build: .

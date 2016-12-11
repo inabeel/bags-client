@@ -1,0 +1,10 @@
+{
+	"name": "tests",
+	"version": "1.0.0",
+	"main": "tests.js",
+	"dependencies": {
+		"webdriverio": "4.4.0",
+		"wdio-mocha-framework": "0.5.4",
+		"chai": "3.5.0"
+	}
+}
