@@ -6,7 +6,6 @@ services:
     build:
       context: ./functional-tests
       dockerfile: Dockerfile-selenium-hub
-    container_name: selenium-hub
 
   selenium-firefox-node:
     image: selenium/node-firefox
@@ -32,8 +31,6 @@ services:
     environment:
       - SELENIUM_REMOTE_HOST=selenium-hub
       - BAG_CUPID_URL=http://bagcupid
-    container_name: bagcupid-tests
 
   bagcupid:
     build: .
-    container_name: bagcupid
