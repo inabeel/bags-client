@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "functional-tests", "functional-tests", "{B9BC3B15-B74A-48FD-ADC0-E7C259E301ED}"
 	ProjectSection(SolutionItems) = preProject
-		docker-compose.test.yml = docker-compose.test.yml
+		docker-compose.yml = docker-compose.yml
 		functional-tests\Dockerfile = functional-tests\Dockerfile
 		functional-tests\Dockerfile-selenium-hub = functional-tests\Dockerfile-selenium-hub
 		functional-tests\package.json = functional-tests\package.json
@@ -26,6 +26,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hooks", "hooks", "{3A77E2F9-60D7-451E-AF48-799FEACFE932}"
 	ProjectSection(SolutionItems) = preProject
 		hooks\post_push = hooks\post_push
+		hooks\test = hooks\test
 	EndProjectSection
 EndProject
 Global
