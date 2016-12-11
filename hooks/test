@@ -1,0 +1,2 @@
+#!/bin/bash
+docker-compose down && docker-compose up --abort-on-container-exit --build --force-recreate --remove-orphans && exit $(docker inspect -f '{{ .State.ExitCode }}' bagcupid-tests)
