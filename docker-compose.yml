@@ -37,3 +37,5 @@ services:
 
   bagcupid:
     build: .
+  ports:
+    - "5555:80"
