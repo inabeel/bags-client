@@ -5,8 +5,12 @@ exports.config = {
 		{ browserName: 'chrome' },
 		{ browserName: 'firefox' }
 	],
+	logLevel: 'command',
 	baseUrl: process.env.BAG_CUPID_URL,
 	framework: 'mocha',
+	mochaOpts: {
+		timeout: 20000
+	},
 	before: (capabilities, specs) => {
 		let chai = require('chai');
 		global.expect = chai.expect;

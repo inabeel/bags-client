@@ -1,6 +1,5 @@
 FROM node:6
 
-RUN npm install webdriverio
 COPY package.json /app/package.json
 WORKDIR /app
 RUN npm install

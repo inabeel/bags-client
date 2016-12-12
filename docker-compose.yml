@@ -23,7 +23,7 @@ services:
       - HUB_PORT_4444_TCP_ADDR=selenium-hub
       - HUB_PORT_4444_TCP_PORT=4444
 
-  sut:
+  bagcupid-tests:
     build: ./functional-tests
     links:
       - selenium-hub
@@ -31,6 +31,7 @@ services:
     environment:
       - SELENIUM_REMOTE_HOST=selenium-hub
       - BAG_CUPID_URL=http://bagcupid
+    container_name: bagcupid-tests
 
   bagcupid:
     build: .
