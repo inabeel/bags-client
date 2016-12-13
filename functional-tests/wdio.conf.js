@@ -5,11 +5,11 @@ exports.config = {
 		{ browserName: 'chrome' },
 		{ browserName: 'firefox' }
 	],
-	logLevel: 'command',
+	logLevel: 'verbose',
 	baseUrl: process.env.BAG_CUPID_URL,
 	framework: 'mocha',
 	mochaOpts: {
-		timeout: 20000
+		timeout: 60000
 	},
 	before: (capabilities, specs) => {
 		let chai = require('chai');

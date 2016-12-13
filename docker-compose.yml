@@ -6,6 +6,8 @@ services:
     build:
       context: ./functional-tests
       dockerfile: Dockerfile-selenium-hub
+    ports:
+      - "4444:4444"
 
   selenium-firefox-node:
     image: selenium/node-firefox
@@ -35,3 +37,5 @@ services:
 
   bagcupid:
     build: .
+    ports:
+      - "5555:80"
