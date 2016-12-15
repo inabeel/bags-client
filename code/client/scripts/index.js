@@ -163,6 +163,7 @@ Handlebars.registerHelper('countMoreLength', function (array) {
 });
 
 Handlebars.registerHelper('titleCase', function (name) {
+    name = EscapeSingleQuote(name);
     return name.substr(0, 1).toUpperCase() + name.substr(1);
 });
 
@@ -1544,4 +1545,8 @@ function ShowingBrandFilter() {
 
 function HideBanner() {
     $("html, body").stop().animate({ scrollTop: $(".banner").height() - 25}, '500');    
+}
+
+function EscapeSingleQuote(str) {
+    return str.replace(/'/g, "\\'");
 }
