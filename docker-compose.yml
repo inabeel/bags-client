@@ -2,10 +2,9 @@ version: '2'
 
 services:
   selenium-hub:
-    # once https://github.com/SeleniumHQ/docker-selenium/pull/336 is merged this can change to image: selenium/hub
-    build:
-      context: ./functional-tests
-      dockerfile: Dockerfile-selenium-hub
+    image: selenium/hub:3.0.1
+    environment:
+      - GRID_THROW_ON_CAPABILITY_NOT_PRESENT=true
     ports:
       - "4444:4444"
 
