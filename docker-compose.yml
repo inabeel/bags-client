@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  selenium-hub:
+    image: selenium/hub:3.0.1
+    environment:
+      - GRID_THROW_ON_CAPABILITY_NOT_PRESENT=true
+    ports:
+      - "4444:4444"
+
+  selenium-firefox-node:
+    image: selenium/node-firefox
+    links:
+      - selenium-hub
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium-hub
+      - HUB_PORT_4444_TCP_PORT=4444
+
+  selenium-chrome-node:
+    image: selenium/node-chrome
+    links:
+      - selenium-hub
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium-hub
+      - HUB_PORT_4444_TCP_PORT=4444
+
+  bagcupid-tests:
+    build: ./functional-tests
+    links:
+      - selenium-hub
+      - bagcupid
+    environment:
+      - SELENIUM_REMOTE_HOST=selenium-hub
+      - BAG_CUPID_URL=http://bagcupid
+    container_name: bagcupid-tests
+
+  bagcupid:
+    build: .
+    ports:
+      - "5555:80"

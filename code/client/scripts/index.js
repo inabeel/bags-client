@@ -163,7 +163,12 @@ Handlebars.registerHelper('countMoreLength', function (array) {
 });
 
 Handlebars.registerHelper('titleCase', function (name) {
+    name = EscapeSingleQuote(name);
     return name.substr(0, 1).toUpperCase() + name.substr(1);
+});
+
+Handlebars.registerHelper('getBrandName', function (tags) {
+    return Enumerable.From(tags).Where(w=>w.category.name == "brand").Select(s => s.name).Single();
 });
 
 Handlebars.registerHelper('categoryIcon', function (name) {
@@ -326,7 +331,7 @@ $(window).on('hashchange', function () {
     g_popup_just_closed = false;
 });
 
-//Range slider
+//Price slider
 var stepSlider = document.getElementById('price-slider');
 
 noUiSlider.create(stepSlider, {
@@ -803,7 +808,7 @@ function ShowProductPopup(productid) {
         if (xhr_product.readyState == 4 && xhr_product.status == 200) {
             var product = JSON.parse(xhr_product.responseText);
             var template = Handlebars.templates['product-details'];
-            document.title = "Bag Cupid: " + product.name.substr(0, 1).toUpperCase() + product.name.substr(1) + " : $" + product.price;
+            document.title = product.name.substr(0, 1).toUpperCase() + product.name.substr(1) + " : $" + product.price;
             $.magnificPopup.open({
                 closeBtnInside: true,
                 removalDelay: 500,
@@ -1167,23 +1172,59 @@ function createXHR() {
     return null;
 }
 
-function ShareLink(channel, entity) {
+function ShareLink(channel, entity, product_imgurl, product_name, product_brand) {
     var url = "", tag_names = "";
 
     if (entity == "product") 
-        url = escape(window.location.href.replace(window.location.pathname, "") + "/app/product/" + g_open_productid);
+        url = encodeURIComponent(window.location.href.replace(window.location.pathname, "") + "/app/product/" + g_open_productid);
     else if (entity == "search")
-        url = escape(window.location.href.replace("#", ""));
+        url = encodeURIComponent(window.location.href.replace("#", ""));
 
     switch (channel) {
         case 'facebook':
             window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, "_blank");
             break;
         case 'twitter':
-            window.open('https://twitter.com/intent/tweet?url='+ url, "_blank");
+            var tweet_text = "";
+            if (entity == "product")
+                tweet_text = product_brand + ": " + product_name;
+           
+            window.open('https://twitter.com/intent/tweet?text=' + tweet_text + '&url=' + url + '&hashtags=BagCupid', "_blank");
             break;
         case 'googleplus':
             window.open('https://plus.google.com/share?url=' + url, "_blank");
+            break;
+        case 'pinterest':
+            var pin_desc = "";
+            if (entity == "product")
+                pin_desc = product_brand + ": " + product_name;
+            else if (entity == "search") {
+                var path = window.location.pathname;
+
+                var productId = (path.match(/product\/(\d+)/i) || [])[1];
+                var tags = (path.match(/tags\/(.*?)\/*?$/i) || [])[1];
+                var minPrice = (path.match(/minprice\/(\d+)/i) || [])[1];
+                var maxPrice = (path.match(/maxprice\/(\d+)/i) || [])[1];
+
+                if (!(productId || tags || minPrice || maxPrice)){
+                    //Sharing base webpage
+                    product_imgurl = encodeURIComponent(window.location.origin + $("img.header-logo").attr("src"));
+                    pin_desc = encodeURIComponent("Find Your Perfect Bag, We Make It Easy.");
+                }
+                else {
+                    if (!productId) {
+                        product_imgurl = encodeURIComponent($(".product-list > div:first-child").find("img:first-child").attr("src"));
+                    }
+
+                    var selected_tags = $("#main-search option:selected");
+
+                    for (var i = 0; i < selected_tags.length; i++) {
+                        pin_desc += selected_tags[i].text + ", ";
+                    }
+                    pin_desc = encodeURIComponent(pin_desc.trim().slice(0, -1));
+                }
+            }
+            window.open('https://pinterest.com/pin/create/link/?url=' + url + '&media=' + product_imgurl + '&description=' + pin_desc, "_blank");
             break;
     }
 }
@@ -1504,4 +1545,8 @@ function ShowingBrandFilter() {
 
 function HideBanner() {
     $("html, body").stop().animate({ scrollTop: $(".banner").height() - 25}, '500');    
+}
+
+function EscapeSingleQuote(str) {
+    return str.replace(/'/g, "\\'");
 }

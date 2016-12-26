@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Zoltu.Bags.Client
 {
@@ -27,6 +28,39 @@ namespace Zoltu.Bags.Client
 
 			var content = await response.Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<Product>(content);
+		}
+
+		public virtual async Task<List<Product>> GetProductsByTags(String[] tags)
+		{
+			var url = new StringBuilder();
+			url.Append("products/by_tags?");
+
+			for (int i = 0; i < tags.Length; i++)
+			{
+				url.Append($"tag_id={tags[i]}");
+
+				if (i != tags.Length - 1)
+					url.Append("&");
+			}
+
+			var response = await httpClient.GetAsync(url.ToString());
+
+			if (!response.IsSuccessStatusCode)
+				return null;
+
+			var content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<List<Product>>(content);
+		}
+
+		public virtual async Task<List<Product.Tag>> GetTags()
+		{
+			var response = await httpClient.GetAsync("tags");
+
+			if (!response.IsSuccessStatusCode)
+				return null;
+
+			var content = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<List<Product.Tag>>(content);
 		}
 
 		public class Product

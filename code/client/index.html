@@ -4,18 +4,19 @@
 <head>
 	<!-- Azure Application Insights -->
 	<script type="text/javascript">
-		var appInsights=window.appInsights||function(config){    function r(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s=u.createElement(o),i,f;for(s.src=config.url||"//az416426.vo.msecnd.net/scripts/a/ai.0.js",u.getElementsByTagName(o)[0].parentNode.appendChild(s),t.cookie=u.cookie,t.queue=[],i=["Event","Exception","Metric","PageView","Trace"];i.length;)r("track"+i.pop());return r("setAuthenticatedUserContext"),r("clearAuthenticatedUserContext"),config.disableExceptionTracking||(i="onerror",r("_"+i),f=e[i],e[i]=function(config,r,u,e,o){var s=f&&f(config,r,u,e,o);return s!==!0&&t["_"+i](config,r,u,e,o),s}),t
+		var appInsights = window.appInsights || function (config) {
+			function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = u.createElement(o), i, f; for (s.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace"]; i.length;) r("track" + i.pop()); return r("setAuthenticatedUserContext"), r("clearAuthenticatedUserContext"), config.disableExceptionTracking || (i = "onerror", r("_" + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t["_" + i](config, r, u, e, o), s }), t
 		}({
-			instrumentationKey:"9424da09-b5a4-44b2-b3f2-ee3c5abcde0f"
+			instrumentationKey: "9424da09-b5a4-44b2-b3f2-ee3c5abcde0f"
 		});
-		window.appInsights=appInsights;
+		window.appInsights = appInsights;
 		appInsights.trackPageView();
 	</script>
 	<!-- End Azure Application Insights -->
 	<!-- Google Analytics -->
-	<script  src="//www.google-analytics.com/cx/api.js?experiment=32VOjTOiSYyaJBJTGVIcbA"></script>
+	<script src="//www.google-analytics.com/cx/api.js?experiment=32VOjTOiSYyaJBJTGVIcbA"></script>
 	<script>
-		window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+		window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
 		ga('create', 'UA-66024947-3', 'auto');
 		ga('require', 'urlChangeTracker');
 		ga('require', 'outboundLinkTracker', {});
@@ -26,7 +27,7 @@
 	</script>
 	<script>
 		// Wait for the DOM to load, then execute the view for the chosen variation.
-		function ApplyDesignExperiemnt(){
+		function ApplyDesignExperiemnt() {
 			// Define JavaScript for each page variation of this experiment.
 			switch (chosenVariation) {
 				case 0:
@@ -46,7 +47,7 @@
 	<!-- End Google Analytics -->
 	<!-- Bing Ads -->
 	<script>
-		(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"5438211"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");
+		(function (w, d, t, r, u) { var f, n, i; w[u] = w[u] || [], f = function () { var o = { ti: "5438211" }; o.q = w[u], w[u] = new UET(o), w[u].push("pageLoad") }, n = d.createElement(t), n.src = r, n.async = 1, n.onload = n.onreadystatechange = function () { var s = this.readyState; s && s !== "loaded" && s !== "complete" || (f(), n.onload = n.onreadystatechange = null) }, i = d.getElementsByTagName(t)[0], i.parentNode.insertBefore(n, i) })(window, document, "script", "//bat.bing.com/bat.js", "uetq");
 	</script>
 	<noscript>
 		<img src="//bat.bing.com/action/0?ti=5438211&Ver=2" height="0" width="0" style="display:none; visibility: hidden;" />
@@ -55,24 +56,24 @@
 	<!-- Google Ads Conversion Tracking -->
 	<script type="text/javascript">
 		/* <![CDATA[ */
-		goog_snippet_vars = function() {
+		goog_snippet_vars = function () {
 			var w = window;
 			w.google_conversion_id = 872335982;
 			w.google_conversion_label = "JHZDCNqt5moQ7pT7nwM";
 			w.google_remarketing_only = false;
 		}
 		// DO NOT CHANGE THE CODE BELOW.
-		goog_report_conversion = function(url) {
+		goog_report_conversion = function (url) {
 			goog_snippet_vars();
 			window.google_conversion_format = "3";
 			var opt = new Object();
-			opt.onload_callback = function() {
-				if (typeof(url) != 'undefined') {
+			opt.onload_callback = function () {
+				if (typeof (url) != 'undefined') {
 					window.location = url;
 				}
 			}
 			var conv_handler = window['google_trackConversion'];
-			if (typeof(conv_handler) == 'function') {
+			if (typeof (conv_handler) == 'function') {
 				conv_handler(opt);
 			}
 		}
@@ -84,7 +85,19 @@
 	<meta property="og:type" content="@Model.Type">
 	<meta property="og:title" content="@Model.Title">
 	<meta property="og:description" content="@Model.Description">
-	<meta property="og:image" content="@Model.Image">
+	@foreach(var image in Model.Images) {
+	<meta property="og:image" content="@image">
+	}
+
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="BagCupid" />
+	<meta name="twitter:title" content="@Model.Title" />
+	<meta name="twitter:description" content="@Model.Description" />
+	@foreach(var image in Model.Images) {
+	<meta name="twitter:image" content="@image" />
+	}
+	<meta name="twitter:url" content="@Model.Url" />
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
@@ -113,7 +126,7 @@
 	<link href="/vendors/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css" />
 	<link href="/vendors/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css" />
 </head>
-<body onload="ApplyDesignExperiemnt();">
+<body class="design-v2" onload="ApplyDesignExperiemnt();">
 	<div class="banner" style="background-image: url(/img/banner/bag5.jpg)">
 		<div class="caption-text">
 			<div class="container">
@@ -127,7 +140,7 @@
 
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
-						<h1>We Make <br/>It <span class="text-yellow">Easy</span></h1>
+						<h1>We Make <br />It <span class="text-yellow">Easy</span></h1>
 					</div>
 				</div>
 			</div>
@@ -152,7 +165,7 @@
 							<a href="javascript:void(0)" onclick="ShowAboutUsView()">About Us</a>
 						</li>
 						<li>
-							<a href="javascript:void(0);"  onclick="_urq.push(['Feedback_Open'])">Feedback</a>
+							<a href="javascript:void(0);" onclick="_urq.push(['Feedback_Open'])">Feedback</a>
 						</li>
 					</ul>
 				</div>
@@ -311,11 +324,11 @@
 									<h2>The easiest way to find your perfect bag!</h2>
 								</div>
 								<div class="card-body card-padding">
-									<p>Here at Zoltu our aim is to help bag shoppers find the perfect bag. There is a sea of handbags and purses out there and though there are many websites offering these items for sale there is none like us. There are websites that allow you to filter but none offer the precision of Zoltu bags. It doesn’t matter if this is your first handbag or your 150th – we understand how hard it is to shop for handbags online sometimes and we want to make this task easier for you. We designed our website so that it is super easy and quick for you to apply the filters that will help you find the best bag. Simply start typing into the search box and you will see options populated right away. Click on the different tags to narrow down the perfect bag for your needs. You can narrow down your choice by brand, color, style, material, size, handles, straps and type.</p>
+									<p>Here at BagCupid our aim is to help bag shoppers find the perfect bag. There is a sea of handbags and purses out there and though there are many websites offering these items for sale there is none like us. There are websites that allow you to filter but none offer the precision of BagCupid. It doesn’t matter if this is your first handbag or your 150th – we understand how hard it is to shop for handbags online sometimes and we want to make this task easier for you. We designed our website so that it is super easy and quick for you to apply the filters that will help you find the best bag. Simply start typing into the search box and you will see options populated right away. Click on the different tags to narrow down the perfect bag for your needs. You can narrow down your choice by brand, color, style, material, size, handles, straps and type.</p>
 									<p>Notice the simple design of our website? There are no flashing banners and no annoying advertisements and pop-up screens. We are not into distractions – we are into the business of helping you find the right bag. We want you to leave our website with a conviction that you have chosen the right bag and not with frustration after going through handbag listings one after the other only to be more confused than you were in the first place. So we kept our design, simple and straight to the point. It is all about the handbags here.</p>
 									<p>Not only does our website offer user friendly filtering but we also have a blog that is packed with informative content. The content on our blog can be helpful with choosing the right bag for an event, setting or based on what you intend to have it carry. Our blog also includes written pieces on various designers and the audience they cater to as well as the kind of line that they carry. Our blog is informative and is updated often with the latest and best information on handbags, their design and manufacture along with trends. No fluff is what we guarantee just clean cut informative pieces.</p>
 									<p>We have it all. We educate you on handbags and provide the shopping marketplace where you can find the ideal handbag for your needs.</p>
-									<p>Zoltu Bags is the brainchild of Connie Zoltu; a self-professed handbag fanatic. She is a lover of handbag variety and as such knows the struggles of handbag shopping. She knows just how much specifics matter. In her very own words, she describes Zoltu Bags:</p>
+									<p>BagCupid is the brainchild of Connie Zoltu; a self-professed handbag fanatic. She is a lover of handbag variety and as such knows the struggles of handbag shopping. She knows just how much specifics matter. In her very own words, she describes BagCupid:</p>
 
 									<blockquote class="mb25">
 										<p><i><center><h4>“It's like a dating website but rather than finding a soulmate, you find your dream bag.”</h4></center></i></p>
@@ -368,24 +381,28 @@
 		</div>
 	</div>
 	<div class="btn-floating share dropup dropdown">
-		<a id="social-dropdown-opener" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="text">
-			Share
+		<a id="social-dropdown-opener" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<div class="text">
+				Share
+			</div>
+			<div class="icon">
+				<i class="fa fa-share-alt"></i>
+			</div>
 		</a>
-		<div class="icon">
-			<i class="fa fa-share-alt"></i>
-		</div>
 		<ul class="dropdown-menu social-dropdown" aria-labelledby="social-dropdown-opener">
-			<li class="share-title mb5"> Share this search</li>
-			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search');"><i class="fa fa-facebook-square text-facebook"></i>&nbsp;&nbsp;Facebook</a></li>
-			<li><a href="javascript:void(0);" onclick="ShareLink('twitter','search');"><i class="fa fa-twitter-square text-info"></i>&nbsp;&nbsp;Twitter</a></li>
-			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus','search');"><i class="fa fa-google-plus-square text-danger"></i>&nbsp;&nbsp;Google+</a></li>
+			<li class="share-title mb5"><i class="fa fa-share-alt"></i> Share this Search</li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('facebook','search','','','');"><i class="fa fa-facebook-square text-facebook large"></i>&nbsp;&nbsp;<span class="channel-name">Facebook</span></a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('twitter', 'search', '', '', '');"><i class="fa fa-twitter-square text-info large"></i>&nbsp;&nbsp;<span class="channel-name">Twitter</span></a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('googleplus', 'search', '', '', '');"><i class="fa fa-google-plus-square text-danger large"></i>&nbsp;&nbsp;<span class="channel-name">Google+</span></a></li>
+			<li><a href="javascript:void(0);" onclick="ShareLink('pinterest', 'search', '', '', '');"><i class="fa fa-pinterest-square text-pinterest large"></i>&nbsp;&nbsp;<span class="channel-name">Pinterest</span></a></li>
 		</ul>
 	</div>
 
-	<div class="btn-floating feedback">
-		<a href="#" class="text" onclick="_urq.push(['Feedback_Open'])">
+
+	<div class="btn-floating feedback" onclick="_urq.push(['Feedback_Open'])">
+		<div class="text">
 			Feedback
-		</a>
+		</div>
 		<div class="icon">
 			<i class="fa fa-comments"></i>
 		</div>
@@ -434,7 +451,7 @@
 		_urq.push(['setGACode', 'UA-66024947-3']);
 		_urq.push(['setPerformInitialShorctutAnimation', false]);
 		_urq.push(['initSite', '8005a4d2-5d8c-4466-95ed-0dbaf1620030']);
-		(function() {
+		(function () {
 			var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
 			ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js');
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);

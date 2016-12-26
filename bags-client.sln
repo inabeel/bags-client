@@ -7,6 +7,28 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "code", "code\code.xproj", "
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "tests", "tests\tests.xproj", "{6C9498F3-5912-43CE-A7D7-9BC4A1A68F40}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BAC78805-F70D-4BD2-BF36-7F36C9CAC506}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "functional-tests", "functional-tests", "{B9BC3B15-B74A-48FD-ADC0-E7C259E301ED}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		functional-tests\Dockerfile = functional-tests\Dockerfile
+		functional-tests\Dockerfile-selenium-hub = functional-tests\Dockerfile-selenium-hub
+		functional-tests\package.json = functional-tests\package.json
+		functional-tests\tests.js = functional-tests\tests.js
+		functional-tests\wdio.conf.js = functional-tests\wdio.conf.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hooks", "hooks", "{3A77E2F9-60D7-451E-AF48-799FEACFE932}"
+	ProjectSection(SolutionItems) = preProject
+		hooks\post_push = hooks\post_push
+		hooks\test = hooks\test
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
