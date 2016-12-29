@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Zoltu.Bags.Client.Extensions;
+using System.Text;
 
 namespace Zoltu.Bags.Client.Controllers
 {
@@ -45,15 +46,40 @@ namespace Zoltu.Bags.Client.Controllers
 				if (product?.Images != null && product.Images.Count() > 0)
 					model.Images = product.Images
 						.OrderBy(image => image.Priority)
-						.SelectAndSwallowReferenceType(image =>new Uri(image.Large))
+						.SelectAndSwallowReferenceType(image => new Uri(image.Large))
 						.Where(image => image != null);
 
 				if (product?.Tags != null && product.Tags.Count() > 0)
 				{
 					var brand = product.Tags.FirstOrDefault(x => x.IsBrand)?.TagName ?? "";
-					var styles = String.Join("/", product.Tags.Where(x => x.IsStyle).Select(x=> x.TagName).ToArray());
+					var styles = String.Join("/", product.Tags.Where(x => x.IsStyle).Select(x => x.TagName).ToArray());
 
 					model.Title = $"{brand} {product.Name} - {styles}";
+				}
+			}
+			else if (!String.IsNullOrEmpty(tagId))
+			{
+				model.Url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
+
+				var tags = tagId.Split('_');
+				var products = await bagsApi.GetProductsByTags(tags);
+
+				if (products?.Count > 0)
+					model.Images = products.Take(5)
+						.Select(product => product.Images
+							.OrderBy(image => image.Priority)
+							.SelectAndSwallowReferenceType(image => new Uri(image.Large))
+							.Where(image => image != null).FirstOrDefault());
+
+
+				var tagModels = await bagsApi.GetTags();
+
+				if (tagModels?.Count() > 0)
+				{
+					var tagsDescription = String.Join(", ", tagModels.Where(x => tags.Any(y => Convert.ToUInt32(y) == x.TagId))
+						.Select(x => x.TagName));
+
+					model.Description = $"Find your perfect {tagsDescription} handbag!";
 				}
 			}
 
@@ -69,6 +95,7 @@ namespace Zoltu.Bags.Client.Controllers
 		public String Description { get; set; } = "What is your dream bag? Are you having trouble finding it? Let us help you!";
 		public IEnumerable<Uri> Images { get; set; } = new[] { new Uri("https://bagcupid.com/img/logo/bagcupid_large.png") };
 	}
+
 
 	public static class Extensions
 	{

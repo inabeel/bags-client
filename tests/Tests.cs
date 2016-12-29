@@ -83,6 +83,66 @@ namespace Zoltu.Bags.Client.Tests
 		}
 
 		[Fact]
+		public async void valid_products_by_single_tag()
+		{
+			// arrange
+			var expectedImages = new[]
+			{
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/41bMuVElKtL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/51flp21pHcL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/51qV9uIhBVL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/415MwLrPVJL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/5159OKUd8vL.jpg")
+			};
+
+			// arrange
+			var controller = new HomeController(new BagsApi());
+
+			// act
+			var result = await controller.App("tags/190");
+
+			// assert
+			var viewResult = Assert.IsType<ViewResult>(result);
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
+
+			Assert.Equal(expected: "https://bagcupid.com/app/tags/190", actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: "Find your perfect adidas handbag!", actual: viewModel.Description);
+			Assert.Equal(expected: expectedImages, actual: viewModel.Images);
+		}
+
+		[Fact]
+		public async void valid_products_by_multiple_tag()
+		{
+			// arrange
+			var expectedImages = new[]
+			{
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/51flp21pHcL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/51qV9uIhBVL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/415MwLrPVJL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/5159OKUd8vL.jpg"),
+				new Uri("https://images-na.ssl-images-amazon.com/images/I/51yPnhzohXL.jpg")
+			};
+
+			// arrange
+			var controller = new HomeController(new BagsApi());
+
+			// act
+			var result = await controller.App("tags/190_303");
+
+			// assert
+			var viewResult = Assert.IsType<ViewResult>(result);
+			var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
+
+			Assert.Equal(expected: "https://bagcupid.com/app/tags/190_303", actual: viewModel.Url);
+			Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+			Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+			Assert.Equal(expected: "Find your perfect adidas, flat handbag!", actual: viewModel.Description);
+			Assert.Equal(expected: expectedImages, actual: viewModel.Images);
+		}
+
+		[Fact]
 		public async void invalid_product()
 		{
 			// arrange
