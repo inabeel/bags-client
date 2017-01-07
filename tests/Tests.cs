@@ -83,7 +83,7 @@ namespace Zoltu.Bags.Client.Tests
 		}
 
 		[Fact]
-		public async void valid_products_by_single_tag()
+		public async void valid_products_by_single_tag_from_real_api()
 		{
 			// arrange
 			var expectedImages = new[]
@@ -113,7 +113,7 @@ namespace Zoltu.Bags.Client.Tests
 		}
 
 		[Fact]
-		public async void valid_products_by_multiple_tag()
+		public async void valid_products_by_multiple_tag_from_real_api()
 		{
 			// arrange
 			var expectedImages = new[]
@@ -277,5 +277,29 @@ namespace Zoltu.Bags.Client.Tests
 			Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
 			Assert.Equal(expected: new[] { new Uri("http://second"), new Uri("http://first") }, actual: viewModel.Images);
 		}
+
+        [Fact]
+        public async void no_tags()
+        {
+            // arrange
+            var mockBagsApi = new Mock<BagsApi>();
+            mockBagsApi
+                .Setup(x => x.GetTags())
+                .ReturnsAsync(null);
+            var controller = new HomeController(mockBagsApi.Object);
+
+            // act
+            var result = await controller.App("tags/190");
+
+            // assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var viewModel = Assert.IsType<MetaViewModel>(viewResult.Model);
+
+            Assert.Equal(expected: "https://bagcupid.com/app/tags/190", actual: viewModel.Url);
+            Assert.Equal(expected: expectedDefaultType, actual: viewModel.Type);
+            Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
+            Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
+            Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Images);
+        } 
 	}
 }

@@ -9,102 +9,106 @@ using System.Text;
 
 namespace Zoltu.Bags.Client.Controllers
 {
-	public class HomeController : Controller
-	{
-		private static readonly Regex productRegex = new Regex(@"product\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-		private static readonly Regex tagRegex = new Regex(@"tags\/(.*?)\/*?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-		private static readonly Regex minPriceRegex = new Regex(@"minprice\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-		private static readonly Regex maxPriceRegex = new Regex(@"maxprice\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-		private static readonly Regex aboutRegex = new Regex(@"aboutus", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    public class HomeController : Controller
+    {
+        private static readonly Regex productRegex = new Regex(@"product\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex tagRegex = new Regex(@"tags\/(.*?)\/*?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex minPriceRegex = new Regex(@"minprice\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex maxPriceRegex = new Regex(@"maxprice\/(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex aboutRegex = new Regex(@"aboutus", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-		private readonly BagsApi bagsApi;
+        private readonly BagsApi bagsApi;
 
-		public HomeController(BagsApi bagsApi)
-		{
-			this.bagsApi = bagsApi;
-		}
+        public HomeController(BagsApi bagsApi)
+        {
+            this.bagsApi = bagsApi;
+        }
 
-		[Route("")]
-		[Route("app/{*path}")]
-		public async Task<IActionResult> App(String path = null)
-		{
-			var model = new MetaViewModel();
+        [Route("")]
+        [Route("app/{*path}")]
+        public async Task<IActionResult> App(String path = null)
+        {
+            var model = new MetaViewModel();
 
-			path = path ?? "";
-			var productId = productRegex.Match(path).Groups[1].Value?.TryParseUInt64();
-			var tagId = tagRegex.Match(path).Groups[1].Value;
-			var minPrice = minPriceRegex.Match(path).Groups[1].Value.TryParseUInt64();
-			var maxPrice = maxPriceRegex.Match(path).Groups[1].Value.TryParseUInt64();
-			var aboutUs = aboutRegex.Match(path).Success;
+            path = path ?? "";
+            var productId = productRegex.Match(path).Groups[1].Value?.TryParseUInt64();
+            var tagIds = tagRegex.Match(path).Groups[1].Value;
+            var minPrice = minPriceRegex.Match(path).Groups[1].Value.TryParseUInt64();
+            var maxPrice = maxPriceRegex.Match(path).Groups[1].Value.TryParseUInt64();
+            var aboutUs = aboutRegex.Match(path).Success;
 
-			if (productId != null)
-			{
-				var product = await bagsApi.GetProduct(productId ?? 0);
+            if (productId != null)
+            {
+                var product = await bagsApi.GetProduct(productId ?? 0);
 
-				model.Url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
+                model.Url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
 
-				if (product?.Images != null && product.Images.Count() > 0)
-					model.Images = product.Images
-						.OrderBy(image => image.Priority)
-						.SelectAndSwallowReferenceType(image => new Uri(image.Large))
-						.Where(image => image != null);
+                if (product?.Images != null && product.Images.Count() > 0)
+                    model.Images = product.Images
+                        .OrderBy(image => image.Priority)
+                        .SelectAndSwallowReferenceType(image => new Uri(image.Large))
+                        .Where(image => image != null);
 
-				if (product?.Tags != null && product.Tags.Count() > 0)
-				{
-					var brand = product.Tags.FirstOrDefault(x => x.IsBrand)?.TagName ?? "";
-					var styles = String.Join("/", product.Tags.Where(x => x.IsStyle).Select(x => x.TagName).ToArray());
+                if (product?.Tags != null && product.Tags.Count() > 0)
+                {
+                    var brand = product.Tags.FirstOrDefault(x => x.IsBrand)?.TagName ?? "";
+                    var styles = String.Join("/", product.Tags.Where(x => x.IsStyle).Select(x => x.TagName).ToArray());
 
-					model.Title = $"{brand} {product.Name} - {styles}";
-				}
-			}
-			else if (!String.IsNullOrEmpty(tagId))
-			{
-				model.Url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
+                    model.Title = $"{brand} {product.Name} - {styles}";
+                }
+            }
+            else if (!String.IsNullOrEmpty(tagIds))
+            {
+                model.Url = $"https://bagcupid.com/app/{path.TrimStart('/')}";
 
-				var tags = tagId.Split('_');
-				var products = await bagsApi.GetProductsByTags(tags);
+                var tagList = tagIds.Split('_').ToList();
+                var productsTask = bagsApi.GetProductsByTags(tagList);
+                var taskTagModels = bagsApi.GetTags();
 
-				if (products?.Count > 0)
-					model.Images = products.Take(5)
-						.Select(product => product.Images
-							.OrderBy(image => image.Priority)
-							.SelectAndSwallowReferenceType(image => new Uri(image.Large))
-							.Where(image => image != null).FirstOrDefault());
+                var products = await productsTask;
+                if (products?.Count > 0)
+                    model.Images = (await productsTask ?? Enumerable.Empty<BagsApi.Product>())
+                        .Take(5)
+                        .Select(product => product.Images
+                                .OrderBy(image => image.Priority)
+                                .SelectAndSwallowReferenceType(image => new Uri(image.Large))
+                                .Where(image => image != null)
+                                .FirstOrDefault());
+
+                var tagModels = await taskTagModels;
+
+                if (tagModels?.Count() > 0)
+                {
+                    var tags = tagModels.ToDictionary(tagModel => tagModel.TagId, tagModel => tagModel.TagName);
+                    var tagNames = tagList.Select(tagId => tags[Convert.ToUInt32(tagId)]);
+                    var tagsDescription = String.Join(", ", tagNames);
+
+                    model.Description = $"Find your perfect {tagsDescription} handbag!";
+                }
+            }
+
+            return View("index", model);
+        }
+    }
+
+    public class MetaViewModel
+    {
+        public String Url { get; set; } = "https://bagcupid.com/";
+        public String Type { get; set; } = "website";
+        public String Title { get; set; } = "Bag Cupid";
+        public String Description { get; set; } = "What is your dream bag? Are you having trouble finding it? Let us help you!";
+        public IEnumerable<Uri> Images { get; set; } = new[] { new Uri("https://bagcupid.com/img/logo/bagcupid_large.png") };
+    }
 
 
-				var tagModels = await bagsApi.GetTags();
+    public static class Extensions
+    {
+        private static readonly Regex upperCaseWordsRegex = new Regex(@"(^\w)|(\s\w)", RegexOptions.Compiled);
 
-				if (tagModels?.Count() > 0)
-				{
-					var tagsDescription = String.Join(", ", tagModels.Where(x => tags.Any(y => Convert.ToUInt32(y) == x.TagId))
-						.Select(x => x.TagName));
-
-					model.Description = $"Find your perfect {tagsDescription} handbag!";
-				}
-			}
-
-			return View("index", model);
-		}
-	}
-
-	public class MetaViewModel
-	{
-		public String Url { get; set; } = "https://bagcupid.com/";
-		public String Type { get; set; } = "website";
-		public String Title { get; set; } = "Bag Cupid";
-		public String Description { get; set; } = "What is your dream bag? Are you having trouble finding it? Let us help you!";
-		public IEnumerable<Uri> Images { get; set; } = new[] { new Uri("https://bagcupid.com/img/logo/bagcupid_large.png") };
-	}
-
-
-	public static class Extensions
-	{
-		private static readonly Regex upperCaseWordsRegex = new Regex(@"(^\w)|(\s\w)", RegexOptions.Compiled);
-
-		public static UInt64? TryParseUInt64(this String value)
-		{
-			UInt64 id = 0;
-			return UInt64.TryParse(value, out id) ? id : (UInt64?)null;
-		}
-	}
+        public static UInt64? TryParseUInt64(this String value)
+        {
+            UInt64 id = 0;
+            return UInt64.TryParse(value, out id) ? id : (UInt64?)null;
+        }
+    }
 }
