@@ -82,7 +82,7 @@ var parent = function(){
 var wrap = function(self, key, method){
 	// if method is already wrapped
 	if (method.$origin) method = method.$origin;
-	
+
 	var wrapper = function() {
 		if (!this || this == atom.global) throw new TypeError('Context lost');
 		if (method.$protected && !this.$caller) throw new Error('The method «' + key + '» is protected.');
@@ -95,7 +95,7 @@ var wrap = function(self, key, method){
 	wrapper.$owner  = self;
 	wrapper.$origin = method;
 	wrapper.$name   = key;
-	
+
 	return wrapper;
 };
 

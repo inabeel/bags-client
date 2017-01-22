@@ -41,7 +41,7 @@ coreAppend(Number.prototype, {
 	.split(' ')
 	.forEach(function(method) {
 		if (Number[method]) return;
-		
+
 		Number.prototype[method] = function() {
 			return Math[method].apply(null, [this].append(arguments));
 		};

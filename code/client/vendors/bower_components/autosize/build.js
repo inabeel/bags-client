@@ -60,7 +60,7 @@ function build(code) {
 	fs.writeFile('dist/'+pkg.config.filename+'.js', header+code);
 	fs.writeFile('dist/'+pkg.config.filename+'.min.js', header+minified);
 	writeBower();
-	
+
 	console.log('dist built');
 }
 

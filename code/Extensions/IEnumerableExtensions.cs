@@ -5,7 +5,7 @@ using System.Linq;
 namespace Zoltu.Bags.Client.Extensions
 {
 	public static class IEnumerableExtensions
-    {
+	{
 		public static IEnumerable<TResult> SelectAndSwallowReferenceType<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> predicate) where TResult : class
 		{
 			return source

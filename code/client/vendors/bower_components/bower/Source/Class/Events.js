@@ -120,13 +120,13 @@ coreAppend(Class, {
 		},
 		isEventAdded: function (name) {
 			initEvents(this);
-			
+
 			var e = this._events[name];
 			return !!(e && e.length);
 		},
 		fireEvent: function (name, args) {
 			initEvents(this);
-			
+
 			name = removeOn(name);
 			// we should prevent skipping next event on removing this in different fireEvents
 			var funcs = atom.clone(this._events[name]);
@@ -139,7 +139,7 @@ coreAppend(Class, {
 		},
 		readyEvent: function (name, args) {
 			initEvents(this);
-			
+
 			nextTick(function () {
 				name = removeOn(name);
 				this._events.$ready[name] = args || [];

@@ -6,68 +6,68 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
-    pkg: grunt.file.readJSON('package.json'),
+	pkg: grunt.file.readJSON('package.json'),
 
-    concat: {
-      dist: {
-        src: [ 'source/_base.css', 'source/**/*.css' ], // _base.css required for .animated helper class
-        dest: 'animate.css'
-      }
-    },
+	concat: {
+	  dist: {
+		src: [ 'source/_base.css', 'source/**/*.css' ], // _base.css required for .animated helper class
+		dest: 'animate.css'
+	  }
+	},
 
-    autoprefixer: { // https://github.com/nDmitry/grunt-autoprefixer
-      options: {
-        browsers: ['last 2 versions', 'bb 10']
-      },
-      no_dest: {
-        src: 'animate.css' // output file
-      }
-    },
+	autoprefixer: { // https://github.com/nDmitry/grunt-autoprefixer
+	  options: {
+		browsers: ['last 2 versions', 'bb 10']
+	  },
+	  no_dest: {
+		src: 'animate.css' // output file
+	  }
+	},
 
-    cssmin: {
-      minify: {
-        src: ['animate.css'],
-        dest: 'animate.min.css',
-      }
-    },
+	cssmin: {
+	  minify: {
+		src: ['animate.css'],
+		dest: 'animate.min.css',
+	  }
+	},
 
-    watch: {
-      css: {
-        files: [ 'source/**/*', 'animate-config.json' ],
-        tasks: ['default']
-      }
-    }
+	watch: {
+	  css: {
+		files: [ 'source/**/*', 'animate-config.json' ],
+		tasks: ['default']
+	  }
+	}
 
   });
 
   // fuction to perform custom task
   concatAnim = function () {
 
-    var categories = grunt.file.readJSON('animate-config.json'),
-      category, files, file,
-      target = [ 'source/_base.css' ],
-      count = 0;
+	var categories = grunt.file.readJSON('animate-config.json'),
+	  category, files, file,
+	  target = [ 'source/_base.css' ],
+	  count = 0;
 
-    for ( category in categories ) {
-      if ( categories.hasOwnProperty(category) ) {
-        files = categories[category]
-        for (file in files) {
-          if ( files.hasOwnProperty(file) && files[file] ) {
-            target.push('source/' + category + '/' + file + '.css');
-            count += 1;
-          }
-        }
-      }
-    }
+	for ( category in categories ) {
+	  if ( categories.hasOwnProperty(category) ) {
+		files = categories[category]
+		for (file in files) {
+		  if ( files.hasOwnProperty(file) && files[file] ) {
+			target.push('source/' + category + '/' + file + '.css');
+			count += 1;
+		  }
+		}
+	  }
+	}
 
-    if (!count) {
-      grunt.log.writeln('No animations activated.');
-    } else {
-      grunt.log.writeln(count + (count > 1 ? ' animations' : ' animation') + ' activated.');
-    }
+	if (!count) {
+	  grunt.log.writeln('No animations activated.');
+	} else {
+	  grunt.log.writeln(count + (count > 1 ? ' animations' : ' animation') + ' activated.');
+	}
 
-    grunt.config('concat', { 'animate.css': target });
-    grunt.task.run('concat');
+	grunt.config('concat', { 'animate.css': target });
+	grunt.task.run('concat');
 
   };
 

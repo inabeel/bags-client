@@ -25,7 +25,7 @@ provides: Animatable
 
 /** @class atom.Animatable */
 declare( 'atom.Animatable', {
-	
+
 	element: null,
 
 	initialize: function (callbacks, context) {

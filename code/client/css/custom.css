@@ -184,7 +184,7 @@ h4,.h4{font-size:14px;line-height:20px}
 body.showing-product{overflow:hidden}
 .btn-floating{position:fixed;z-index:2;left:0;position:fixed;bottom:53px;display:table;width:130px;left:-90px;box-shadow:0 1px 3px rgba(0,0,0,0.3);cursor:pointer;border-top-right-radius:2px!important;border-bottom-right-radius:2px!important;-webkit-transition:width .3s ease-out,background .3s ease-out,box-shadow .3s ease-out,transform .2s ease-out;transition:width .3s ease-out,background .3s ease-out,box-shadow .3s ease-out,transform .3s ease-out}
 @media (min-width:768px){
-    .btn-floating.push{-moz-transform:translateX(90px);-ms-transform:translateX(90px);-webkit-transform:translateX(90px);transform:translateX(90px)}
+	.btn-floating.push{-moz-transform:translateX(90px);-ms-transform:translateX(90px);-webkit-transform:translateX(90px);transform:translateX(90px)}
 }
 .btn-floating .text{width:90px;float:left;background-color:#fff;height:40px;line-height:40px;text-align:center;font-weight:500}
 .btn-floating .icon{height:40px;width:40px;float:right;line-height:40px;background-color:#fff;padding:0;display:block;text-align:center;font-size:16px;color:#777;border-top-right-radius:2px!important;border-bottom-right-radius:2px!important}
@@ -192,7 +192,7 @@ body.showing-product{overflow:hidden}
 .btn-floating.share{z-index:3}
 .btn-floating.share .social-dropdown{bottom:35px}
 @media (max-width:767px){
-    .btn-floating.share .social-dropdown{left:89px}
+	.btn-floating.share .social-dropdown{left:89px}
 }
 .btn-floating.help{bottom:105px}
 .btn-floating.help .icon{font-size:20px}

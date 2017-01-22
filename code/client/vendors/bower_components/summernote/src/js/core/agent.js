@@ -53,7 +53,7 @@ define(['jquery'], function ($) {
           }
         }
       }
-  
+
       return res;
     };
   }
@@ -78,14 +78,14 @@ define(['jquery'], function ($) {
       if (typeof callback !== 'function') {
         throw new TypeError(callback + ' is not a function');
       }
-  
+
       if (arguments.length > 1) {
         T = thisArg;
       }
-  
+
       A = new Array(len);
       k = 0;
-  
+
       while (k < len) {
         var kValue, mappedValue;
         if (k in O) {

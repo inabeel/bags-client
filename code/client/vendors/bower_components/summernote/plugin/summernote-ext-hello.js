@@ -12,15 +12,15 @@
   var tmpl = $.summernote.renderer.getTemplate();
 
   /**
-   * @class plugin.hello 
-   * 
-   * Hello Plugin  
+   * @class plugin.hello
+   *
+   * Hello Plugin
    */
   $.summernote.addPlugin({
     /** @property {String} name name of plugin */
     name: 'hello',
-    /** 
-     * @property {Object} buttons 
+    /**
+     * @property {Object} buttons
      * @property {Function} buttons.hello   function to make button
      * @property {Function} buttons.helloDropdown   function to make button
      * @property {Function} buttons.helloImage   function to make button
@@ -58,7 +58,7 @@
     },
 
     /**
-     * @property {Object} events 
+     * @property {Object} events
      * @property {Function} events.hello  run function when button that has a 'hello' event name  fires click
      * @property {Function} events.helloDropdown run function when button that has a 'helloDropdown' event name  fires click
      * @property {Function} events.helloImage run function when button that has a 'helloImage' event name  fires click

@@ -300,6 +300,6 @@ namespace Zoltu.Bags.Client.Tests
             Assert.Equal(expected: expectedDefaultTitle, actual: viewModel.Title);
             Assert.Equal(expected: expectedDefaultDescription, actual: viewModel.Description);
             Assert.Equal(expected: expectedDefaultImage, actual: viewModel.Images);
-        } 
+        }
 	}
 }

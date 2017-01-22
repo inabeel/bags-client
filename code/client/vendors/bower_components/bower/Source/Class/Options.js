@@ -46,7 +46,7 @@ atom.Class.Options = atom.Class({
 				}
 			}
 		}
-		
+
 		if (this.addEvent) for (var option in options){
 			if (atom.typeOf(options[option]) == 'function' && (/^on[A-Z]/).test(option)) {
 				this.addEvent(option, options[option]);

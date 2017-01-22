@@ -146,7 +146,7 @@ test('Extending', function(){
 	bar.etter = 9;
 	equal(bar._etter, 18, 'Property setter is implemented');
 	equal(bar.etter,  23, 'Property getter is implemented');
-	
+
 
 });
 

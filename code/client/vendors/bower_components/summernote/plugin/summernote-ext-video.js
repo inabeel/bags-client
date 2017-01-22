@@ -17,7 +17,7 @@
 
   /**
    * createVideoNode
-   *  
+   *
    * @member plugin.video
    * @private
    * @param {String} url
@@ -122,7 +122,7 @@
 
   /**
    * toggle button status
-   *  
+   *
    * @member plugin.video
    * @private
    * @param {jQuery} $btn
@@ -192,7 +192,7 @@
    *    toolbar : [
    *        ['group', [ 'video' ]]
    *    ]
-   *    ...    
+   *    ...
    *    });
    * ```
    */
@@ -245,10 +245,10 @@
 
           // restore range
           editor.restoreRange($editable);
-          
+
           // build node
           var $node = createVideoNode(url);
-          
+
           if ($node) {
             // insert video node
             editor.insertNode($editable, $node);

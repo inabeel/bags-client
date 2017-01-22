@@ -29,7 +29,7 @@ define('summernote/core/async', function () {
         }).readAsDataURL(file);
       }).promise();
     };
-  
+
     /**
      * @method createImage
      *

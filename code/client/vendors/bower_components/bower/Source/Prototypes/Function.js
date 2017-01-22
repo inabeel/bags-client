@@ -35,7 +35,7 @@ prototypize.add(function (globalObject) {
 			}, time);
 		};
 	}
-	
+
 	coreAppend(Function.prototype, {
 		after: prototypize.fn(atom.fn)('after'),
 		delay     : timer(false),

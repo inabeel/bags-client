@@ -837,7 +837,7 @@ define([
       //03. create editable
       var isContentEditable = !$holder.is(':disabled');
       var $editable = $('<div class="note-editable panel-body" contentEditable="' + isContentEditable + '"></div>').prependTo($editingArea);
-      
+
       if (options.height) {
         $editable.height(options.height);
       }

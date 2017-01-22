@@ -127,7 +127,7 @@ test('atom.dom().toggleClass', function() {
 	// cleanup
 	$elem.each(function(e){e.className = ''});
 });
-	
+
 test('atom.dom().html', function() {
 	var $elem = atom.dom($ID + ' h1');
 
@@ -137,7 +137,7 @@ test('atom.dom().html', function() {
 
 test('atom.dom().text', function() {
 	var $elem = atom.dom($ID + ' h1');
-		
+
 	$elem.html('<span>42</span>');
 	strictEqual($elem.text(), '42', 'text content atom.dom("#cid h1") should be equal to "42", but html content is "<span>42</span>"');
 
@@ -156,14 +156,14 @@ test('atom.dom().parent', function() {
 test('atom.dom().bind', function () {
 	var $elem = atom.dom.create('div');
 	var bind = false;
-	
+
 	$elem.bind("click", function () {
 		bind = true;
 	}).bind("click", false);
-	
+
 	var event = document.createEvent("MouseEvent");
 	event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	
+
 	ok(!$elem.first.dispatchEvent(event), "bind('click', false) should prevent default action");
 	ok(bind, "event listener should was called on click event");
 });
@@ -171,18 +171,18 @@ test('atom.dom().bind', function () {
 test('atom.dom().unbind', function () {
 	var $elem = atom.dom.create('div');
 	var bind = 0;
-	
+
 	$elem.bind("click", function listener () {
 		bind++;
 		$elem.unbind("click", listener);
 	});
-	
+
 	var event = document.createEvent("MouseEvent");
 	event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	
+
 	$elem.first.dispatchEvent(event);
 	$elem.first.dispatchEvent(event);
-	
+
 	equal(bind, 1, "unbind should detach event listener");
 });
 

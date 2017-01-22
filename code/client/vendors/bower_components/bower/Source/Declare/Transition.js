@@ -12,7 +12,7 @@ license:
 requires:
 	- Core
 	- declare
-	
+
 inspiration:
   - "[MooTools](http://mootools.net)"
 

@@ -93,7 +93,7 @@ define([
               break;
             }
           }
-          
+
           $fontname.find('.note-current-fontname').text(selectedFont);
           checkDropdownMenu($fontname, selectedFont);
 

@@ -11,8 +11,8 @@ import {
 } from './handle-swal-dom';
 
 import {
-  hasClass, addClass, removeClass, 
-  escapeHtml, 
+  hasClass, addClass, removeClass,
+  escapeHtml,
   _show, show, _hide, hide
 } from './handle-dom';
 

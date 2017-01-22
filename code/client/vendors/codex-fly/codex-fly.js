@@ -1,7 +1,7 @@
 /*!
  * Function: flyToElement
  * Author: CodexWorld
- * Author URI: http://www.codexworld.com  
+ * Author URI: http://www.codexworld.com
  * Author Email: contact@codexworld.com
  * Description: This function is used for adding flying effect to the element.
  */
@@ -13,7 +13,7 @@ function flyToElement(flyer, flyingTo) {
 	$('body').append($(flyerClone));
 	var gotoX = $(flyingTo).offset().left + ($(flyingTo).width() / 2) - ($(flyer).width()/divider)/2;
 	var gotoY = $(flyingTo).offset().top + ($(flyingTo).height() / 2) - ($(flyer).height()/divider)/2;
-	 
+
 	$(flyerClone).animate({
 	    left: gotoX,
 	    top: gotoY,

@@ -30,7 +30,7 @@ atom.dom.prototype.ajax = function (config) {
 		config.onLoad = function (r) { $dom.first.innerHTML = r };
 	}
 	if (config.onError) config.onError = config.onError.bind($dom);
-	
+
 	atom.ajax(config);
 	return $dom;
 };

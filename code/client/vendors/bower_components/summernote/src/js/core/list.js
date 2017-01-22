@@ -94,7 +94,7 @@ define(['summernote/core/func'], function (func) {
         return memo + fn(v);
       }, 0);
     };
-  
+
     /**
      * returns a copy of the collection with array type.
      * @param {Collection} collection - collection eg) node.childNodes, ...
@@ -106,7 +106,7 @@ define(['summernote/core/func'], function (func) {
       }
       return result;
     };
-  
+
     /**
      * cluster elements by predicate function.
      *
@@ -127,7 +127,7 @@ define(['summernote/core/func'], function (func) {
         return memo;
       }, [[head(array)]]);
     };
-  
+
     /**
      * returns a copy of the array with all falsy values removed
      *
@@ -180,7 +180,7 @@ define(['summernote/core/func'], function (func) {
 
       return array[idx - 1];
     };
-  
+
     return { head: head, last: last, initial: initial, tail: tail,
              prev: prev, next: next, find: find, contains: contains,
              all: all, sum: sum, from: from,

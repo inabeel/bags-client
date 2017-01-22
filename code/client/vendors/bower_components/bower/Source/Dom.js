@@ -53,13 +53,13 @@ provides: dom
 		},
 		readyCallback = function () {
 			if (domReady) return;
-			
+
 			domReady = true;
-			
+
 			for (var i = 0; i < onDomReady.length;) {
 				onDomReady[i++]();
 			}
-			
+
 			onDomReady = [];
 		},
 		findParentByLevel = function (elem, level) {
@@ -69,7 +69,7 @@ provides: dom
 
 			return findParentByLevel(elem.parentNode, level-1);
 		};
-		
+
 	document.addEventListener('DOMContentLoaded', readyCallback, false);
 	window.addEventListener('load', readyCallback, false);
 
@@ -320,13 +320,13 @@ provides: dom
 			this.each(function (elem) {
 				fr.appendChild(elem);
 			});
-			
+
 			if (next) {
 				parent.insertBefore(fr, next);
 			} else {
 				parent.appendChild(fr);
 			}
-			
+
 			return this;
 		},
 		/** @private */
@@ -363,11 +363,11 @@ provides: dom
 		hasClass: function(classNames) {
 			if (!classNames) return this;
 			if (!isArray(classNames)) classNames = [classNames];
-			
+
 			var result = false;
 			this.each(function (elem) {
 				if (result) return;
-				
+
 				var i = classNames.length,
 					all = elem.className.split(/\s+/);
 

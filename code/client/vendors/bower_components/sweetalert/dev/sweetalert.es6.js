@@ -6,10 +6,10 @@
  * jQuery-like functions for manipulating the DOM
  */
 import {
-  hasClass, addClass, removeClass, 
-  escapeHtml, 
-  _show, show, _hide, hide, 
-  isDescendant, 
+  hasClass, addClass, removeClass,
+  escapeHtml,
+  _show, show, _hide, hide,
+  isDescendant,
   getTopMargin,
   fadeIn, fadeOut,
   fireClick,
@@ -133,7 +133,7 @@ sweetAlert = swal = function() {
   var modal = getModal();
 
 
-  /* 
+  /*
    * Make sure all modal buttons respond to all events
    */
   var $buttons = modal.querySelectorAll('button');

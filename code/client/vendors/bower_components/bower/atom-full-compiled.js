@@ -440,13 +440,13 @@ provides: dom
 		},
 		readyCallback = function () {
 			if (domReady) return;
-			
+
 			domReady = true;
-			
+
 			for (var i = 0; i < onDomReady.length;) {
 				onDomReady[i++]();
 			}
-			
+
 			onDomReady = [];
 		},
 		findParentByLevel = function (elem, level) {
@@ -456,7 +456,7 @@ provides: dom
 
 			return findParentByLevel(elem.parentNode, level-1);
 		};
-		
+
 	document.addEventListener('DOMContentLoaded', readyCallback, false);
 	window.addEventListener('load', readyCallback, false);
 
@@ -707,13 +707,13 @@ provides: dom
 			this.each(function (elem) {
 				fr.appendChild(elem);
 			});
-			
+
 			if (next) {
 				parent.insertBefore(fr, next);
 			} else {
 				parent.appendChild(fr);
 			}
-			
+
 			return this;
 		},
 		/** @private */
@@ -750,11 +750,11 @@ provides: dom
 		hasClass: function(classNames) {
 			if (!classNames) return this;
 			if (!isArray(classNames)) classNames = [classNames];
-			
+
 			var result = false;
 			this.each(function (elem) {
 				if (result) return;
-				
+
 				var i = classNames.length,
 					all = elem.className.split(/\s+/);
 
@@ -1061,7 +1061,7 @@ atom.dom.prototype.ajax = function (config) {
 		config.onLoad = function (r) { $dom.first.innerHTML = r };
 	}
 	if (config.onError) config.onError = config.onError.bind($dom);
-	
+
 	atom.ajax(config);
 	return $dom;
 };
@@ -1412,7 +1412,7 @@ var parent = function(){
 var wrap = function(self, key, method){
 	// if method is already wrapped
 	if (method.$origin) method = method.$origin;
-	
+
 	var wrapper = function() {
 		if (!this || this == atom.global) throw new TypeError('Context lost');
 		if (method.$protected && !this.$caller) throw new Error('The method «' + key + '» is protected.');
@@ -1425,7 +1425,7 @@ var wrap = function(self, key, method){
 	wrapper.$owner  = self;
 	wrapper.$origin = method;
 	wrapper.$name   = key;
-	
+
 	return wrapper;
 };
 
@@ -1705,13 +1705,13 @@ coreAppend(Class, {
 		},
 		isEventAdded: function (name) {
 			initEvents(this);
-			
+
 			var e = this._events[name];
 			return !!(e && e.length);
 		},
 		fireEvent: function (name, args) {
 			initEvents(this);
-			
+
 			name = removeOn(name);
 			// we should prevent skipping next event on removing this in different fireEvents
 			var funcs = atom.clone(this._events[name]);
@@ -1724,7 +1724,7 @@ coreAppend(Class, {
 		},
 		readyEvent: function (name, args) {
 			initEvents(this);
-			
+
 			nextTick(function () {
 				name = removeOn(name);
 				this._events.$ready[name] = args || [];
@@ -1828,7 +1828,7 @@ atom.Class.Options = atom.Class({
 				}
 			}
 		}
-		
+
 		if (this.addEvent) for (var option in options){
 			if (atom.typeOf(options[option]) == 'function' && (/^on[A-Z]/).test(option)) {
 				this.addEvent(option, options[option]);
@@ -2081,7 +2081,7 @@ license:
 requires:
 	- Core
 	- declare
-	
+
 inspiration:
   - "[MooTools](http://mootools.net)"
 
@@ -2757,7 +2757,7 @@ provides: Animatable
 
 /** @class atom.Animatable */
 declare( 'atom.Animatable', {
-	
+
 	element: null,
 
 	initialize: function (callbacks, context) {
@@ -4683,7 +4683,7 @@ prototypize.add(function (globalObject) {
 			}, time);
 		};
 	}
-	
+
 	coreAppend(Function.prototype, {
 		after: prototypize.fn(atom.fn)('after'),
 		delay     : timer(false),
@@ -4799,7 +4799,7 @@ coreAppend(Number.prototype, {
 	.split(' ')
 	.forEach(function(method) {
 		if (Number[method]) return;
-		
+
 		Number.prototype[method] = function() {
 			return Math[method].apply(null, [this].append(arguments));
 		};
@@ -4986,4 +4986,4 @@ prototypize.add(function (globalObject) {
 	);
 });
 
-}.call(typeof exports == 'undefined' ? window : exports, Object, Array)); 
+}.call(typeof exports == 'undefined' ? window : exports, Object, Array));
